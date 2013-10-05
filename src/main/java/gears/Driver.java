@@ -1,4 +1,4 @@
-package com.gears.java;
+package gears;
 
 public class Driver {
 
