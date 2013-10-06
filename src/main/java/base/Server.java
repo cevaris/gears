@@ -103,7 +103,9 @@ public class Server {
 		AWSCredentials credentials = new BasicAWSCredentials(AWS_ACCESS_KEY,AWS_SECRET_KEY);
         AmazonEC2Client ec2 = new AmazonEC2Client(credentials);
         ec2.setRegion(Region.getRegion(Regions.US_EAST_1));
-		RunInstancesResult runInstances = ec2.runInstances(runInstancesRequest);
+        ec2.setEndpoint("ec2.us-east-1.amazonaws.com");
+        
+		RunInstancesResult runInstances = null;//ec2.runInstances(runInstancesRequest);
 		
 		return (runInstances != null) ? true : false;
 //		return false;
