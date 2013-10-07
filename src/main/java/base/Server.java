@@ -7,8 +7,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.security.Security;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import net.schmizz.sshj.SSHClient;
@@ -28,7 +29,10 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.ec2.AmazonEC2Client;
+import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.InstanceType;
+import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
 
@@ -46,7 +50,9 @@ public class Server {
 		loadCredentials();
 //		Boolean isStarted = init();
 //		LOG.info(String.format("Got EC2 running: %s", isStarted));
-		connect();
+//		connect();
+		getServers();
+
 	}
 	
 	private boolean connect() {
@@ -130,6 +136,36 @@ public class Server {
 		
 		return (runInstances != null) ? true : false;
 //		return false;
+	}
+	
+	protected void getServers(){
+		AWSCredentials credentials = new BasicAWSCredentials(AWS_ACCESS_KEY,AWS_SECRET_KEY);
+        AmazonEC2Client ec2 = new AmazonEC2Client(credentials);
+        ec2.setRegion(Region.getRegion(Regions.US_EAST_1));
+        
+		DescribeInstancesResult describeInstancesRequest = ec2.describeInstances();
+        List<Reservation> reservations = describeInstancesRequest.getReservations();
+        List<Instance> instances = new ArrayList<Instance>();
+
+        for (Reservation reservation : reservations) {
+            instances.addAll(reservation.getInstances());
+        }
+        
+        for (Instance instance : instances) {
+        	LOG.info(instance.getPublicDnsName());	
+        }
+
+//        //get instance id's
+//        String id;
+//        List<com.amazonaws.services.elasticloadbalancing.model.Instance> instanceId = new ArrayList<com.amazonaws.services.elasticloadbalancing.model.Instance>();
+//        List<String> instanceIdString = new ArrayList<String>();
+//        Iterator<Instance> iterator = instances.iterator();
+//        while (iterator.hasNext()) {
+//            id=iterator.next().getInstanceId();
+//            instanceId.add(new com.amazonaws.services.elasticloadbalancing.model.Instance(id));
+//            instanceIdString.add(id);
+//        }
+
 	}
 
 }
