@@ -153,6 +153,11 @@ abstract public class Server {
 //		return false;
 	}
 	
+	
+	/**
+	 * Get List of EC2 and hook them up to load balancer
+	 * http://stackoverflow.com/questions/10374704/how-can-i-create-a-load-balancer-in-aws-using-the-aws-java-sdk
+	 */
 	protected void getServers(){
 		AWSCredentials credentials = new BasicAWSCredentials(AWS_ACCESS_KEY,AWS_SECRET_KEY);
         AmazonEC2Client ec2 = new AmazonEC2Client(credentials);
