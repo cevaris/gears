@@ -38,7 +38,7 @@ import com.amazonaws.services.ec2.model.RunInstancesResult;
 
 
 
-public class Server {
+abstract public class Server {
 	
 	Logger LOG = Logger.getLogger(Server.class.getClass());
 	
@@ -46,20 +46,33 @@ public class Server {
 	private String AWS_SECRET_KEY;
 	private String AWS_SSH_KEY;
 	
+	protected SSHClient client;
+	protected Session session;
+	
 	public Server() {
-		loadCredentials();
+//		loadCredentials();
 //		Boolean isStarted = init();
 //		LOG.info(String.format("Got EC2 running: %s", isStarted));
 //		connect();
-		getServers();
+//		getServers();
 
 	}
 	
-	private boolean connect() {
+	abstract protected boolean install();
+	abstract protected boolean update();
+	
+	
+	public Session getSession() {
+		if(this.session == null) connect();
+		
+		return this.session;
+	}
+	
+	protected boolean connect() {
 		
 		try {
 			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-			SSHClient client = new SSHClient();
+			this.client = new SSHClient();
 			client.addHostKeyVerifier(new PromiscuousVerifier());
 			client.connect("ec2-54-227-192-242.compute-1.amazonaws.com");
 			
@@ -68,19 +81,19 @@ public class Server {
 			keyFile.init(new File(AWS_SSH_KEY));
 			client.authPublickey("ubuntu",keyFile);
 			
-			Session session = client.startSession();
-			final Command cmd = session.exec("sudo apt-get update");
-            
-        	InputStream channel = cmd.getInputStream();
-        	
-        	StringWriter writer = new StringWriter();
-        	IOUtils.copy(channel, writer);
-        	String theString = writer.toString();
-        	
-        	LOG.info(String.format("%s",theString));
-            
-            client.close();
-            session.close();
+			this.session = client.startSession();
+//			final Command cmd = session.exec("sudo apt-get update");
+//            
+//        	InputStream channel = cmd.getInputStream();
+//        	
+//        	StringWriter writer = new StringWriter();
+//        	IOUtils.copy(channel, writer);
+//        	String theString = writer.toString();
+//        	
+//        	LOG.info(String.format("%s",theString));
+//            
+//			this.client.close();
+//			this.session.close();
             
             
 		} catch (TransportException e){
@@ -89,13 +102,15 @@ public class Server {
 			LOG.error(e);
 		} catch (IOException e){
 			LOG.error(e);
-		} 
+		} finally {
+			
+		}
 		
 		return true;
 		
 	}
 
-	private void loadCredentials() {
+	protected void loadCredentials() {
 		Yaml yaml = new Yaml();
 		try{
 			Object configInput = yaml.load(new FileInputStream(new File(Constant.CONFIG_PATH)));
