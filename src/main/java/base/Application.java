@@ -5,6 +5,11 @@ import net.schmizz.sshj.connection.channel.direct.Session;
 public class Application {
 	
 	protected String PACKAGE_NAME;
+	protected Server server;
+	
+	public Application(Server server) {
+		this.server = server;
+	}
 	
 	public String getPackageName() {
 		return PACKAGE_NAME;
@@ -20,6 +25,12 @@ public class Application {
 		
 		return true;		
 	}
+	
+	public boolean update() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 
 	public Session getSession() {

@@ -58,8 +58,10 @@ abstract public class Server {
 
 	}
 	
-	abstract protected boolean install();
-	abstract protected boolean update();
+	
+	abstract protected boolean subscribe(Application applicaiton);
+	abstract protected boolean unsubscribe(Application applicaiton);
+	abstract protected boolean notifySubscribers();
 	
 	
 	public Session getSession() {
@@ -74,7 +76,7 @@ abstract public class Server {
 			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 			this.client = new SSHClient();
 			client.addHostKeyVerifier(new PromiscuousVerifier());
-			client.connect("ec2-54-227-192-242.compute-1.amazonaws.com");
+			client.connect("ec2-54-224-80-192.compute-1.amazonaws.com");
 			
 			
 			PKCS8KeyFile keyFile = new PKCS8KeyFile();
