@@ -1,4 +1,4 @@
 AWS:
   AWS_ACCESS_KEY: AKIAIKKACIRQPH57FHBQ
   AWS_SECRET_KEY: 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
-  AWS_SSH_KEY: ~/.ssh/ec2_key
+  AWS_SSH_KEY: '/Users/cevaris/.ssh/ec2_key'
