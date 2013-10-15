@@ -1,6 +1,4 @@
 package gears;
-import java.util.ArrayList;
-import java.util.List;
 
 import networking.SSHRequest;
 
@@ -14,49 +12,24 @@ import junit.framework.TestCase;
 public class ApacheServerTest extends TestCase {
 	
 	class ApacheApp extends Application {
-		String PACKAGE_NAME = "apache2";
 		
-		@Override
-		protected boolean update() {
-			// TODO Auto-generated method stub
-			return false;
+		public ApacheApp(Server server) {
+			super(server);
 		}
+
+		String PACKAGE_NAME = "apache2";
 
 	}
 	
-	// Solidify User model
-	// Encapsulate tweet import into custom rake command
-	// Draft out needed tweet attributes and create Tweet Mongoid model using Embedded Documents
-	// 
-
 	class ApacheServer extends Server {
-		
-		List<Application> applications = new ArrayList<Application>();
 		
 		public ApacheServer() {
 			loadCredentials();
 			connect();
 		}
 
-		@Override
-		protected boolean subscribe(Application app) {
-			this.applications.add(app);
-			return true;
-		}
-
-		@Override
-		protected boolean unsubscribe(Application app) {
-			this.applications.remove(app);
-			return true;
-		}
-
-		@Override
-		protected boolean notifySubscribers() {
-			for( Application app : this.applications ){
-				app.update();
-			}
-			return true;
-		}
+		
+		
 
 	}
 	

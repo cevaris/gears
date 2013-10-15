@@ -2,7 +2,7 @@ package base;
 
 import net.schmizz.sshj.connection.channel.direct.Session;
 
-public class Application {
+abstract public class Application {
 	
 	protected String PACKAGE_NAME;
 	protected Server server;
@@ -17,12 +17,10 @@ public class Application {
 	
 	
 	protected boolean install() {
-		
 		return true;		
 	}
 	
 	protected boolean uninstall() {
-		
 		return true;		
 	}
 	
