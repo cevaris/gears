@@ -49,21 +49,24 @@ abstract public class Server {
 	protected SSHClient client;
 	protected Session session;
 	
-	public Server() {
-//		loadCredentials();
-//		Boolean isStarted = init();
-//		LOG.info(String.format("Got EC2 running: %s", isStarted));
-//		connect();
-//		getServers();
-
+	protected List<Application> applications = new ArrayList<Application>();
+	
+	protected boolean notifySubscribers() {
+		for( Application app : this.applications ){
+			app.update(); //TODO: Update if not installed
+		}
+		return true;
 	}
-	
-	
-	abstract protected boolean subscribe(Application applicaiton);
-	abstract protected boolean unsubscribe(Application applicaiton);
-	abstract protected boolean notifySubscribers();
-	
-	
+	protected boolean subscribe(Application app) {
+		this.applications.add(app);
+		return true;
+	}
+
+	protected boolean unsubscribe(Application app) {
+		this.applications.remove(app);
+		return true;
+	}
+
 	public Session getSession() {
 		if(this.session == null) connect();
 		
