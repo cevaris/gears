@@ -1,0 +1,7 @@
+server { 
+	listen $port; 
+	server_name $webName; 
+	root $projectPath; 
+	
+	passenger_enabled on;
+}

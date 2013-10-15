@@ -1,6 +1,6 @@
 package gears;
 
-import networking.SSHRequest;
+import network.SSHRequest;
 
 import org.junit.*;
 
