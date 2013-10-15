@@ -18,7 +18,6 @@ public class ApacheServerTest extends TestCase {
 		}
 
 		String PACKAGE_NAME = "apache2";
-
 	}
 	
 	class ApacheServer extends Server {
@@ -27,10 +26,6 @@ public class ApacheServerTest extends TestCase {
 			loadCredentials();
 			connect();
 		}
-
-		
-		
-
 	}
 	
 	@Test
