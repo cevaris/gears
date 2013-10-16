@@ -3,14 +3,16 @@ package gears;
 import org.junit.*;
 
 import base.Application;
+import base.Instance;
 import base.Server;
+import base.ServerConfiguration;
 import junit.framework.TestCase;
 
 
 public class ApacheServerTest extends TestCase {
 	
 	public static String TEST_RESOURCES = "src/test/java/resources/";
-	public static String CONFIG_PATH = TEST_RESOURCES + "config.yaml";
+	public static String HOSTS = TEST_RESOURCES + "hosts.yaml";
 	
 	class ApacheApp extends Application {
 		String PACKAGE_NAME = "apache2";
@@ -22,6 +24,19 @@ public class ApacheServerTest extends TestCase {
 	
 	class ApacheServer extends Server {
 		
+		class ProductionApache extends ServerConfiguration {
+			public ProductionApache() {
+				Instance apacheWeb = new Instance();
+				apacheWeb.setFQDN("192.168.1.101");
+				apacheWeb.setSSHPermKeyPath("/Users/cevaris/.ssh/id_rsa");
+				addInstance(apacheWeb);
+			}
+		}
+		
+		public ApacheServer() {
+			this.config = new ProductionApache();
+		}
+
 	}
 	
 	@Test
