@@ -5,8 +5,6 @@ import gears.Constant;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +12,11 @@ import java.util.Map;
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
-import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import net.schmizz.sshj.transport.TransportException;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 import net.schmizz.sshj.userauth.UserAuthException;
 import net.schmizz.sshj.userauth.keyprovider.PKCS8KeyFile;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
@@ -37,23 +33,32 @@ import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
 
 
-
 abstract public class Server {
 	
 	Logger LOG = Logger.getLogger(Server.class.getClass());
+	
+	private List<?> nodes;
+	private String sshKey;
+	
+	private String configPath;
+	
+	protected SSHClient client;
+	protected Session session;
+	protected boolean isSSHConnected;
 	
 	private String AWS_ACCESS_KEY;
 	private String AWS_SECRET_KEY;
 	private String AWS_SSH_KEY;
 	
-	protected SSHClient client;
-	protected Session session;
-	
 	protected List<Application> applications = new ArrayList<Application>();
+	
+	public void setConfigPath(String configPath) {
+		this.configPath = configPath;
+	}
 	
 	protected boolean notifySubscribers() {
 		for( Application app : this.applications ){
-			app.update(); //TODO: Update if not installed
+			app.update(); //TODO: install app if not installed
 		}
 		return true;
 	}
@@ -75,6 +80,10 @@ abstract public class Server {
 	
 	protected boolean connect() {
 		
+		if((this.session != null) && this.session.isOpen()) return false;
+		
+		loadCredentials(this.configPath);
+		
 		try {
 			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 			this.client = new SSHClient();
@@ -87,6 +96,7 @@ abstract public class Server {
 			client.authPublickey("ubuntu",keyFile);
 			
 			this.session = client.startSession();
+			
 //			final Command cmd = session.exec("sudo apt-get update");
 //            
 //        	InputStream channel = cmd.getInputStream();
@@ -115,19 +125,42 @@ abstract public class Server {
 		
 	}
 
-	protected void loadCredentials() {
-		Yaml yaml = new Yaml();
+	private void loadCredentials(String configPath) {
+		Yaml yaml = null;
+		Object configDocument = null;
+		Map<?, ?> config = null;
+		
 		try{
-			Object configInput = yaml.load(new FileInputStream(new File(Constant.CONFIG_PATH)));
-			Map<String, Object> config = (Map<String, Object>)configInput;
-			Map<String, String> credentials = (Map<String, String>)config.get("AWS");
-			AWS_ACCESS_KEY = credentials.get("AWS_ACCESS_KEY");
-			AWS_SECRET_KEY = credentials.get("AWS_SECRET_KEY");
-			AWS_SSH_KEY    = credentials.get("AWS_SSH_KEY");
-			System.out.println(String.format("Loaded AWS credentials - %s::%s::%s", AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_SSH_KEY));
+			yaml = new Yaml();
+			configDocument = yaml.load(new FileInputStream(new File(configPath)));
+			config = (Map<?, ?>) configDocument;
 		} catch (Exception e){
-			System.err.println(e);
+			LOG.error("Syntax error in configuration file", e);
 		}
+		
+		try{
+			this.nodes = (List<?>)config.get("NODES");
+		} catch (ClassCastException e){
+			LOG.error("Invalid node configuration. Define list of IP Address or hostnames, e.g, NODES: [191.168.1.101, 191.168.1.101]", e);
+		}
+		
+		try{
+			this.sshKey = (String)config.get("SSH_KEY");
+		} catch (ClassCastException e){
+			LOG.error("Invalid SSH Key configuration. Define path of SSH private key.", e);
+		}
+		
+		System.out.println(String.format("Loaded Node Credentials - %s::%s", this.nodes, this.sshKey));
+		
+		/**
+		 * EC2 Config YAML Parser
+		 */
+//		Map<String, String> credentials = (Map<String, String>)config.get("AWS");
+//		AWS_ACCESS_KEY = credentials.get("AWS_ACCESS_KEY");
+//		AWS_SECRET_KEY = credentials.get("AWS_SECRET_KEY");
+//		AWS_SSH_KEY    = credentials.get("AWS_SSH_KEY");
+//		System.out.println(String.format("Loaded AWS credentials - %s::%s::%s", AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_SSH_KEY));
+			
 	}
 
 	
@@ -136,7 +169,7 @@ abstract public class Server {
 	 * http://stackoverflow.com/questions/9283556/sshj-keypair-login-to-ec2-instance/15800383#15800383
 	 * @return
 	 */
-	protected boolean init(){
+	protected boolean ec2Init(){
 		
 		assert(AWS_ACCESS_KEY != null || AWS_SECRET_KEY != null || AWS_SSH_KEY != null) : "AWS Credentials not set";
 		
@@ -163,7 +196,7 @@ abstract public class Server {
 	 * Get List of EC2 and hook them up to load balancer
 	 * http://stackoverflow.com/questions/10374704/how-can-i-create-a-load-balancer-in-aws-using-the-aws-java-sdk
 	 */
-	protected void getServers(){
+	protected void getEc2Servers(){
 		AWSCredentials credentials = new BasicAWSCredentials(AWS_ACCESS_KEY,AWS_SECRET_KEY);
         AmazonEC2Client ec2 = new AmazonEC2Client(credentials);
         ec2.setRegion(Region.getRegion(Regions.US_EAST_1));

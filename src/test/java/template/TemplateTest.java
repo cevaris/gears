@@ -1,4 +1,4 @@
-package com.template;
+package template;
 
 import static org.junit.Assert.*;
 
