@@ -17,9 +17,35 @@ public class ApacheServerTest extends TestCase {
 	class ApacheApp extends Application {
 		String PACKAGE_NAME = "apache2";
 		
+		String MYSQL_PASS   = "mypass";
+		String MYSQL_USER   = "root";
+		
 		public ApacheApp(Server server) {
 			super(server);
+			init();
 		}
+
+		private void init() {
+			
+			update();
+			// Install Apache
+			install(PACKAGE_NAME);
+
+			// Silent terminal
+			execute("export DEBIAN_FRONTEND=noninteractive");
+
+			// Install misc apps
+			install(new String[]{"mysql-server","php5-mysql", "php5", "libapache2-mod-php5", "php5-mcrypt"}, 
+					new String[]{"-q","-y"});
+
+			// Define Mysql password
+			execute(String.format("mysqladmin -u root password %s", MYSQL_PASS));
+			
+			// Restart Apache service, equals to "service apache2 restart"
+			restartService(PACKAGE_NAME);
+		}
+		
+		
 		    
 	}
 	
@@ -44,6 +70,13 @@ public class ApacheServerTest extends TestCase {
 	public void testApacheServerSession(){
 		Server apache = new ApacheServer();
 		apache.execute();
+//		assertNotNull(apache.getSession());
+	}
+	
+	@Test
+	public void testApacheApp(){
+		Server server   = new ApacheServer();
+		Application app = new ApacheApp(server);
 //		assertNotNull(apache.getSession());
 	}
 //	

@@ -18,14 +18,13 @@ abstract public class Application {
 		return PACKAGE_NAME;
 	}
 	
-	
 	public boolean install(String[] commands, String[] flags) {
 		return install(
 			StringUtils.join(commands, " "), 
 			StringUtils.join(flags, " ")
 		);
 	}
-	
+
 	public boolean install(String service) {
 		return install(service, "");
 	}
@@ -34,13 +33,19 @@ abstract public class Application {
 		return execute(String.format("apt-get %s install %s",flags, service));
 	}
 	
+	public boolean restartService(String service) {
+		return execute(String.format("service %s restart", service));
+	}
+	
 	public boolean update() {
 		return execute("apt-get update");
 	}
 	
-	private boolean execute(String command) {
-		SSHRequest request = new SSHRequest(this.server);
-		return request.execute(command);
+	public boolean execute(String command) {
+		System.out.println(command);
+		return false;
+//		SSHRequest request = new SSHRequest(this.server);
+//		return request.execute(command);
 	}
 
 	public Session getSession() {
