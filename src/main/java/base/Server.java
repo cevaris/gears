@@ -5,18 +5,23 @@ import gears.Constant;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.schmizz.sshj.Config;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
+import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import net.schmizz.sshj.transport.TransportException;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 import net.schmizz.sshj.userauth.UserAuthException;
 import net.schmizz.sshj.userauth.keyprovider.PKCS8KeyFile;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
@@ -26,16 +31,11 @@ abstract public class Server {
 	
 	Logger LOG = Logger.getLogger(Server.class.getClass());
 	
-	private List<?> nodes;
-	private String sshKey;
-	
-	private String hostsPath;
-	
 	protected SSHClient client;
 	protected Session session;
-	protected boolean isSSHConnected;
 	
 	protected List<Application> applications = new ArrayList<Application>();
+	
 	protected ServerConfiguration config;
 	
 	protected boolean notifySubscribers() {
@@ -60,26 +60,32 @@ abstract public class Server {
 	}
 	
 	protected boolean connect() {
+		boolean status = true;
+		for(Instance instance : config.getInstances()){
+			status = status && connect(instance);
+		}
+		return status;
+	}
+	
+	private boolean connect(Instance instance) {
 		
-		assert(this.hostsPath != null) : "Hosts path is not set";
-		if((this.session != null) && this.session.isOpen()) return false;
-		
-		loadCredentials(this.hostsPath);
+		assert(instance != null) : "Instance is null";
 		
 		try {
 			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 			this.client = new SSHClient();
-			client.addHostKeyVerifier(new PromiscuousVerifier());
-			client.connect("ec2-54-224-80-192.compute-1.amazonaws.com");
-			
+			this.client.addHostKeyVerifier(new PromiscuousVerifier());
+			this.client.connect(instance.getFQDN());
 			
 			PKCS8KeyFile keyFile = new PKCS8KeyFile();
-			keyFile.init(new File(AWS_SSH_KEY));
-			client.authPublickey("ubuntu",keyFile);
+			keyFile.init(new File(instance.getSSHPermKeyPath()));
+			this.client.authPublickey("root",keyFile);
 			
-			this.session = client.startSession();
+			this.session = this.client.startSession();
 			
-//			final Command cmd = session.exec("sudo apt-get update");
+			return this.session.isOpen();
+			
+//			final Command cmd = this.session.exec("ls -l /");
 //            
 //        	InputStream channel = cmd.getInputStream();
 //        	
@@ -92,18 +98,15 @@ abstract public class Server {
 //			this.client.close();
 //			this.session.close();
             
-            
 		} catch (TransportException e){
 			LOG.error(e);
 		} catch (UserAuthException e){
 			LOG.error(e);
 		} catch (IOException e){
 			LOG.error(e);
-		} finally {
-			
 		}
 		
-		return true;
+		return false;
 		
 	}
 
@@ -133,6 +136,11 @@ abstract public class Server {
 		}
 		
 		System.out.println(String.format("Loaded Node Credentials - %s::%s", this.nodes, this.sshKey));
+	}
+	
+	
+	public void execute() {
+		connect();
 	}
 
 	
