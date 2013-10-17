@@ -20,15 +20,6 @@ public class ApacheServerTest extends TestCase {
 		public ApacheApp(Server server) {
 			super(server);
 		}
-		
-		
-		public install(){
-			this.server.update();
-			this.server.install(PACKAGE_NAME);
-			this.server.chmod("/var/www/", 777, false);
-			
-		}
-		
 		    
 	}
 	

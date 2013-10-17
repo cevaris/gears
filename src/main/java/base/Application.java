@@ -1,6 +1,9 @@
 package base;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.schmizz.sshj.connection.channel.direct.Session;
+import network.SSHRequest;
 
 abstract public class Application {
 	
@@ -16,20 +19,29 @@ abstract public class Application {
 	}
 	
 	
-	protected boolean install() {
-		return true;		
+	public boolean install(String[] commands, String[] flags) {
+		return install(
+			StringUtils.join(commands, " "), 
+			StringUtils.join(flags, " ")
+		);
 	}
 	
-	protected boolean uninstall() {
-		return true;		
+	public boolean install(String service) {
+		return install(service, "");
+	}
+	
+	public boolean install(String service, String flags) {
+		return execute(String.format("apt-get %s install %s",flags, service));
 	}
 	
 	public boolean update() {
-		// TODO Auto-generated method stub
-		return false;
+		return execute("apt-get update");
 	}
-
-
+	
+	private boolean execute(String command) {
+		SSHRequest request = new SSHRequest(this.server);
+		return request.execute(command);
+	}
 
 	public Session getSession() {
 		// TODO Auto-generated method stub
