@@ -28,7 +28,7 @@ public class ApacheServerTest extends TestCase {
 		
 		public ApacheApp(Server server) {
 			super(server);
-//			init();
+			init();
 			renderInfo();
 		}
 
@@ -80,12 +80,12 @@ public class ApacheServerTest extends TestCase {
 
 	}
 	
-	@Test
-	public void testApacheServerSession(){
-		Server apache = new ApacheServer();
-		apache.execute();
-//		assertNotNull(apache.getSession());
-	}
+//	@Test
+//	public void testApacheServerSession(){
+//		Server apache = new ApacheServer();
+//		apache.execute();
+////		assertNotNull(apache.getSession());
+//	}
 	
 	@Test
 	public void testApacheApp(){
