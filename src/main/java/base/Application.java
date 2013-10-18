@@ -1,6 +1,11 @@
 package base;
 
+import static org.junit.Assert.assertTrue;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.velocity.VelocityContext;
+
+import template.Templaton;
 
 import net.schmizz.sshj.connection.channel.direct.Session;
 import network.SSHRequest;
@@ -12,10 +17,6 @@ abstract public class Application {
 	
 	public Application(Server server) {
 		this.server = server;
-	}
-	
-	public String getPackageName() {
-		return PACKAGE_NAME;
 	}
 	
 	public boolean install(String[] commands, String[] flags) {
@@ -41,6 +42,10 @@ abstract public class Application {
 		return execute("apt-get update");
 	}
 	
+	public boolean render(String source, String dest, VelocityContext context) {
+		return execute(String.format("echo <<  %s", ));
+	}
+	
 	public boolean execute(String command) {
 		System.out.println(command);
 		return false;
@@ -49,8 +54,7 @@ abstract public class Application {
 	}
 
 	public Session getSession() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.server.getSession();
 	}
 	
 	

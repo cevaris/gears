@@ -1,6 +1,11 @@
 package gears;
 
+import static org.junit.Assert.assertTrue;
+
+import org.apache.velocity.VelocityContext;
 import org.junit.*;
+
+import template.Templaton;
 
 import base.Application;
 import base.Instance;
@@ -13,6 +18,7 @@ public class ApacheServerTest extends TestCase {
 	
 	public static String TEST_RESOURCES = "src/test/java/resources/";
 	public static String HOSTS = TEST_RESOURCES + "hosts.yaml";
+	public static String INFO = TEST_RESOURCES + "info.php.vm";
 	
 	class ApacheApp extends Application {
 		String PACKAGE_NAME = "apache2";
@@ -22,29 +28,37 @@ public class ApacheServerTest extends TestCase {
 		
 		public ApacheApp(Server server) {
 			super(server);
-			init();
+//			init();
+			renderInfo();
 		}
 
 		private void init() {
-			
+			// Update apt-get
 			update();
-			// Install Apache
-			install(PACKAGE_NAME);
 
 			// Silent terminal
 			execute("export DEBIAN_FRONTEND=noninteractive");
 
 			// Install misc apps
-			install(new String[]{"mysql-server","php5-mysql", "php5", "libapache2-mod-php5", "php5-mcrypt"}, 
+			install(new String[]{PACKAGE_NAME, "mysql-server","php5-mysql", "php5", "libapache2-mod-php5", "php5-mcrypt"}, 
 					new String[]{"-q","-y"});
 
 			// Define Mysql password
 			execute(String.format("mysqladmin -u root password %s", MYSQL_PASS));
 			
+			renderInfo();
+			
 			// Restart Apache service, equals to "service apache2 restart"
 			restartService(PACKAGE_NAME);
 		}
 		
+		
+		private void renderInfo(){
+			VelocityContext context = Templaton.getContext();
+        	context.put("MYSQL_PASS", MYSQL_PASS);
+        	context.put("MYSQL_USER", MYSQL_USER );
+			render(INFO, "/var/www/info.php", context);
+		}
 		
 		    
 	}

@@ -7,43 +7,63 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
+import sun.security.jca.GetInstance;
+
 public class Templaton {
 	
 	
-	VelocityContext context = null;
-	StringWriter writer = null;
-	Template template = null;
-	boolean hasRendered = false;
+//	VelocityContext context = null;
+//	StringWriter writer = null;
+//	Template template = null;
+	private static Templaton instance = null;
 	
-	public Templaton(String templatePath) {
-		init(templatePath, null);
+	
+	public static Templaton getInstance() {
+		if(instance == null) instance = new Templaton();
+		return instance;
 	}
 	
-	public Templaton(String templateName, StringWriter writer) {
-		init(templateName, writer);
+	public static VelocityContext getContext(){
+		return new VelocityContext();
 	}
 	
-	public void init(String templatePath, StringWriter writer){
-		this.context = new VelocityContext();
-		this.template = Velocity.getTemplate(templatePath);
-		this.writer = writer;
+	
+	public StringWriter render(String source, VelocityContext context) {
+		return render(source, context, new StringWriter());
+	}
+	public StringWriter render(String source, VelocityContext context, StringWriter writer) {
 		
-		this.hasRendered = false;
-	}
-	
-	public Context put(String key, Object value) {
-		this.context.put(key,value);
-		return this.context;
-	}
-	
-	public StringWriter render() {
-		if(this.hasRendered) return this.writer;
-		if(this.writer == null) this.writer = new StringWriter();
+		if(writer == null) writer = new StringWriter();
 		
-		this.template.merge(context, writer);
-		this.hasRendered = true;
+		Template template = Velocity.getTemplate(source);
+		template.merge(context, writer);
 		
-		return this.writer;
+		return writer;
 	}
+
+	
+//	public void init(String templatePath, StringWriter writer){
+//		this.context = new VelocityContext();
+//		this.template = Velocity.getTemplate(templatePath);
+//		this.writer = writer;
+//		
+//	}
+	
+//	public Context put(String key, Object value) {
+//		this.context.put(key,value);
+//		return this.context;
+//	}
+	
+//	public StringWriter render() {
+//		
+//		if(this.writer == null) this.writer = new StringWriter();
+//		
+//		this.template.merge(context, writer);
+//		this.hasRendered = true;
+//		
+//		return this.writer;
+//	}
+	
+	
 
 }

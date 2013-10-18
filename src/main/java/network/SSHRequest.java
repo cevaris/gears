@@ -24,8 +24,8 @@ public class SSHRequest {
 	public SSHRequest(Server server) {
 		this.session = server.getSession();
 	}
-	public SSHRequest(Application server) {
-		this.session = server.getSession();
+	public SSHRequest(Application app) {
+		this.session = app.getSession();
 	}
 	
 	public String getResponse() {
