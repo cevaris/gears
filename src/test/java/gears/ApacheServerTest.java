@@ -29,7 +29,6 @@ public class ApacheServerTest extends TestCase {
 		public ApacheApp(Server server) {
 			super(server);
 			init();
-			renderInfo();
 		}
 
 		private void init() {
@@ -38,18 +37,20 @@ public class ApacheServerTest extends TestCase {
 
 			// Silent terminal
 			execute("export DEBIAN_FRONTEND=noninteractive");
-
-			// Install misc apps
-			install(new String[]{PACKAGE_NAME, "mysql-server","php5-mysql", "php5", "libapache2-mod-php5", "php5-mcrypt"}, 
-					new String[]{"-q","-y"});
-
-			// Define Mysql password
-			execute(String.format("mysqladmin -u root password %s", MYSQL_PASS));
 			
-			renderInfo();
-			
-			// Restart Apache service, equals to "service apache2 restart"
-			restartService(PACKAGE_NAME);
+			update();
+//
+//			// Install misc apps
+//			install(new String[]{PACKAGE_NAME, "mysql-server","php5-mysql", "php5", "libapache2-mod-php5", "php5-mcrypt"}, 
+//					new String[]{"-q","-y"});
+//
+//			// Define Mysql password
+//			execute(String.format("mysqladmin -u root password %s", MYSQL_PASS));
+//			
+//			renderInfo();
+//			
+//			// Restart Apache service, equals to "service apache2 restart"
+//			restartService(PACKAGE_NAME);
 		}
 		
 		

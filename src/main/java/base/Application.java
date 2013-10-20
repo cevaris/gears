@@ -16,11 +16,10 @@ abstract public class Application {
 	
 	protected String PACKAGE_NAME;
 	protected Server server;
-	private SSHRequest request;
 	
 	public Application(Server server) {
 		this.server = server;
-		 request = new SSHRequest(this.server);
+		 
 	}
 	
 	public boolean install(String[] commands, String[] flags) {
@@ -58,16 +57,15 @@ abstract public class Application {
 	}
 	
 	public boolean execute(String command) {
-		System.out.println(command);
-		return false;
+//		System.out.println(command);
+//		return false;
 		
-//		return request.execute(command);
+		SSHRequest request = new SSHRequest(this.server);
+		
+		return request.execute(command);
 //		return request.execute("ls -l /");
 	}
 
-	public Session getSession() {
-		return this.server.getSession();
-	}
 	
 	
 

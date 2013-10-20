@@ -54,9 +54,13 @@ abstract public class Server {
 		return true;
 	}
 
-	public Session getSession() {
-		if(this.session == null) connect();
-		return this.session;
+//	public Session getSession() {
+//		if(this.session == null) connect();
+//		return this.session;
+//	}
+	public SSHClient getClient() {
+		if(this.client == null) connect();
+		return this.client;
 	}
 	
 	protected boolean connect() {
@@ -81,9 +85,11 @@ abstract public class Server {
 			keyFile.init(new File(instance.getSSHPermKeyPath()));
 			this.client.authPublickey("root",keyFile);
 			
-			this.session = this.client.startSession();
+			return true;
 			
-			return this.session.isOpen();
+//			this.session = this.client.startSession();
+			
+//			return this.session.isOpen();
 			
 //			final Command cmd = this.session.exec("ls -l /");
 //            
