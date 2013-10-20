@@ -4,12 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
+import net.schmizz.sshj.connection.channel.direct.Signal;
 import net.schmizz.sshj.transport.TransportException;
 import net.schmizz.sshj.userauth.UserAuthException;
 import base.Server;
@@ -35,6 +38,7 @@ public class SSHRequest {
 			Session session = this.client.startSession();
 			final Command cmd = session.exec(command);
         	InputStream channel = cmd.getInputStream();
+        	InputStream errorChannel = cmd.getErrorStream();
         	
 //        	/* Writes full response to string */ 
 //        	StringWriter writer = new StringWriter();
@@ -48,6 +52,20 @@ public class SSHRequest {
             while ((line = in.readLine()) != null) {
             	LOG.info(String.format("%s",line));
             	log.append(line);
+            }
+            
+            Integer exitStatus = cmd.getExitStatus();
+            if(exitStatus == null || exitStatus != 0) {
+            	LOG.error(String.format("Irregular Exit Status (%d) from the following command %s", exitStatus, command));
+            	BufferedReader error = new BufferedReader(new InputStreamReader(errorChannel));
+            	while ((line = error.readLine()) != null) {
+                	LOG.info(String.format("%s",line));
+                	log.append(line);
+                }
+            	errorChannel.close();
+            	error.close();   
+            } else {
+            	LOG.info(String.format("Success Exit Status (%d) from the following command %s", exitStatus, command));
             }
             
             this.response = log.toString();
