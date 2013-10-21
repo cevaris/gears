@@ -40,7 +40,7 @@ abstract public class Server {
 	
 	protected boolean notifySubscribers() {
 		for( Application app : this.applications ){
-			app.update(); //TODO: install app if not installed
+			app.execute(); //TODO: install app if not installed
 		}
 		return true;
 	}
@@ -145,14 +145,4 @@ abstract public class Server {
 //	}
 	
 	
-	public void execute() {
-		this.connect();
-		
-		for(Application app : this.applications){
-			app.execute();
-		}
-	}
-
-	
-
 }

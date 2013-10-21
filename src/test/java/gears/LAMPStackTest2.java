@@ -114,8 +114,9 @@ public class LAMPStackTest2 {
 		class ProductionLAMP extends ServerConfiguration {
 			public ProductionLAMP() {
 				Instance server = new Instance();
-				server.setFQDN("192.168.1.102");
+				server.setFQDN("192.168.1.103");
 				server.setSSHPermKeyPath("/Users/cevaris/.ssh/id_rsa");
+				
 				addInstance(server);
 			}
 		}
@@ -123,11 +124,11 @@ public class LAMPStackTest2 {
 		public LAMPStackServer() {
 			this.config = new ProductionLAMP();
 			
-			this.applications.add(new PHPApp(this));
-			this.applications.add(new MySQLApp(this));
-			this.applications.add(new ApacheApp(this));
+			subscribe(new PHPApp(this));
+			subscribe(new MySQLApp(this));
+			subscribe(new ApacheApp(this));
 			
-			execute();
+			notifySubscribers();
 		}
 
 	}
