@@ -40,20 +40,12 @@ public class LAMPStackTest2 {
 	
 	class ApacheApp extends Application {
 		
-		String MYSQL_PASS   = "mypass";
-		String MYSQL_USER   = "root";
+		
 		
 		public ApacheApp(Server server) {
 			super(server);
 		}
-
-		private void renderInfo(){
-			VelocityContext context = Templaton.getContext();
-        	context.put("MYSQL_PASS", MYSQL_PASS);
-        	context.put("MYSQL_USER", MYSQL_USER );
-			render(INFO, "/var/www/info.php", context);
-		}
-
+		
 		@Override
 		protected void execute() {
 			// Update application repository
@@ -63,8 +55,6 @@ public class LAMPStackTest2 {
 			install(new String[]{"apache2", "libapache2-mod-php5", "php5-mcrypt"}, 
 					new String[]{"-q","-y"});
 	
-			renderInfo();
-			
 			// Restart Apache service, equals to "service apache2 restart"
 			restart("apache2");
 		}
@@ -77,10 +67,11 @@ public class LAMPStackTest2 {
 		 * For MySQL config file
 		 * http://stackoverflow.com/questions/1167056/optimal-mysql-configuration-my-cnf
 		 */
-		String MYSQL_PASS   = "mypass";
-		String MYSQL_USER   = "root";
-		String INNODB_BUFFER_POOL_SIZE = "512M";
-		String INNODB_LOG_FILE_SIZE = "128M";
+		public static final String MYSQL_PASS   = "mypass";
+		public static final String MYSQL_USER   = "root";
+		
+		public static final String INNODB_BUFFER_POOL_SIZE = "512M";
+		public static final String INNODB_LOG_FILE_SIZE = "128M";
 		
 		public MySQLApp(Server server) {
 			super(server);
@@ -111,6 +102,11 @@ public class LAMPStackTest2 {
 	
 	class LAMPStackServer extends Server {
 		
+
+		Application mysql = null;
+		Application php = null;
+		Application apache = null;
+		
 		class ProductionLAMP extends ServerConfiguration {
 			public ProductionLAMP() {
 				Instance server = new Instance();
@@ -124,12 +120,21 @@ public class LAMPStackTest2 {
 		public LAMPStackServer() {
 			this.config = new ProductionLAMP();
 			
-			subscribe(new PHPApp(this));
-			subscribe(new MySQLApp(this));
-			subscribe(new ApacheApp(this));
+			subscribe(php    = new PHPApp(this));
+			subscribe(mysql  = new MySQLApp(this));
+			subscribe(apache = new ApacheApp(this));
+			
+//			renderInfo();
 			
 			notifySubscribers();
 		}
+		
+//		private void renderInfo(){
+//			VelocityContext context = Templaton.getContext();
+//        	context.put("MYSQL_PASS", MySQLApp.MYSQL_PASS);
+//        	context.put("MYSQL_USER", MySQLApp.MYSQL_USER );
+//			render(INFO, "/var/www/info.php", context);
+//		}
 
 	}
 	
