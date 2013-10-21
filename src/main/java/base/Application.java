@@ -9,7 +9,6 @@ import org.apache.velocity.VelocityContext;
 
 import template.Templaton;
 
-import net.schmizz.sshj.connection.channel.direct.Session;
 import network.SSHRequest;
 
 abstract public class Application {
@@ -17,9 +16,10 @@ abstract public class Application {
 	protected String PACKAGE_NAME;
 	protected Server server;
 	
+	protected abstract void execute();
+	
 	public Application(Server server) {
 		this.server = server;
-		 
 	}
 	
 	public boolean install(String[] commands, String[] flags) {
@@ -37,7 +37,7 @@ abstract public class Application {
 		return execute(String.format("apt-get %s install %s",flags, service));
 	}
 	
-	public boolean restartService(String service) {
+	public boolean restart(String service) {
 		return execute(String.format("service %s restart", service));
 	}
 	

@@ -146,7 +146,11 @@ abstract public class Server {
 	
 	
 	public void execute() {
-		connect();
+		this.connect();
+		
+		for(Application app : this.applications){
+			app.execute();
+		}
 	}
 
 	

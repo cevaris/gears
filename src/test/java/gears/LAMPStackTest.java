@@ -14,15 +14,14 @@ import base.ServerConfiguration;
 import junit.framework.TestCase;
 
 
-public class ApacheServerTest extends TestCase {
+public class LAMPStackTest extends TestCase {
 	
 	public static String TEST_RESOURCES = "src/test/java/resources/";
 	public static String HOSTS = TEST_RESOURCES + "hosts.yaml";
+	
 	public static String INFO = TEST_RESOURCES + "info.php.vm";
-	public static String BASH_PROFILE = TEST_RESOURCES + "bash_profile.vm";
 	
 	class ApacheApp extends Application {
-		String PACKAGE_NAME = "apache2";
 		
 		String MYSQL_PASS   = "mypass";
 		String MYSQL_USER   = "root";
@@ -33,40 +32,34 @@ public class ApacheServerTest extends TestCase {
 		}
 
 		private void init() {
-			// Update apt-get
+			// Update application repository
 			update();
-
-			// Silent terminal
-//			renderBashProfile();
-//			execute("source ~/.bash_profile");
 			
+			// Hack for automating Mysql install
 			execute(String.format("echo mysql-server-5.5 mysql-server/root_password password %s | debconf-set-selections", MYSQL_PASS));
 			execute(String.format("echo mysql-server-5.5 mysql-server/root_password_again password %s | debconf-set-selections", MYSQL_PASS));
 			
 			// Install misc apps
-			install(new String[]{PACKAGE_NAME, "mysql-server","php5-mysql", "php5", "libapache2-mod-php5", "php5-mcrypt"}, 
+			install(new String[]{"apache2", "mysql-server","php5-mysql", "php5", "libapache2-mod-php5", "php5-mcrypt"}, 
 					new String[]{"-q","-y"});
 
-//			// Define Mysql password
-//			execute(String.format("mysqladmin -u root password %s", MYSQL_PASS));
-			
 			renderInfo();
 			
 			// Restart Apache service, equals to "service apache2 restart"
-			restartService(PACKAGE_NAME);
+			restart("apache2");
 		}
 		
-		
-		private void renderBashProfile() {
-			VelocityContext context = Templaton.getContext();
-			render(BASH_PROFILE, "/root/.bash_profile", context);
-		}
-
 		private void renderInfo(){
 			VelocityContext context = Templaton.getContext();
         	context.put("MYSQL_PASS", MYSQL_PASS);
         	context.put("MYSQL_USER", MYSQL_USER );
 			render(INFO, "/var/www/info.php", context);
+		}
+
+		@Override
+		protected void execute() {
+			// TODO Auto-generated method stub
+			
 		}
 		    
 	}
