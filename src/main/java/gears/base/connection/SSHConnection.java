@@ -1,37 +1,64 @@
-package network;
+package gears.base.connection;
 
+import gears.base.Connection;
+import gears.base.Instance;
 import gears.base.Server;
+import gears.base.ServerConfiguration;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
+import java.security.Security;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
-import net.schmizz.sshj.connection.channel.direct.Signal;
 import net.schmizz.sshj.transport.TransportException;
+import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 import net.schmizz.sshj.userauth.UserAuthException;
+import net.schmizz.sshj.userauth.keyprovider.PKCS8KeyFile;
 
-public class SSHRequest {
+public class SSHConnection implements Connection {
 	
-	private Logger LOG = Logger.getLogger(SSHRequest.class.getClass());
+	Logger LOG = Logger.getLogger(Server.class.getClass());
 	
-	private SSHClient client;
-	private String  response;
+	private ServerConfiguration config = null;
+	private SSHClient client = null;
+	private boolean isOpen = false;
 	
-//	public SSHRequest(Server server) {
-//		this.client = server.getClient();
-//	}
 	
-	public String getResponse() {
-		return response;
+	public SSHConnection(ServerConfiguration config) {
+		this.config = config;
 	}
+
+	public boolean connect() {
+		
+		assert(this.config != null) : "Server Configuration is null";
+		
+		boolean status = true;
+		for(Instance instance : this.config.getInstances()){
+			status = status && connect(instance);
+		}
+		this.isOpen = status;
+		
+		return status;
+	}
+	
+	public boolean disconnect() {
+		assert(this.config != null) : "Server Configuration is null";
+		
+		// TODO Code in disconnect method for SSH connection
+		return false;
+	}
+
+	public boolean isOpen() {
+		return isOpen;
+	}
+	
 	
 	public boolean execute(String command){
 		
@@ -52,7 +79,6 @@ public class SSHRequest {
             String line;        	
             while ((line = in.readLine()) != null) {
             	LOG.info(String.format("%s",line));
-            	log.append(line);
             }
             
             Integer exitStatus = cmd.getExitStatus();
@@ -69,8 +95,6 @@ public class SSHRequest {
             	LOG.info(String.format("Success Exit Status (%d) from the following command %s", exitStatus, command));
             }
             
-            this.response = log.toString();
-        	
             in.close();
             channel.close();
             cmd.close();
@@ -92,5 +116,33 @@ public class SSHRequest {
 		return false;
 
 	}
+	
+	private boolean connect(Instance instance) {
+		
+		assert(instance != null) : "Instance is null";
+		
+		try {
+			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+			this.client = new SSHClient();
+			this.client.addHostKeyVerifier(new PromiscuousVerifier());
+			this.client.connect(instance.getFQDN());
+			
+			PKCS8KeyFile keyFile = new PKCS8KeyFile();
+			keyFile.init(new File(instance.getSSHPermKeyPath()));
+			this.client.authPublickey("root",keyFile);
+			
+			return true;
+		} catch (TransportException e){
+			LOG.error(e);
+		} catch (UserAuthException e){
+			LOG.error(e);
+		} catch (IOException e){
+			LOG.error(e);
+		}
+		
+		return false;
+		
+	}
+
 
 }

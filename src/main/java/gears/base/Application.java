@@ -1,4 +1,4 @@
-package base;
+package gears.base;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,7 +9,6 @@ import org.apache.velocity.VelocityContext;
 
 import template.Templaton;
 
-import network.SSHRequest;
 
 abstract public class Application {
 	
@@ -60,9 +59,9 @@ abstract public class Application {
 //		System.out.println(command);
 //		return false;
 		
-		SSHRequest request = new SSHRequest(this.server);
-		
-		return request.execute(command);
+//		SSHRequest request = new SSHRequest(this.server);
+		return this.server.connection.execute(command);
+//		return request.execute(command);
 //		return request.execute("ls -l /");
 	}
 

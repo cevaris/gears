@@ -1,9 +1,15 @@
-package base;
+package gears.base;
 
 public class Instance {
 	
 	String fqdn;
 	String sshPermKeyPath;
+	
+	
+	public Instance(String fqdn, String sshPermKeyPath) {
+		this.fqdn = fqdn;
+		this.sshPermKeyPath = sshPermKeyPath;
+	}
 	
 	public void setFQDN(String fqdn) {
 		this.fqdn = fqdn;

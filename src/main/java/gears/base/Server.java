@@ -1,6 +1,8 @@
-package base;
+package gears.base;
 
 import gears.Constant;
+import gears.base.connection.ConnectionFactory;
+import gears.base.connection.SSHConnection;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,17 +33,23 @@ abstract public class Server {
 	
 	Logger LOG = Logger.getLogger(Server.class.getClass());
 	
-	protected SSHClient client;
-	protected Session session;
+	ConnectionFactory connFactory = ConnectionFactory.getInstance();
+	Connection connection = null;
 	
 	protected List<Application> applications = new ArrayList<Application>();
 	
 	protected ServerConfiguration config;
 	
 	protected boolean notifySubscribers() {
-		for( Application app : this.applications ){
-			app.execute(); //TODO: install app if not installed
-		}
+		
+		if(this.connection == null) this.connection = connFactory.getSSHConnection(this.config);
+		if(!this.connection.isOpen()) this.connection.connect();
+		
+		System.out.println("Is sever open:" + this.connection.isOpen());
+		
+//		for( Application app : this.applications ){
+//			app.execute(); //TODO: install app if not installed
+//		}
 		return true;
 	}
 	protected boolean subscribe(Application app) {
@@ -54,67 +62,6 @@ abstract public class Server {
 		return true;
 	}
 
-//	public Session getSession() {
-//		if(this.session == null) connect();
-//		return this.session;
-//	}
-	public SSHClient getClient() {
-		if(this.client == null) connect();
-		return this.client;
-	}
-	
-	protected boolean connect() {
-		boolean status = true;
-		for(Instance instance : config.getInstances()){
-			status = status && connect(instance);
-		}
-		return status;
-	}
-	
-	private boolean connect(Instance instance) {
-		
-		assert(instance != null) : "Instance is null";
-		
-		try {
-			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-			this.client = new SSHClient();
-			this.client.addHostKeyVerifier(new PromiscuousVerifier());
-			this.client.connect(instance.getFQDN());
-			
-			PKCS8KeyFile keyFile = new PKCS8KeyFile();
-			keyFile.init(new File(instance.getSSHPermKeyPath()));
-			this.client.authPublickey("root",keyFile);
-			
-			return true;
-			
-//			this.session = this.client.startSession();
-			
-//			return this.session.isOpen();
-			
-//			final Command cmd = this.session.exec("ls -l /");
-//            
-//        	InputStream channel = cmd.getInputStream();
-//        	
-//        	StringWriter writer = new StringWriter();
-//        	IOUtils.copy(channel, writer);
-//        	String theString = writer.toString();
-//        	
-//        	LOG.info(String.format("%s",theString));
-//            
-//			this.client.close();
-//			this.session.close();
-            
-		} catch (TransportException e){
-			LOG.error(e);
-		} catch (UserAuthException e){
-			LOG.error(e);
-		} catch (IOException e){
-			LOG.error(e);
-		}
-		
-		return false;
-		
-	}
 
 //	private void loadCredentials(String configPath) {
 //		Yaml yaml = null;

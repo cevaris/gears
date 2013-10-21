@@ -1,16 +1,16 @@
 package gears;
 
 import static org.junit.Assert.assertTrue;
+import gears.base.Application;
+import gears.base.Instance;
+import gears.base.Server;
+import gears.base.ServerConfiguration;
 
 import org.apache.velocity.VelocityContext;
 import org.junit.*;
 
 import template.Templaton;
 
-import base.Application;
-import base.Instance;
-import base.Server;
-import base.ServerConfiguration;
 import junit.framework.TestCase;
 
 
@@ -68,10 +68,10 @@ public class LAMPStackTest extends TestCase {
 		
 		class ProductionApache extends ServerConfiguration {
 			public ProductionApache() {
-				Instance apacheWeb = new Instance();
-				apacheWeb.setFQDN("192.168.1.102");
-				apacheWeb.setSSHPermKeyPath("/Users/cevaris/.ssh/id_rsa");
-				addInstance(apacheWeb);
+//				Instance apacheWeb = new Instance();
+//				apacheWeb.setFQDN("192.168.1.102");
+//				apacheWeb.setSSHPermKeyPath("/Users/cevaris/.ssh/id_rsa");
+//				addInstance(apacheWeb);
 			}
 		}
 		

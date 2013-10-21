@@ -4,15 +4,15 @@ import static org.junit.Assert.*;
 import gears.LAMPStackTest.ApacheApp;
 import gears.LAMPStackTest.ApacheServer;
 import gears.LAMPStackTest.ApacheServer.ProductionApache;
+import gears.base.Application;
+import gears.base.Instance;
+import gears.base.Server;
+import gears.base.ServerConfiguration;
 
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;
 
 import template.Templaton;
-import base.Application;
-import base.Instance;
-import base.Server;
-import base.ServerConfiguration;
 
 public class LAMPStackTest2 {
 
@@ -109,11 +109,11 @@ public class LAMPStackTest2 {
 		
 		class ProductionLAMP extends ServerConfiguration {
 			public ProductionLAMP() {
-				Instance server = new Instance();
-				server.setFQDN("192.168.1.103");
-				server.setSSHPermKeyPath("/Users/cevaris/.ssh/id_rsa");
+				Instance server1 = new Instance("192.168.1.101", "/Users/cevaris/.ssh/id_rsa");
+				addInstance(server1);
 				
-				addInstance(server);
+				Instance server2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa");
+				addInstance(server2);
 			}
 		}
 		
