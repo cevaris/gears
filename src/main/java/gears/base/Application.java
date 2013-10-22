@@ -3,6 +3,8 @@ package gears.base;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.VelocityContext;
@@ -10,15 +12,14 @@ import org.apache.velocity.VelocityContext;
 import template.Templaton;
 
 
-abstract public class Application {
+abstract public class Application implements Installer {
 	
-	protected String PACKAGE_NAME;
-	protected Server server;
+	protected Gear deployment;
 	
 	protected abstract void execute();
 	
-	public Application(Server server) {
-		this.server = server;
+	public Application(Gear deployment) {
+		this.deployment = deployment;
 	}
 	
 	public void render(String source, String dest, VelocityContext context) {

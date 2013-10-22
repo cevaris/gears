@@ -2,8 +2,8 @@ package gears.base.connection;
 
 import gears.base.Connection;
 import gears.base.Instance;
-import gears.base.Server;
-import gears.base.ServerConfiguration;
+import gears.base.Gear;
+import gears.base.Configuration;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,14 +24,14 @@ import net.schmizz.sshj.userauth.keyprovider.PKCS8KeyFile;
 
 public class SSHConnection implements Connection {
 	
-	Logger LOG = Logger.getLogger(Server.class.getClass());
+	Logger LOG = Logger.getLogger(Gear.class.getClass());
 	
-	private ServerConfiguration config = null;
+	private Configuration config = null;
 	private SSHClient client = null;
 	private boolean isOpen = false;
 	
 	
-	public SSHConnection(ServerConfiguration config) {
+	public SSHConnection(Configuration config) {
 		this.config = config;
 	}
 

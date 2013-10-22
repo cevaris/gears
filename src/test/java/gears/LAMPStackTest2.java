@@ -9,8 +9,8 @@ import gears.base.Connection;
 import gears.base.Installer;
 import gears.base.InstallerFactory;
 import gears.base.Instance;
-import gears.base.Server;
-import gears.base.ServerConfiguration;
+import gears.base.Gear;
+import gears.base.Configuration;
 import gears.base.connection.ConnectionFactory;
 
 import org.apache.velocity.VelocityContext;
@@ -27,7 +27,7 @@ public class LAMPStackTest2 {
 	
 	class PHPApp extends Application {
 		
-		public PHPApp(Server server) {
+		public PHPApp(Gear server) {
 			super(server);
 		}
 
@@ -44,9 +44,7 @@ public class LAMPStackTest2 {
 	
 	class ApacheApp extends Application {
 		
-		
-		
-		public ApacheApp(Server server) {
+		public ApacheApp(Gear server) {
 			super(server);
 		}
 		
@@ -77,7 +75,7 @@ public class LAMPStackTest2 {
 		public static final String INNODB_BUFFER_POOL_SIZE = "512M";
 		public static final String INNODB_LOG_FILE_SIZE = "128M";
 		
-		public MySQLApp(Server server) {
+		public MySQLApp(Gear server) {
 			super(server);
 		}
 		
@@ -92,7 +90,6 @@ public class LAMPStackTest2 {
 			// Install misc apps
 			install(new String[]{"mysql-server", "php5-mysql", "php5", "php5-mcrypt"}, 
 					new String[]{"-q","-y"});
-			
 		}
 		
 //		private void renderConfig(){
@@ -104,25 +101,25 @@ public class LAMPStackTest2 {
 		    
 	}
 	
-	class LAMPStackServer extends Server {
+	class ProductionLAMP extends Configuration {
+		public ProductionLAMP() {
+			Instance server1 = new Instance("192.168.1.101", "/Users/cevaris/.ssh/id_rsa");
+			addInstance(server1);
+			
+			Instance server2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa");
+			addInstance(server2);
+		}
+	}
+	
+	class LAMPStackServer extends Gear {
 		
 		Application mysql = null;
 		Application php = null;
 		Application apache = null;
 		
-		class ProductionLAMP extends ServerConfiguration {
-			public ProductionLAMP() {
-				Instance server1 = new Instance("192.168.1.101", "/Users/cevaris/.ssh/id_rsa");
-				addInstance(server1);
-				
-				Instance server2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa");
-				addInstance(server2);
-			}
-		}
-		
 		public LAMPStackServer() {
 			
-			ServerConfiguration config = new ProductionLAMP();
+			Configuration config = new ProductionLAMP();
 			setConfig(config);
 			
 			subscribe(php    = new PHPApp(this));
@@ -152,7 +149,7 @@ public class LAMPStackTest2 {
 	
 	@Test
 	public void testLAMPServer(){
-		Server server   = new LAMPStackServer();
+		Gear server   = new LAMPStackServer();
 //		Application app = new MySQLApp(server);
 //		assertNotNull(apache.getSession());
 	}

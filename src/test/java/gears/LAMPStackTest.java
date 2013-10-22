@@ -3,8 +3,8 @@ package gears;
 import static org.junit.Assert.assertTrue;
 import gears.base.Application;
 import gears.base.Instance;
-import gears.base.Server;
-import gears.base.ServerConfiguration;
+import gears.base.Gear;
+import gears.base.Configuration;
 
 import org.apache.velocity.VelocityContext;
 import org.junit.*;
@@ -26,7 +26,7 @@ public class LAMPStackTest extends TestCase {
 		String MYSQL_PASS   = "mypass";
 		String MYSQL_USER   = "root";
 		
-		public ApacheApp(Server server) {
+		public ApacheApp(Gear server) {
 			super(server);
 			init();
 		}
@@ -64,9 +64,9 @@ public class LAMPStackTest extends TestCase {
 		    
 	}
 	
-	class ApacheServer extends Server {
+	class ApacheServer extends Gear {
 		
-		class ProductionApache extends ServerConfiguration {
+		class ProductionApache extends Configuration {
 			public ProductionApache() {
 //				Instance apacheWeb = new Instance();
 //				apacheWeb.setFQDN("192.168.1.102");
@@ -90,7 +90,7 @@ public class LAMPStackTest extends TestCase {
 	
 	@Test
 	public void testApacheApp(){
-		Server server   = new ApacheServer();
+		Gear server   = new ApacheServer();
 		Application app = new ApacheApp(server);
 //		assertNotNull(apache.getSession());
 	}

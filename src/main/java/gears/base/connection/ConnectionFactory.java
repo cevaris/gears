@@ -1,7 +1,7 @@
 package gears.base.connection;
 
 import gears.base.Connection;
-import gears.base.ServerConfiguration;
+import gears.base.Configuration;
 
 public class ConnectionFactory {
 
@@ -12,7 +12,7 @@ public class ConnectionFactory {
 		return instance;
 	}
 	
-	public Connection getSSHConnection(ServerConfiguration  config){
+	public Connection getSSHConnection(Configuration  config){
 		return new SSHConnection(config);
 	}
 	

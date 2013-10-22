@@ -28,42 +28,19 @@ import org.apache.log4j.Logger;
 
 
 
-abstract public class Server {
+abstract public class Gear {
 	
-	private static final Logger LOG = Logger.getLogger(Server.class.getClass());
+	private static final Logger LOG = Logger.getLogger(Gear.class.getClass());
 	
-	protected ConnectionFactory connFactory    = ConnectionFactory.getInstance();
-	protected InstallerFactory  installFactory = InstallerFactory.getInstance();
-	
-	protected Connection connection = null;
-	protected Installer  installer  = null;
-	protected ServerConfiguration config;
+	protected Configuration config = null;
 	
 	protected List<Application> applications = new ArrayList<Application>();
 
-	
-	
-	protected void setConfig(ServerConfiguration config) {
-		this.config     = config;
-		this.connection = this.connFactory.getSSHConnection(this.config);
-		this.installer 	= this.installFactory.getDebianInstaller(this.connection);
-	}
-	
-	protected void setInstaller(Installer installer) {
-		this.installer = installer;		
-	}
-
-	protected void setConnection(Connection connection) {
-		this.connection = connection;
+	protected void setConfig(Configuration config) {
+		this.config = config;
 	}
 	
 	protected boolean notifySubscribers() {
-		
-		assert(this.connection != null) : "Connection is not defined";
-		if(!this.connection.isOpen()) this.connection.connect();
-		
-		System.out.println("Is sever open:" + this.connection.isOpen());
-		
 		for( Application app : this.applications ){
 			app.execute(); //TODO: install app if not installed
 		}

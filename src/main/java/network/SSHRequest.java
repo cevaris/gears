@@ -1,6 +1,6 @@
 package network;
 
-import gears.base.Server;
+import gears.base.Gear;
 
 import java.io.BufferedReader;
 import java.io.IOException;
