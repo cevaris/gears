@@ -50,7 +50,6 @@ public class SSHConnection implements Connection {
 	
 	public boolean disconnect() {
 		assert(this.config != null) : "Server Configuration is null";
-		
 		// TODO Code in disconnect method for SSH connection
 		return false;
 	}

@@ -10,20 +10,15 @@ public class DebianInstaller implements Installer {
 		this.connection = connection;
 	}
 	
-	public boolean install(String[] commands, String[] flags) {
-		return install(
-			StringUtils.join(commands, " "), 
-			StringUtils.join(flags, " ")
-		);
-	}
-
-	public boolean install(String service) {
-		return install(service, "");
-	}
-	
-	public boolean install(String service, String flags) {
+	public boolean install(String flags, String service) {
 		assert (this.connection != null) : "Connection is null";
 		return this.connection.execute(String.format("apt-get %s install %s",flags, service));
+	}
+
+	//TODO: Installer "remove" not tested
+	public boolean remove(String[] commands, String[] flags) {
+		assert (this.connection != null) : "Connection is null";
+		return this.connection.execute(String.format("apt-get %s --purge remove %s ",flags, commands));
 	}
 	
 	public boolean restart(String service) {

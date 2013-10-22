@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import gears.LAMPStackTest.ApacheApp;
 import gears.LAMPStackTest.ApacheServer;
 import gears.LAMPStackTest.ApacheServer.ProductionApache;
-import gears.base.Application;
+import gears.base.GearApplication;
 import gears.base.Connection;
 import gears.base.Installer;
 import gears.base.InstallerFactory;
@@ -25,7 +25,7 @@ public class LAMPStackTest2 {
 	public static String INFO = TEST_RESOURCES + "info.php.vm";
 	
 	
-	class PHPApp extends Application {
+	class PHPApp extends GearApplication {
 		
 		public PHPApp(Gear server) {
 			super(server);
@@ -42,7 +42,7 @@ public class LAMPStackTest2 {
 		    
 	}
 	
-	class ApacheApp extends Application {
+	class ApacheApp extends GearApplication {
 		
 		public ApacheApp(Gear server) {
 			super(server);
@@ -54,8 +54,10 @@ public class LAMPStackTest2 {
 			update();
 			
 			// Install misc apps
-			install(new String[]{"apache2", "libapache2-mod-php5", "php5-mcrypt"}, 
-					new String[]{"-q","-y"});
+			install(
+				new String[]{"-q","-y"},
+				new String[]{"apache2", "libapache2-mod-php5", "php5-mcrypt"} 
+			);
 	
 			// Restart Apache service, equals to "service apache2 restart"
 			restart("apache2");
@@ -63,7 +65,7 @@ public class LAMPStackTest2 {
 		    
 	}
 	
-	class MySQLApp extends Application {
+	class MySQLApp extends GearApplication {
 		
 		/**
 		 * For MySQL config file
@@ -113,20 +115,16 @@ public class LAMPStackTest2 {
 	
 	class LAMPStackServer extends Gear {
 		
-		Application mysql = null;
-		Application php = null;
-		Application apache = null;
+		GearApplication mysql = null;
+		GearApplication php = null;
+		GearApplication apache = null;
 		
 		public LAMPStackServer() {
-			
-			Configuration config = new ProductionLAMP();
-			setConfig(config);
+			setConfig(new ProductionLAMP());
 			
 			subscribe(php    = new PHPApp(this));
 			subscribe(mysql  = new MySQLApp(this));
 			subscribe(apache = new ApacheApp(this));
-			
-//			renderInfo();
 			
 			notifySubscribers();
 		}

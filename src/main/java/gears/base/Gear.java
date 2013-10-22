@@ -34,31 +34,28 @@ abstract public class Gear {
 	
 	protected Configuration config = null;
 	
-	protected List<Application> applications = new ArrayList<Application>();
+	protected List<GearApplication> applications = new ArrayList<GearApplication>();
 
 	protected void setConfig(Configuration config) {
 		this.config = config;
 	}
 	
 	protected boolean notifySubscribers() {
-		for( Application app : this.applications ){
-			app.execute(); //TODO: install app if not installed
+		for( GearApplication app : this.applications ){
+			app.install(); //TODO: install app if not installed
 		}
 		return true;
 	}
-	protected boolean subscribe(Application app) {
+	protected boolean subscribe(GearApplication app) {
 		this.applications.add(app);
 		return true;
 	}
 
-	protected boolean unsubscribe(Application app) {
+	protected boolean unsubscribe(GearApplication app) {
 		this.applications.remove(app);
 		return true;
 	}
 	
-	
-
-
 //	private void loadCredentials(String configPath) {
 //		Yaml yaml = null;
 //		Object configDocument = null;

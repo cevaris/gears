@@ -1,7 +1,7 @@
 package gears;
 
 import static org.junit.Assert.assertTrue;
-import gears.base.Application;
+import gears.base.GearApplication;
 import gears.base.Instance;
 import gears.base.Gear;
 import gears.base.Configuration;
@@ -21,7 +21,7 @@ public class LAMPStackTest extends TestCase {
 	
 	public static String INFO = TEST_RESOURCES + "info.php.vm";
 	
-	class ApacheApp extends Application {
+	class ApacheApp extends GearApplication {
 		
 		String MYSQL_PASS   = "mypass";
 		String MYSQL_USER   = "root";
@@ -91,7 +91,7 @@ public class LAMPStackTest extends TestCase {
 	@Test
 	public void testApacheApp(){
 		Gear server   = new ApacheServer();
-		Application app = new ApacheApp(server);
+		GearApplication app = new ApacheApp(server);
 //		assertNotNull(apache.getSession());
 	}
 //	
