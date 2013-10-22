@@ -35,34 +35,18 @@ abstract public class Gear {
 	
 	protected Configuration config = null;
 	
-	protected Map<String, List<GearApplication>> applications = new HashMap<String, List<GearApplication>>();
-
 	protected void setConfig(Configuration config) {
 		this.config = config;
 	}
 	
-	protected boolean notifySubscribers() {
-		for( List<GearApplication> apps : this.applications.values() ){
-			for( GearApplication app : apps ){
-				app.install();
-			}
+	protected boolean install(String group, GearApplication app) {
+		boolean result = true;
+		for(Instance instance : this.config.getInstances(group)){
+			result = result && app.install(instance);
 		}
-		return true;
-	}
-	
-	protected boolean subscribe(String group, GearApplication app) {
-		// Add instance list to newly encountered groups
-		if(this.applications.get(group) == null) 
-			this.applications.put(group, new ArrayList<GearApplication>());
-		
-		return this.applications.get(group).add(app);
+		return result;
 	}
 
-	protected boolean unsubscribe(String group, GearApplication app) {
-		// TODO: Need to create Gear Application un-installer 
-		return true;
-	}
-	
 //	private void loadCredentials(String configPath) {
 //		Yaml yaml = null;
 //		Object configDocument = null;

@@ -11,7 +11,6 @@ import org.apache.velocity.VelocityContext;
 
 import template.Templaton;
 
-
 abstract public class GearApplication implements Application {
 	
 	protected String packageName = null;
@@ -27,6 +26,15 @@ abstract public class GearApplication implements Application {
 			StringUtils.join(flags, " ")
 		);
 	}
+	
+	public boolean restart() {
+		return this.gear.config.installer.restart(this.packageName);
+	}
+	
+	public boolean update() {
+		return this.gear.config.installer.update();
+	}
+	
 
 //	public boolean install(String service) {
 //		return install(service, "");
@@ -39,13 +47,7 @@ abstract public class GearApplication implements Application {
 //		);
 //	}
 	
-	public boolean restart() {
-		return this.gear.config.installer.restart(this.packageName);
-	}
-	
-	public boolean update() {
-		return this.gear.config.installer.update();
-	}
+
 	
 //	public void render(String source, String dest, VelocityContext context) {
 //		Templaton templaton = Templaton.getInstance();

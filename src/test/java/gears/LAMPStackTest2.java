@@ -107,10 +107,10 @@ public class LAMPStackTest2 {
 	
 	class ProductionLAMP extends Configuration {
 		public ProductionLAMP() {
-			Instance server1 = new Instance("192.168.1.101", "/Users/cevaris/.ssh/id_rsa");
+			Instance server1 = new Instance( "192.168.1.101", "/Users/cevaris/.ssh/id_rsa", this);
 			addInstance("web", server1);
 			
-			Instance server2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa");
+			Instance server2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa", this);
 			addInstance("web", server2);
 		}
 	}
@@ -124,11 +124,10 @@ public class LAMPStackTest2 {
 		public LAMPStackServer() {
 			setConfig(new ProductionLAMP());
 			
-			subscribe("web", php    = new PHPApp(this));
-			subscribe("web", mysql  = new MySQLApp(this));
-			subscribe("web", apache = new ApacheApp(this));
+			install("web", php    = new PHPApp(this));
+			install("web", mysql  = new MySQLApp(this));
+			install("web", apache = new ApacheApp(this));
 			
-			notifySubscribers();
 		}
 
 //		private void renderInfo(){

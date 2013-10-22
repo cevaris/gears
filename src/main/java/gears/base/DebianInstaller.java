@@ -1,12 +1,10 @@
 package gears.base;
 
-import org.apache.commons.lang.StringUtils;
-
 public class DebianInstaller implements Installer {
 	
 	Connection connection = null; 
 	
-	public DebianInstaller(Connection connection) {
+	public void setConnection(Connection connection) {
 		this.connection = connection;
 	}
 	

@@ -10,8 +10,8 @@ public class InstallerFactory {
 		return instance;
 	}
 	
-	public Installer getDebianInstaller(Connection connection){
-		return new DebianInstaller(connection);
+	public Installer getDebianInstaller(){
+		return new DebianInstaller();
 	}
 	
 }

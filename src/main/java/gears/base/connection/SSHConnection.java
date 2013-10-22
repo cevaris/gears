@@ -30,11 +30,10 @@ public class SSHConnection implements Connection {
 	private SSHClient client = null;
 	private boolean isOpen = false;
 	
-	
-	public SSHConnection(Configuration config) {
+	public void setConfig(Configuration config) {
 		this.config = config;
 	}
-
+	
 	public boolean connect() {
 		
 		assert(this.config != null) : "Server Configuration is null";
@@ -55,9 +54,8 @@ public class SSHConnection implements Connection {
 	}
 
 	public boolean isOpen() {
-		return isOpen;
+		return this.isOpen;
 	}
-	
 	
 	public boolean execute(String command){
 		

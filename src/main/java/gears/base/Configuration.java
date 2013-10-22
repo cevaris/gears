@@ -22,8 +22,6 @@ public class Configuration {
 	public Configuration() {
 		this.instancesMap  = new HashMap<String, List<Instance>>();
 		this.instancesList = new ArrayList<Instance>();
-		this.connection = this.connFactory.getSSHConnection(this);
-		this.installer 	= this.installFactory.getDebianInstaller(this.connection);
 	}
 	
 	public List<Instance> getInstances(String group) {

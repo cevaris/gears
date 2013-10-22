@@ -12,8 +12,8 @@ public class ConnectionFactory {
 		return instance;
 	}
 	
-	public Connection getSSHConnection(Configuration  config){
-		return new SSHConnection(config);
+	public Connection getSSHConnection(){
+		return new SSHConnection();
 	}
 	
 	
