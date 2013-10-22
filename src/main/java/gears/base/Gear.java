@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,25 +35,31 @@ abstract public class Gear {
 	
 	protected Configuration config = null;
 	
-	protected List<GearApplication> applications = new ArrayList<GearApplication>();
+	protected Map<String, List<GearApplication>> applications = new HashMap<String, List<GearApplication>>();
 
 	protected void setConfig(Configuration config) {
 		this.config = config;
 	}
 	
 	protected boolean notifySubscribers() {
-		for( GearApplication app : this.applications ){
-			app.install(); //TODO: install app if not installed
+		for( List<GearApplication> apps : this.applications.values() ){
+			for( GearApplication app : apps ){
+				app.install();
+			}
 		}
 		return true;
 	}
-	protected boolean subscribe(GearApplication app) {
-		this.applications.add(app);
-		return true;
+	
+	protected boolean subscribe(String group, GearApplication app) {
+		// Add instance list to newly encountered groups
+		if(this.applications.get(group) == null) 
+			this.applications.put(group, new ArrayList<GearApplication>());
+		
+		return this.applications.get(group).add(app);
 	}
 
-	protected boolean unsubscribe(GearApplication app) {
-		this.applications.remove(app);
+	protected boolean unsubscribe(String group, GearApplication app) {
+		// TODO: Need to create Gear Application un-installer 
 		return true;
 	}
 	

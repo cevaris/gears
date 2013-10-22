@@ -28,16 +28,16 @@ abstract public class GearApplication implements Application {
 		);
 	}
 
-	public boolean install(String service) {
-		return install(service, "");
-	}
+//	public boolean install(String service) {
+//		return install(service, "");
+//	}
 	
-	public boolean remove() {
-		return this.gear.config.installer.remove(
-				new String[]{},
-				new String[]{this.packageName}
-		);
-	}
+//	public boolean remove() {
+//		return this.gear.config.installer.remove(
+//				new String[]{},
+//				new String[]{this.packageName}
+//		);
+//	}
 	
 	public boolean restart() {
 		return this.gear.config.installer.restart(this.packageName);

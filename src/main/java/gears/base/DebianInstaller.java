@@ -31,4 +31,9 @@ public class DebianInstaller implements Installer {
 		return this.connection.execute("apt-get update");
 	}
 
+	public boolean remove(String flags, String service) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

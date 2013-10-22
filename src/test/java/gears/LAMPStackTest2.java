@@ -90,8 +90,10 @@ public class LAMPStackTest2 {
 			execute(String.format("echo mysql-server-5.5 mysql-server/root_password_again password %s | debconf-set-selections", MYSQL_PASS));
 			
 			// Install misc apps
-			install(new String[]{"mysql-server", "php5-mysql", "php5", "php5-mcrypt"}, 
-					new String[]{"-q","-y"});
+			install(
+					new String[]{"-q","-y"}, 
+					new String[]{"mysql-server", "php5-mysql", "php5", "php5-mcrypt"} 
+			);
 		}
 		
 //		private void renderConfig(){
@@ -106,10 +108,10 @@ public class LAMPStackTest2 {
 	class ProductionLAMP extends Configuration {
 		public ProductionLAMP() {
 			Instance server1 = new Instance("192.168.1.101", "/Users/cevaris/.ssh/id_rsa");
-			addInstance(server1);
+			addInstance("web", server1);
 			
 			Instance server2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa");
-			addInstance(server2);
+			addInstance("web", server2);
 		}
 	}
 	
@@ -122,9 +124,9 @@ public class LAMPStackTest2 {
 		public LAMPStackServer() {
 			setConfig(new ProductionLAMP());
 			
-			subscribe(php    = new PHPApp(this));
-			subscribe(mysql  = new MySQLApp(this));
-			subscribe(apache = new ApacheApp(this));
+			subscribe("web", php    = new PHPApp(this));
+			subscribe("web", mysql  = new MySQLApp(this));
+			subscribe("web", apache = new ApacheApp(this));
 			
 			notifySubscribers();
 		}
