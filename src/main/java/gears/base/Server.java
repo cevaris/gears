@@ -30,14 +30,32 @@ import org.apache.log4j.Logger;
 
 abstract public class Server {
 	
-	Logger LOG = Logger.getLogger(Server.class.getClass());
+	private static final Logger LOG = Logger.getLogger(Server.class.getClass());
 	
-	Connection connection = null;
-	Installer  installer  = null;
+	protected ConnectionFactory connFactory    = ConnectionFactory.getInstance();
+	protected InstallerFactory  installFactory = InstallerFactory.getInstance();
+	
+	protected Connection connection = null;
+	protected Installer  installer  = null;
+	protected ServerConfiguration config;
 	
 	protected List<Application> applications = new ArrayList<Application>();
+
 	
-	protected ServerConfiguration config;
+	
+	protected void setConfig(ServerConfiguration config) {
+		this.config     = config;
+		this.connection = this.connFactory.getSSHConnection(this.config);
+		this.installer 	= this.installFactory.getDebianInstaller(this.connection);
+	}
+	
+	protected void setInstaller(Installer installer) {
+		this.installer = installer;		
+	}
+
+	protected void setConnection(Connection connection) {
+		this.connection = connection;
+	}
 	
 	protected boolean notifySubscribers() {
 		
@@ -61,17 +79,7 @@ abstract public class Server {
 		return true;
 	}
 	
-	protected void setInstaller(Installer installer) {
-		this.installer = installer;		
-	}
-
-	protected void setConnection(Connection connection) {
-		this.connection = connection;
-	}
-
-	protected void setConfig(ServerConfiguration config) {
-		this.config = config;
-	}
+	
 
 
 //	private void loadCredentials(String configPath) {

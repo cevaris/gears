@@ -106,9 +106,6 @@ public class LAMPStackTest2 {
 	
 	class LAMPStackServer extends Server {
 		
-		ConnectionFactory connFactory    = ConnectionFactory.getInstance();
-		InstallerFactory  installFactory = InstallerFactory.getInstance();
-		
 		Application mysql = null;
 		Application php = null;
 		Application apache = null;
@@ -126,12 +123,7 @@ public class LAMPStackTest2 {
 		public LAMPStackServer() {
 			
 			ServerConfiguration config = new ProductionLAMP();
-			Connection conn 		   = this.connFactory.getSSHConnection(config);
-			Installer  installer 	   = this.installFactory.getDebianInstaller(conn);
-			
 			setConfig(config);
-			setConnection(conn);
-			setInstaller(installer);
 			
 			subscribe(php    = new PHPApp(this));
 			subscribe(mysql  = new MySQLApp(this));
