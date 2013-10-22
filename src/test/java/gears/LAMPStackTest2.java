@@ -5,9 +5,13 @@ import gears.LAMPStackTest.ApacheApp;
 import gears.LAMPStackTest.ApacheServer;
 import gears.LAMPStackTest.ApacheServer.ProductionApache;
 import gears.base.Application;
+import gears.base.Connection;
+import gears.base.Installer;
+import gears.base.InstallerFactory;
 import gears.base.Instance;
 import gears.base.Server;
 import gears.base.ServerConfiguration;
+import gears.base.connection.ConnectionFactory;
 
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;
@@ -102,7 +106,9 @@ public class LAMPStackTest2 {
 	
 	class LAMPStackServer extends Server {
 		
-
+		ConnectionFactory connFactory    = ConnectionFactory.getInstance();
+		InstallerFactory  installFactory = InstallerFactory.getInstance();
+		
 		Application mysql = null;
 		Application php = null;
 		Application apache = null;
@@ -118,7 +124,14 @@ public class LAMPStackTest2 {
 		}
 		
 		public LAMPStackServer() {
-			this.config = new ProductionLAMP();
+			
+			ServerConfiguration config = new ProductionLAMP();
+			Connection conn 		   = this.connFactory.getSSHConnection(config);
+			Installer  installer 	   = this.installFactory.getDebianInstaller(conn);
+			
+			setConfig(config);
+			setConnection(conn);
+			setInstaller(installer);
 			
 			subscribe(php    = new PHPApp(this));
 			subscribe(mysql  = new MySQLApp(this));
@@ -128,7 +141,7 @@ public class LAMPStackTest2 {
 			
 			notifySubscribers();
 		}
-		
+
 //		private void renderInfo(){
 //			VelocityContext context = Templaton.getContext();
 //        	context.put("MYSQL_PASS", MySQLApp.MYSQL_PASS);

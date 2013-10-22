@@ -25,7 +25,6 @@ import net.schmizz.sshj.userauth.keyprovider.PKCS8KeyFile;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.yaml.snakeyaml.Yaml;
 
 
 
@@ -33,8 +32,8 @@ abstract public class Server {
 	
 	Logger LOG = Logger.getLogger(Server.class.getClass());
 	
-	ConnectionFactory connFactory = ConnectionFactory.getInstance();
 	Connection connection = null;
+	Installer  installer  = null;
 	
 	protected List<Application> applications = new ArrayList<Application>();
 	
@@ -42,14 +41,14 @@ abstract public class Server {
 	
 	protected boolean notifySubscribers() {
 		
-		if(this.connection == null) this.connection = connFactory.getSSHConnection(this.config);
+		assert(this.connection != null) : "Connection is not defined";
 		if(!this.connection.isOpen()) this.connection.connect();
 		
 		System.out.println("Is sever open:" + this.connection.isOpen());
 		
-//		for( Application app : this.applications ){
-//			app.execute(); //TODO: install app if not installed
-//		}
+		for( Application app : this.applications ){
+			app.execute(); //TODO: install app if not installed
+		}
 		return true;
 	}
 	protected boolean subscribe(Application app) {
@@ -60,6 +59,18 @@ abstract public class Server {
 	protected boolean unsubscribe(Application app) {
 		this.applications.remove(app);
 		return true;
+	}
+	
+	protected void setInstaller(Installer installer) {
+		this.installer = installer;		
+	}
+
+	protected void setConnection(Connection connection) {
+		this.connection = connection;
+	}
+
+	protected void setConfig(ServerConfiguration config) {
+		this.config = config;
 	}
 
 
