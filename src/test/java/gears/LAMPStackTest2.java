@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import gears.LAMPStackTest.ApacheApp;
 import gears.LAMPStackTest.ApacheServer;
 import gears.LAMPStackTest.ApacheServer.ProductionApache;
+import gears.base.DebianInstaller;
 import gears.base.GearApplication;
 import gears.base.Connection;
 import gears.base.Installer;
@@ -12,6 +13,7 @@ import gears.base.Instance;
 import gears.base.Gear;
 import gears.base.Configuration;
 import gears.base.connection.ConnectionFactory;
+import gears.base.connection.SSHConnection;
 
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;
@@ -107,10 +109,15 @@ public class LAMPStackTest2 {
 	
 	class ProductionLAMP extends Configuration {
 		public ProductionLAMP() {
-			Instance server1 = new Instance( "192.168.1.101", "/Users/cevaris/.ssh/id_rsa", this);
+			Instance server1 = new Instance(
+				"192.168.1.101", "/Users/cevaris/.ssh/id_rsa",
+				new SSHConnection(), new DebianInstaller()
+			);
 			addInstance("web", server1);
 			
-			Instance server2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa", this);
+			Instance server2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa");
+			server2.setConnection(new SSHConnection());
+			server2.setInstaller(new DebianInstaller());
 			addInstance("web", server2);
 		}
 	}

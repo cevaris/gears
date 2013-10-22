@@ -20,21 +20,21 @@ abstract public class GearApplication implements Application {
 		this.gear = gear;
 	}
 	
-	public boolean install(String[] commands, String[] flags) {
-		return this.gear.config.installer.install(
-			StringUtils.join(commands, " "), 
-			StringUtils.join(flags, " ")
-		);
-	}
-	
-	public boolean restart() {
-		return this.gear.config.installer.restart(this.packageName);
-	}
-	
-	public boolean update() {
-		return this.gear.config.installer.update();
-	}
-	
+//	public boolean install(String[] commands, String[] flags) {
+//		return this.gear.config.installer.install(
+//			StringUtils.join(commands, " "), 
+//			StringUtils.join(flags, " ")
+//		);
+//	}
+//	
+//	public boolean restart() {
+//		return this.gear.config.installer.restart(this.packageName);
+//	}
+//	
+//	public boolean update() {
+//		return this.gear.config.installer.update();
+//	}
+//	
 
 //	public boolean install(String service) {
 //		return install(service, "");

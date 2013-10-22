@@ -1,6 +1,5 @@
 package gears.base;
 
-import gears.base.connection.ConnectionFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,13 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Configuration {
-	
-	
-	protected ConnectionFactory connFactory    = ConnectionFactory.getInstance();
-	protected InstallerFactory  installFactory = InstallerFactory.getInstance();
-	
-	protected Connection connection = null;
-	protected Installer  installer  = null;
 	
 	protected List<Instance> instancesList;
 	protected Map<String,List<Instance>> instancesMap;
@@ -40,14 +32,4 @@ public class Configuration {
 		return this.instancesList;
 	}
 	
-	protected void setInstaller(Installer installer) {
-		this.installer = installer;		
-	}
-
-	protected void setConnection(Connection connection) {
-		this.connection = connection;
-	}
-	
-	
-
 }
