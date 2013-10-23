@@ -5,7 +5,7 @@ import gears.LAMPStackTest.ApacheApp;
 import gears.LAMPStackTest.ApacheServer;
 import gears.LAMPStackTest.ApacheServer.ProductionApache;
 import gears.base.DebianInstaller;
-import gears.base.GearApplication;
+import gears.base.Application;
 import gears.base.Connection;
 import gears.base.Installer;
 import gears.base.InstallerFactory;
@@ -27,12 +27,8 @@ public class LAMPStackTest2 {
 	public static String INFO = TEST_RESOURCES + "info.php.vm";
 	
 	
-	class PHPApp extends GearApplication {
+	class PHPApp extends Application {
 		
-		public PHPApp(Gear server) {
-			super(server);
-		}
-
 		@Override
 		protected void execute() {
 			// Update application repository
@@ -44,11 +40,7 @@ public class LAMPStackTest2 {
 		    
 	}
 	
-	class ApacheApp extends GearApplication {
-		
-		public ApacheApp(Gear server) {
-			super(server);
-		}
+	class ApacheApp extends Application {
 		
 		@Override
 		protected void execute() {
@@ -67,7 +59,7 @@ public class LAMPStackTest2 {
 		    
 	}
 	
-	class MySQLApp extends GearApplication {
+	class MySQLApp extends Application {
 		
 		/**
 		 * For MySQL config file
@@ -78,11 +70,7 @@ public class LAMPStackTest2 {
 		
 		public static final String INNODB_BUFFER_POOL_SIZE = "512M";
 		public static final String INNODB_LOG_FILE_SIZE = "128M";
-		
-		public MySQLApp(Gear server) {
-			super(server);
-		}
-		
+
 		@Override
 		protected void execute() {
 			update();
@@ -124,9 +112,9 @@ public class LAMPStackTest2 {
 	
 	class LAMPStackServer extends Gear {
 		
-		GearApplication mysql = null;
-		GearApplication php = null;
-		GearApplication apache = null;
+		Application mysql = null;
+		Application php = null;
+		Application apache = null;
 		
 		public LAMPStackServer() {
 			setConfig(new ProductionLAMP());

@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 
 
 
-abstract public class Gear {
+abstract public class Gear implements Application {
 	
 	private static final Logger LOG = Logger.getLogger(Gear.class.getClass());
 	
@@ -39,10 +39,10 @@ abstract public class Gear {
 		this.config = config;
 	}
 	
-	protected boolean install(String group, GearApplication app) {
+	protected boolean install(String group, Application app) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
-			result = result && app.install(instance);
+//			result = result && app.install(instance);
 		}
 		return result;
 	}
