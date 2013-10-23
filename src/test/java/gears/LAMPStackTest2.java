@@ -1,16 +1,12 @@
 package gears;
 
 import static org.junit.Assert.*;
-import gears.LAMPStackTest.ApacheApp;
-import gears.LAMPStackTest.ApacheServer;
-import gears.LAMPStackTest.ApacheServer.ProductionApache;
 import gears.base.DebianInstaller;
 import gears.base.Application;
 import gears.base.Connection;
 import gears.base.Installer;
 import gears.base.InstallerFactory;
 import gears.base.Instance;
-import gears.base.Gear;
 import gears.base.Configuration;
 import gears.base.connection.ConnectionFactory;
 import gears.base.connection.SSHConnection;
@@ -56,7 +52,7 @@ public class LAMPStackTest2 {
 			// Restart Apache service, equals to "service apache2 restart"
 			restart("apache2");
 		}
-		    
+
 	}
 	
 	class MySQLApp extends Application {
@@ -81,11 +77,12 @@ public class LAMPStackTest2 {
 			
 			// Install misc apps
 			install(
-					new String[]{"-q","-y"}, 
-					new String[]{"mysql-server", "php5-mysql", "php5", "php5-mcrypt"} 
+				new String[]{"-q","-y"}, 
+				new String[]{"mysql-server", "php5-mysql", "php5", "php5-mcrypt"} 
 			);
 		}
-		
+
+
 //		private void renderConfig(){
 //			VelocityContext context = Templaton.getContext();
 //        	context.put("MYSQL_PASS", MYSQL_PASS);
@@ -103,26 +100,29 @@ public class LAMPStackTest2 {
 			);
 			addInstance("web", server1);
 			
-			Instance server2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa");
-			server2.setConnection(new SSHConnection());
-			server2.setInstaller(new DebianInstaller());
+			Instance server2 = new Instance(
+					"192.168.1.102", "/Users/cevaris/.ssh/id_rsa",
+					new SSHConnection(), new DebianInstaller()
+			);
 			addInstance("web", server2);
 		}
 	}
 	
-	class LAMPStackServer extends Gear {
+	class LAMPStackServer extends Application {
 		
-		Application mysql = null;
-		Application php = null;
-		Application apache = null;
+		Application mysql  = new MySQLApp();
+		Application php    = new PHPApp();
+		Application apache = new ApacheApp();
 		
 		public LAMPStackServer() {
 			setConfig(new ProductionLAMP());
-			
-			install("web", php    = new PHPApp(this));
-			install("web", mysql  = new MySQLApp(this));
-			install("web", apache = new ApacheApp(this));
-			
+		}
+
+		@Override
+		protected void execute() {
+			install("web", php);
+			install("web", mysql);
+			install("web", apache);
 		}
 
 //		private void renderInfo(){

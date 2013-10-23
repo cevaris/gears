@@ -25,7 +25,8 @@ public class Configuration {
 		if(this.instancesMap.get(group) == null) 
 			this.instancesMap.put(group, new ArrayList<Instance>());
 		
-		return this.instancesMap.get(group).add(instance) && this.instancesList.add(instance);
+				
+		return this.instancesMap.get(group).add(instance) && this.instancesList.add(instance) && instance.connection.connect();
 	}
 	
 	public List<Instance> getInstances(){

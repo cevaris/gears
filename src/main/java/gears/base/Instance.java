@@ -48,4 +48,17 @@ public class Instance {
 	public String getSSHPermKeyPath() {
 		return sshPermKeyPath;
 	}
+	
+	public boolean install(Application app) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+	
+	public boolean execute(String command) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
