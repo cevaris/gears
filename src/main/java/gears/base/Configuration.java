@@ -6,7 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 public class Configuration {
+	
+	private static final Logger LOG = Logger.getLogger(Configuration.class.getClass());
 	
 	protected List<Instance> instancesList;
 	protected Map<String,List<Instance>> instancesMap;

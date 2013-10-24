@@ -31,7 +31,7 @@ public class LAMPStackTest2 {
 			update();
 
 			// Install misc apps
-			install("-q -y", "php5");
+			install("-y", "php5");
 		}
 		    
 	}
@@ -44,10 +44,7 @@ public class LAMPStackTest2 {
 			update();
 			
 			// Install misc apps
-			install(
-				"-q -y",
-				"apache2 libapache2-mod-php5 php5-mcrypt" 
-			);
+			install( "-y", "apache2 libapache2-mod-php5 php5-mcrypt" );
 	
 			// Restart Apache service, equals to "service apache2 restart"
 			restart("apache2");
@@ -76,10 +73,7 @@ public class LAMPStackTest2 {
 			execute(String.format("echo mysql-server-5.5 mysql-server/root_password_again password %s | debconf-set-selections", MYSQL_PASS));
 			
 			// Install misc apps
-			install(
-				"-q -y",
-				"mysql-server php5-mysql php5 php5-mcrypt"
-			);
+			install( "-y", "mysql-server php5-mysql php5 php5-mcrypt" );
 		}
 
 
@@ -95,14 +89,12 @@ public class LAMPStackTest2 {
 	class ProductionLAMP extends Configuration {
 		public ProductionLAMP() {
 			Instance server1 = new Instance(
-				"192.168.1.101", "/Users/cevaris/.ssh/id_rsa",
-				new SSHConnection(), new DebianInstaller()
+				"192.168.1.101", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller()
 			);
 			addInstance("web", server1);
 			
 			Instance server2 = new Instance(
-					"192.168.1.102", "/Users/cevaris/.ssh/id_rsa",
-					new SSHConnection(), new DebianInstaller()
+					"192.168.1.102", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller()
 			);
 			addInstance("web", server2);
 		}

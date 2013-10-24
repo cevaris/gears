@@ -1,8 +1,13 @@
 package gears.base.pkmg;
 
+import org.apache.log4j.Logger;
+
+import gears.base.Gear;
 import gears.base.connection.Connection;
 
 public class DebianInstaller implements Installer {
+	
+	private static final Logger LOG = Logger.getLogger(DebianInstaller.class.getClass());
 	
 	Connection connection = null; 
 	
@@ -33,7 +38,8 @@ public class DebianInstaller implements Installer {
 
 	public boolean execute(String commands) {
 		assert (this.connection != null) : "Connection is null";
-		return this.connection.execute(commands);
+		return true;
+//		return this.connection.execute(commands);
 	}
 
 	

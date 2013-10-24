@@ -1,11 +1,16 @@
 package gears.base;
 
+import org.apache.log4j.Logger;
+
 import gears.base.connection.Connection;
 import gears.base.connection.ConnectionFactory;
 import gears.base.pkmg.Installer;
 import gears.base.pkmg.InstallerFactory;
 
 public class Instance {
+	
+	
+	private static final Logger LOG = Logger.getLogger(Instance.class.getClass());
 	
 	protected Connection connection = null;
 	protected Installer  installer  = null;

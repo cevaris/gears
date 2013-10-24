@@ -1,12 +1,17 @@
 package gears.base.template;
 
+import gears.base.Gear;
+
 import java.io.StringWriter;
 
+import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 public class Templaton {
+	
+	private static final Logger LOG = Logger.getLogger(Templaton.class.getClass());
 	
 	
 //	VelocityContext context = null;
