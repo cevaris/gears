@@ -39,11 +39,8 @@ public class ConfigurationTest {
 		
 		boolean result = true;
 		for(Instance instance : config.getInstances("web")){
-			result = result && instance.connection.connect() && instance.connection.isOpen();
+			result = result && instance.connect();
 		}
-		
-		// Connect to all instances
-//		config.connection.connect();
 		// Test if connection was successfull
 		assertTrue(result);
 		

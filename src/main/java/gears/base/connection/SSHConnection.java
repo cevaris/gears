@@ -24,29 +24,25 @@ public class SSHConnection implements Connection {
 	
 	Logger LOG = Logger.getLogger(SSHConnection.class.getClass());
 	
-	private Configuration config = null;
 	private SSHClient client = null;
 	private boolean isOpen = false;
 	
-	public void setConfig(Configuration config) {
-		this.config = config;
-	}
 	
-	public boolean connect() {
+//	public boolean connect() {
 		
-		assert(this.config != null) : "Server Configuration is null";
+//		assert(this.config != null) : "Server Configuration is null";
 		
 		boolean status = true;
-		for(Instance instance : this.config.getInstances()){
-			status = status && connect(instance);
-		}
-		this.isOpen = status;
+//		for(Instance instance : this.config.getInstances()){
+//			status = status && connect(instance);
+//		}
+//		this.isOpen = status;
 		
-		return status;
-	}
+//		return status;
+//	}
 	
 	public boolean disconnect() {
-		assert(this.config != null) : "Server Configuration is null";
+//		assert(this.config != null) : "Server Configuration is null";
 		// TODO Code in disconnect method for SSH connection
 		return false;
 	}
@@ -112,7 +108,7 @@ public class SSHConnection implements Connection {
 
 	}
 	
-	private boolean connect(Instance instance) {
+	public boolean connect(Instance instance) {
 		
 		assert(instance != null) : "Instance is null";
 		

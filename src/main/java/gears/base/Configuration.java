@@ -37,7 +37,7 @@ public class Configuration {
 		System.out.println(instance.connection);
 		System.out.println("--");
 		
-		return instance.connection.connect();
+		return instance.connect();
 	}
 	
 	public List<Instance> getInstances(){

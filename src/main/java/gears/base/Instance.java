@@ -52,4 +52,8 @@ public class Instance {
 		return sshPermKeyPath;
 	}
 
+	public boolean connect() {
+		return this.connection.connect(this);
+	}
+
 }
