@@ -44,7 +44,8 @@ abstract public class Gear  {
 	protected boolean install(String group, Gear app) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
-			result = result && instance.install(app);
+			app.setup(instance.connection, instance.installer);
+			app.execute();
 		}
 		return result;
 	}

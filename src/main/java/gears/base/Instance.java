@@ -22,11 +22,6 @@ public class Instance {
 	String sshPermKeyPath;
 	Configuration config;
 
-	public Instance(String fqdn, String sshPermKeyPath) {
-		this.fqdn = fqdn;
-		this.sshPermKeyPath = sshPermKeyPath;
-	}
-	
 	public Instance(String fqdn, String sshPermKeyPath, Connection connection, Installer installer) {
 		this.sshPermKeyPath = sshPermKeyPath;
 		this.fqdn = fqdn;
