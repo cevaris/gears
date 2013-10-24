@@ -1,4 +1,4 @@
-package template;
+package gears.base.template;
 
 public @interface Template {
 	String src();

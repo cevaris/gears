@@ -1,4 +1,4 @@
-package gears.base;
+package gears.base.connection;
 
 public interface Connection {
 	

@@ -1,6 +1,9 @@
 package gears.base;
 
+import gears.base.connection.Connection;
 import gears.base.connection.ConnectionFactory;
+import gears.base.pkmg.Installer;
+import gears.base.pkmg.InstallerFactory;
 
 public class Instance {
 	
@@ -47,18 +50,6 @@ public class Instance {
 	}
 	public String getSSHPermKeyPath() {
 		return sshPermKeyPath;
-	}
-	
-	public boolean install(Application app) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	
-	
-	public boolean execute(String command) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

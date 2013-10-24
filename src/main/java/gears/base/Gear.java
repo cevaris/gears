@@ -2,6 +2,11 @@ package gears.base;
 
 import static org.junit.Assert.assertTrue;
 
+import gears.base.connection.Connection;
+import gears.base.pkmg.Installer;
+import gears.base.template.Template;
+import gears.base.template.Templaton;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,28 +15,33 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 
-import template.Templaton;
 
-abstract public class Application {
+abstract public class Gear  {
 	
 	protected String packageName = null;
 	
-	public boolean update()  { return false; }
-	public boolean remove()  { return false; }
-	public boolean install() { return false; }
-	public boolean restart() { return false; }
-	
-	private static final Logger LOG = Logger.getLogger(Application.class.getClass());
+	private static final Logger LOG = Logger.getLogger(Gear.class.getClass());
 	
 	protected Configuration config = null;
 	
-	protected abstract void execute();
+	private Installer installer = null;
 	
 	protected void setConfig(Configuration config) {
 		this.config = config;
 	}
 	
-	protected boolean install(String group, Application app) {
+	protected abstract void execute();
+	
+	public void setup(Connection conn, Installer installer) {
+		this.installer = installer;
+		this.installer.setConnection(conn);
+	}
+	
+	public boolean update()  { 
+		return this.installer.update(); 
+	}
+	
+	protected boolean install(String group, Gear app) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
 			result = result && instance.install(app);
@@ -39,20 +49,27 @@ abstract public class Application {
 		return result;
 	}
 	
-	protected void install(String[] strings, String[] strings2) {
-		// TODO Auto-generated method stub
+	public boolean install(String flags, String commands) {
+		return this.installer.install(flags, commands);		
 	}
 	
-	protected void restart(String string) {
-		// TODO Auto-generated method stub
+	public boolean restart(String service) {
+		return this.installer.restart(service);
+	}
+	
+	public boolean execute(String commands) {
+		return this.installer.execute(commands);
+	}
+	
+	public boolean render(String source, String dest, VelocityContext context) {
+		Templaton templaton = Templaton.getInstance();
+		File destFile = new File(dest);
+		execute(String.format("mkdir -p %s", destFile.getParentFile()));
 		
+		String document = templaton.render(source, context).toString();
+		
+		return execute(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
 	}
-	
-	protected void execute(String format) {
-		// TODO Auto-generated method stub
-	}
-	
-
 	
 //	public boolean install(String[] commands, String[] flags) {
 //		return this.gear.config.installer.install(

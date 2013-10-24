@@ -1,4 +1,4 @@
-package template;
+package gears.base.template;
 
 import java.io.StringWriter;
 
@@ -28,6 +28,7 @@ public class Templaton {
 	public StringWriter render(String source, VelocityContext context) {
 		return render(source, context, new StringWriter());
 	}
+	
 	public StringWriter render(String source, VelocityContext context, StringWriter writer) {
 		
 		if(writer == null) writer = new StringWriter();
@@ -37,7 +38,6 @@ public class Templaton {
 		
 		return writer;
 	}
-
 	
 //	public void init(String templatePath, StringWriter writer){
 //		this.context = new VelocityContext();

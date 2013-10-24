@@ -1,10 +1,10 @@
 package template;
 
 import static org.junit.Assert.*;
+import gears.base.template.Templaton;
 
 import org.junit.Test;
 
-import template.Templaton;
 
 public class TemplateTest {
 	

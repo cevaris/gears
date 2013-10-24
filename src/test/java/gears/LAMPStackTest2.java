@@ -1,20 +1,20 @@
 package gears;
 
 import static org.junit.Assert.*;
-import gears.base.DebianInstaller;
-import gears.base.Application;
-import gears.base.Connection;
-import gears.base.Installer;
-import gears.base.InstallerFactory;
+import gears.base.Gear;
 import gears.base.Instance;
 import gears.base.Configuration;
+import gears.base.connection.Connection;
 import gears.base.connection.ConnectionFactory;
 import gears.base.connection.SSHConnection;
+import gears.base.pkmg.DebianInstaller;
+import gears.base.pkmg.Installer;
+import gears.base.pkmg.InstallerFactory;
+import gears.base.template.Templaton;
 
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;
 
-import template.Templaton;
 
 public class LAMPStackTest2 {
 
@@ -23,7 +23,7 @@ public class LAMPStackTest2 {
 	public static String INFO = TEST_RESOURCES + "info.php.vm";
 	
 	
-	class PHPApp extends Application {
+	class PHPApp extends Gear {
 		
 		@Override
 		protected void execute() {
@@ -31,12 +31,12 @@ public class LAMPStackTest2 {
 			update();
 
 			// Install misc apps
-			install(new String[]{"php5"}, new String[]{"-q","-y"});
+			install("-q -y", "php5");
 		}
 		    
 	}
 	
-	class ApacheApp extends Application {
+	class ApacheApp extends Gear {
 		
 		@Override
 		protected void execute() {
@@ -45,8 +45,8 @@ public class LAMPStackTest2 {
 			
 			// Install misc apps
 			install(
-				new String[]{"-q","-y"},
-				new String[]{"apache2", "libapache2-mod-php5", "php5-mcrypt"} 
+				"-q -y",
+				"apache2 libapache2-mod-php5 php5-mcrypt" 
 			);
 	
 			// Restart Apache service, equals to "service apache2 restart"
@@ -55,7 +55,7 @@ public class LAMPStackTest2 {
 
 	}
 	
-	class MySQLApp extends Application {
+	class MySQLApp extends Gear {
 		
 		/**
 		 * For MySQL config file
@@ -77,18 +77,18 @@ public class LAMPStackTest2 {
 			
 			// Install misc apps
 			install(
-				new String[]{"-q","-y"}, 
-				new String[]{"mysql-server", "php5-mysql", "php5", "php5-mcrypt"} 
+				"-q -y",
+				"mysql-server php5-mysql php5 php5-mcrypt"
 			);
 		}
 
 
-//		private void renderConfig(){
-//			VelocityContext context = Templaton.getContext();
-//        	context.put("MYSQL_PASS", MYSQL_PASS);
-//        	context.put("MYSQL_USER", MYSQL_USER );
-//			render(INFO, "/var/www/info.php", context);
-//		}
+		private void renderConfig(){
+			VelocityContext context = Templaton.getContext();
+        	context.put("MYSQL_PASS", MYSQL_PASS);
+        	context.put("MYSQL_USER", MYSQL_USER );
+			render(INFO, "/var/www/info.php", context);
+		}
 		    
 	}
 	
@@ -108,11 +108,11 @@ public class LAMPStackTest2 {
 		}
 	}
 	
-	class LAMPStackServer extends Application {
+	class LAMPStackServer extends Gear {
 		
-		Application mysql  = new MySQLApp();
-		Application php    = new PHPApp();
-		Application apache = new ApacheApp();
+		Gear mysql  = new MySQLApp();
+		Gear php    = new PHPApp();
+		Gear apache = new ApacheApp();
 		
 		public LAMPStackServer() {
 			setConfig(new ProductionLAMP());
@@ -147,5 +147,7 @@ public class LAMPStackTest2 {
 //		Application app = new MySQLApp(server);
 //		assertNotNull(apache.getSession());
 	}
+
+	
 
 }

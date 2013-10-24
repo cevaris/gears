@@ -1,6 +1,5 @@
 package gears.base.connection;
 
-import gears.base.Connection;
 import gears.base.Instance;
 import gears.base.Configuration;
 
