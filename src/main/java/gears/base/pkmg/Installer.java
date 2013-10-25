@@ -5,15 +5,11 @@ import gears.base.connection.Connection;
 public interface Installer {
 	
 	
-	public void setConnection(Connection connection);
+	public String update();
 	
-	public boolean update();
+	public String restart(String service);
 	
-	public boolean restart(String service);
-	
-	public boolean execute(String commands);
-	
-	public boolean remove(String flags, String service);
-	public boolean install(String flags, String commands);
+	public String remove(String flags, String service);
+	public String install(String flags, String commands);
 	
 }

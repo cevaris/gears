@@ -76,7 +76,6 @@ public class LAMPStackTest2 {
 			install( "-y", "mysql-server php5-mysql php5 php5-mcrypt" );
 		}
 
-
 		private void renderConfig(){
 			VelocityContext context = Templaton.getContext();
         	context.put("MYSQL_PASS", MYSQL_PASS);
@@ -87,12 +86,17 @@ public class LAMPStackTest2 {
 	}
 	
 	class ProductionLAMP extends Configuration {
+		protected ConnectionFactory connFactory    = ConnectionFactory.getInstance();
+		protected InstallerFactory  installFactory = InstallerFactory.getInstance();
+		
 		public ProductionLAMP() {
-			Instance instance1 = new Instance("192.168.1.101", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller());
+			Instance instance1 = new Instance("192.168.1.101", "/Users/cevaris/.ssh/id_rsa",
+					connFactory.getSSHConnection(), installFactory.getDebianInstaller());
 			addInstance("web", instance1);
 			
-//			Instance instance2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller());
-//			addInstance("web", instance2);
+			Instance instance2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa", 
+					connFactory.getSSHConnection(), installFactory.getDebianInstaller());
+			addInstance("web", instance2);
 		}
 	}
 	
@@ -124,19 +128,10 @@ public class LAMPStackTest2 {
 
 	}
 	
-//	@Test
-//	public void testApacheServerSession(){
-//		Server apache = new ApacheServer();
-//		apache.execute();
-////		assertNotNull(apache.getSession());
-//	}
-	
 	@Test
 	public void testLAMPServer(){
 		Gear server   = new LAMPStackServer();
 		server.execute();
-//		Application app = new MySQLApp(server);
-//		assertNotNull(apache.getSession());
 	}
 
 	

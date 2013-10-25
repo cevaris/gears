@@ -3,9 +3,7 @@ package gears.base;
 import org.apache.log4j.Logger;
 
 import gears.base.connection.Connection;
-import gears.base.connection.ConnectionFactory;
 import gears.base.pkmg.Installer;
-import gears.base.pkmg.InstallerFactory;
 
 public class Instance {
 	
@@ -14,9 +12,6 @@ public class Instance {
 	
 	protected Connection connection = null;
 	protected Installer  installer  = null;
-	
-	protected ConnectionFactory connFactory    = ConnectionFactory.getInstance();
-	protected InstallerFactory  installFactory = InstallerFactory.getInstance();
 	
 	String fqdn;
 	String sshPermKeyPath;

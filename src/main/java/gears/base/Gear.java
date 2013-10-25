@@ -1,17 +1,10 @@
 package gears.base;
 
-import static org.junit.Assert.assertTrue;
-
 import gears.base.connection.Connection;
 import gears.base.pkmg.Installer;
-import gears.base.template.Template;
 import gears.base.template.Templaton;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 
@@ -32,15 +25,6 @@ abstract public class Gear  {
 		this.config = config;
 	}
 	
-	public void setup(Connection conn, Installer installer) {
-		this.installer = installer;
-		this.installer.setConnection(conn);
-	}
-	
-	public boolean update()  { 
-		return this.installer.update(); 
-	}
-	
 	protected boolean install(String group, Gear app) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
@@ -48,6 +32,15 @@ abstract public class Gear  {
 			app.execute();
 		}
 		return result;
+	}
+	
+	public void setup(Connection conn, Installer installer) {
+		this.installer = installer;
+		this.installer.setConnection(conn);
+	}
+	
+	public boolean update()  { 
+		return this.installer.update(); 
 	}
 	
 	public boolean install(String flags, String commands) {
