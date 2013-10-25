@@ -91,8 +91,8 @@ public class LAMPStackTest2 {
 			Instance instance1 = new Instance("192.168.1.101", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller());
 			addInstance("web", instance1);
 			
-			Instance instance2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller());
-			addInstance("web", instance2);
+//			Instance instance2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller());
+//			addInstance("web", instance2);
 		}
 	}
 	
