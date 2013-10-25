@@ -22,13 +22,26 @@ abstract public class Gear  {
 	
 	public abstract void execute();
 	
-	public void execute(Connection conn, Installer installer){
-		this.connection = conn;
-		this.installer  = installer;
+	/**
+	 * Internal execution
+	 * @param conn
+	 * @param installer
+	 */
+	private void execute(Connection conn, Installer installer){
+		this.setConnection(conn);
+		this.setInstaller(installer);
 		this.execute();
 	}
 	
-	protected void setConfig(Configuration config) {
+	private void setConnection(Connection connection) {
+		this.connection = connection;
+	}
+	
+	private void setInstaller(Installer installer) {
+		this.installer = installer;
+	}
+	
+	public void setConfig(Configuration config) {
 		this.config = config;
 	}
 	
@@ -63,7 +76,7 @@ abstract public class Gear  {
 		File destFile = new File(dest);
 		
 		for(Instance instance : this.config.getInstances(gearGroup)){
-//			setup(instance.connection, instance.installer);
+			this.setConnection(instance.connection);
 			
 			// Make sure parent directory exists for destination file
 			command(String.format("mkdir -p %s", destFile.getParentFile()));
@@ -74,25 +87,6 @@ abstract public class Gear  {
 		
 		return true;
 	}
-	
-//	public boolean render(String source, String dest, VelocityContext context) {
-//		Templaton templaton = Templaton.getInstance();
-//		File destFile = new File(dest);
-//		
-//		
-//		LOG.info("Before mkdir: " + String.format("mkdir -p %s", destFile.getParentFile()));
-//		LOG.info(this.installer == null);
-//		this.installer.execute(String.format("mkdir -p %s", destFile.getParentFile()));
-//		LOG.info("After mkdir: " + String.format("mkdir -p %s", destFile.getParentFile()));
-//		
-//		LOG.info("Before render");
-//		String document = templaton.render(source, context).toString();
-//		LOG.info("After render");
-//		
-//		return this.installer.execute(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
-//	}
-	
-	
 	
 //	public boolean install(String[] commands, String[] flags) {
 //		return this.gear.config.installer.install(

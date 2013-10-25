@@ -1,5 +1,6 @@
 package gears.base.connection;
 
+import gears.Constant;
 import gears.base.Instance;
 
 import java.io.BufferedReader;
@@ -39,8 +40,9 @@ public class SSHConnection implements Connection {
 		
 //		return status;
 //	}
-	
-	public boolean disconnect() {
+		
+		
+	public boolean disconnect(Instance instance) {
 //		assert(this.config != null) : "Server Configuration is null";
 		// TODO Code in disconnect method for SSH connection
 		return false;
@@ -52,6 +54,11 @@ public class SSHConnection implements Connection {
 	
 	
 	public boolean command(String command) {
+		
+		if(Constant.DEBUG){
+			LOG.info("Command: "+command);
+			return true;
+		}
 		
 		try {
 			Session session = this.client.startSession();
@@ -134,6 +141,8 @@ public class SSHConnection implements Connection {
 		return false;
 		
 	}
+
+	
 
 
 }
