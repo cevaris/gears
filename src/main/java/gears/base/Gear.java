@@ -44,7 +44,6 @@ abstract public class Gear  {
 	protected boolean install(String group, Gear app) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
-			System.out.println("Installing blah");
 			app.setup(instance.connection, instance.installer);
 			app.execute();
 		}
@@ -59,18 +58,17 @@ abstract public class Gear  {
 		return this.installer.restart(service);
 	}
 	
-	public boolean execute(String commands) {
-		return this.installer.execute(commands);
-	}
-	
 	public boolean render(String source, String dest, VelocityContext context) {
 		Templaton templaton = Templaton.getInstance();
 		File destFile = new File(dest);
-		execute(String.format("mkdir -p %s", destFile.getParentFile()));
+		this.installer.execute(String.format("mkdir -p %s", destFile.getParentFile()));
 		
 		String document = templaton.render(source, context).toString();
-		
-		return execute(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
+		return this.installer.execute(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
+	}
+	
+	public boolean execute(String commands) {
+		return this.installer.execute(commands);
 	}
 	
 //	public boolean install(String[] commands, String[] flags) {
