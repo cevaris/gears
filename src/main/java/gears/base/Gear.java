@@ -17,9 +17,16 @@ abstract public class Gear  {
 	
 	protected Configuration config = null;
 	
-	private Installer installer = null;
+	private Installer installer   = null;
+	private Connection connection = null;
 	
 	public abstract void execute();
+	
+	public void execute(Connection conn, Installer installer){
+		this.connection = conn;
+		this.installer  = installer;
+		this.execute();
+	}
 	
 	protected void setConfig(Configuration config) {
 		this.config = config;
@@ -28,42 +35,41 @@ abstract public class Gear  {
 	protected boolean install(String group, Gear app) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
-			app.setup(instance.connection, instance.installer);
-			app.execute();
+			app.execute(instance.connection, instance.installer);
 		}
 		return result;
 	}
 	
-	public void setup(Connection conn, Installer installer) {
-		this.installer = installer;
-		this.installer.setConnection(conn);
-	}
-	
 	public boolean update()  { 
-		return this.installer.update(); 
+		return command(this.installer.update());
 	}
 	
 	public boolean install(String flags, String commands) {
 		LOG.info(this.installer == null);
-		return this.installer.install(flags, commands);		
+//		return this.installer.install(flags, commands);		
+		return command(this.installer.install(flags, commands));
 	}
 	
 	public boolean restart(String service) {
-		return this.installer.restart(service);
+		return command(this.installer.restart(service));
 	}
 	
-	public boolean render(String group, String source, String dest, VelocityContext context) {
+	public boolean command(String commands) {
+		return this.connection.command(commands);
+	}
+	
+	public boolean render(String gearGroup, String source, String dest, VelocityContext context) {
 		Templaton templaton = Templaton.getInstance();
 		File destFile = new File(dest);
 		
-		for(Instance instance : this.config.getInstances(group)){
-			setup(instance.connection, instance.installer);
+		for(Instance instance : this.config.getInstances(gearGroup)){
+//			setup(instance.connection, instance.installer);
 			
 			// Make sure parent directory exists for destination file
-			this.installer.execute(String.format("mkdir -p %s", destFile.getParentFile()));
+			command(String.format("mkdir -p %s", destFile.getParentFile()));
 			
 			String document = templaton.render(source, context).toString();
-			this.installer.execute(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
+			command(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
 		}
 		
 		return true;
@@ -86,9 +92,7 @@ abstract public class Gear  {
 //		return this.installer.execute(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
 //	}
 	
-	public boolean execute(String commands) {
-		return this.installer.execute(commands);
-	}
+	
 	
 //	public boolean install(String[] commands, String[] flags) {
 //		return this.gear.config.installer.install(

@@ -69,8 +69,8 @@ public class LAMPStackTest2 {
 			update();
 			
 			// Hack for automating Mysql install
-			execute(String.format("echo mysql-server-5.5 mysql-server/root_password password %s | debconf-set-selections", MYSQL_PASS));
-			execute(String.format("echo mysql-server-5.5 mysql-server/root_password_again password %s | debconf-set-selections", MYSQL_PASS));
+			command(String.format("echo mysql-server-5.5 mysql-server/root_password password %s | debconf-set-selections", MYSQL_PASS));
+			command(String.format("echo mysql-server-5.5 mysql-server/root_password_again password %s | debconf-set-selections", MYSQL_PASS));
 			
 			// Install misc apps
 			install( "-y", "mysql-server php5-mysql php5 php5-mcrypt" );

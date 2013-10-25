@@ -1,7 +1,6 @@
 package gears.base.connection;
 
 import gears.base.Instance;
-import gears.base.Configuration;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,7 +50,8 @@ public class SSHConnection implements Connection {
 		return this.isOpen;
 	}
 	
-	public boolean execute(String command){
+	
+	public boolean command(String command) {
 		
 		try {
 			Session session = this.client.startSession();
