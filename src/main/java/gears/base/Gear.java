@@ -51,6 +51,7 @@ abstract public class Gear  {
 	}
 	
 	public boolean install(String flags, String commands) {
+		LOG.info(this.installer == null);
 		return this.installer.install(flags, commands);		
 	}
 	
@@ -58,14 +59,39 @@ abstract public class Gear  {
 		return this.installer.restart(service);
 	}
 	
-	public boolean render(String source, String dest, VelocityContext context) {
+	public boolean render(String group, String source, String dest, VelocityContext context) {
 		Templaton templaton = Templaton.getInstance();
 		File destFile = new File(dest);
-		this.installer.execute(String.format("mkdir -p %s", destFile.getParentFile()));
 		
-		String document = templaton.render(source, context).toString();
-		return this.installer.execute(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
+		for(Instance instance : this.config.getInstances(group)){
+			setup(instance.connection, instance.installer);
+			
+			// Make sure parent directory exists for destination file
+			this.installer.execute(String.format("mkdir -p %s", destFile.getParentFile()));
+			
+			String document = templaton.render(source, context).toString();
+			this.installer.execute(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
+		}
+		
+		return true;
 	}
+	
+//	public boolean render(String source, String dest, VelocityContext context) {
+//		Templaton templaton = Templaton.getInstance();
+//		File destFile = new File(dest);
+//		
+//		
+//		LOG.info("Before mkdir: " + String.format("mkdir -p %s", destFile.getParentFile()));
+//		LOG.info(this.installer == null);
+//		this.installer.execute(String.format("mkdir -p %s", destFile.getParentFile()));
+//		LOG.info("After mkdir: " + String.format("mkdir -p %s", destFile.getParentFile()));
+//		
+//		LOG.info("Before render");
+//		String document = templaton.render(source, context).toString();
+//		LOG.info("After render");
+//		
+//		return this.installer.execute(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
+//	}
 	
 	public boolean execute(String commands) {
 		return this.installer.execute(commands);

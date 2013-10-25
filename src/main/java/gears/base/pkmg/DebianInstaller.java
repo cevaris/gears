@@ -38,9 +38,9 @@ public class DebianInstaller implements Installer {
 
 	public boolean execute(String commands) {
 		assert (this.connection != null) : "Connection is null";
-		LOG.info(commands);
-//		return this.connection.execute(commands);
-		return true;
+//		LOG.info(commands);
+		return this.connection.execute(commands);
+//		return true;
 //		return this.connection.execute(commands);
 	}
 

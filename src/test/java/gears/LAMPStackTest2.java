@@ -81,7 +81,7 @@ public class LAMPStackTest2 {
 			VelocityContext context = Templaton.getContext();
         	context.put("MYSQL_PASS", MYSQL_PASS);
         	context.put("MYSQL_USER", MYSQL_USER );
-			render(INFO, "/var/www/info.php", context);
+			render("web", INFO, "/var/www/info.php", context);
 		}
 		    
 	}
@@ -119,7 +119,7 @@ public class LAMPStackTest2 {
 			VelocityContext context = Templaton.getContext();
         	context.put("MYSQL_PASS", MySQLApp.MYSQL_PASS);
         	context.put("MYSQL_USER", MySQLApp.MYSQL_USER );
-			render(INFO, "/var/www/info.php", context);
+			render("web", INFO, "/var/www/info.php", context);
 		}
 
 	}
