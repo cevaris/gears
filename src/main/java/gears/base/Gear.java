@@ -26,11 +26,11 @@ abstract public class Gear  {
 	
 	private Installer installer = null;
 	
+	public abstract void execute();
+	
 	protected void setConfig(Configuration config) {
 		this.config = config;
 	}
-	
-	protected abstract void execute();
 	
 	public void setup(Connection conn, Installer installer) {
 		this.installer = installer;
@@ -44,6 +44,7 @@ abstract public class Gear  {
 	protected boolean install(String group, Gear app) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
+			System.out.println("Installing blah");
 			app.setup(instance.connection, instance.installer);
 			app.execute();
 		}

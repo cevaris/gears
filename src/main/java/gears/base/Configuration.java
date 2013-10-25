@@ -31,12 +31,6 @@ public class Configuration {
 		
 		this.instancesMap.get(group).add(instance);
 		this.instancesList.add(instance);
-		
-		System.out.println(this.instancesMap.get(group));
-		System.out.println(this.instancesList);
-		System.out.println(instance.connection);
-		System.out.println("--");
-		
 		return instance.connect();
 	}
 	

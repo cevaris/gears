@@ -11,7 +11,7 @@ public interface Installer {
 	
 	public boolean restart(String service);
 	
-	public boolean execute(String commands);
+//	public boolean execute(String commands);
 	
 	public boolean remove(String flags, String service);
 	public boolean install(String flags, String commands);

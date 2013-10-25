@@ -36,11 +36,11 @@ public class DebianInstaller implements Installer {
 		return this.connection.execute("apt-get update");
 	}
 
-	public boolean execute(String commands) {
-		assert (this.connection != null) : "Connection is null";
-		return true;
-//		return this.connection.execute(commands);
-	}
+//	public boolean execute(String commands) {
+//		assert (this.connection != null) : "Connection is null";
+//		return true;
+////		return this.connection.execute(commands);
+//	}
 
 	
 

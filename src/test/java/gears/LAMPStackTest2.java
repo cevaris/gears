@@ -26,7 +26,7 @@ public class LAMPStackTest2 {
 	class PHPApp extends Gear {
 		
 		@Override
-		protected void execute() {
+		public void execute() {
 			// Update application repository
 			update();
 
@@ -39,7 +39,7 @@ public class LAMPStackTest2 {
 	class ApacheApp extends Gear {
 		
 		@Override
-		protected void execute() {
+		public void execute() {
 			// Update application repository
 			update();
 			
@@ -65,7 +65,7 @@ public class LAMPStackTest2 {
 		public static final String INNODB_LOG_FILE_SIZE = "128M";
 
 		@Override
-		protected void execute() {
+		public void execute() {
 			update();
 			
 			// Hack for automating Mysql install
@@ -88,15 +88,11 @@ public class LAMPStackTest2 {
 	
 	class ProductionLAMP extends Configuration {
 		public ProductionLAMP() {
-			Instance server1 = new Instance(
-				"192.168.1.101", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller()
-			);
-			addInstance("web", server1);
+			Instance instance1 = new Instance("192.168.1.101", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller());
+			addInstance("web", instance1);
 			
-			Instance server2 = new Instance(
-					"192.168.1.102", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller()
-			);
-			addInstance("web", server2);
+			Instance instance2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa", new SSHConnection(), new DebianInstaller());
+			addInstance("web", instance2);
 		}
 	}
 	
@@ -111,7 +107,7 @@ public class LAMPStackTest2 {
 		}
 
 		@Override
-		protected void execute() {
+		public void execute() {
 			install("web", php);
 			install("web", mysql);
 			install("web", apache);
@@ -136,6 +132,7 @@ public class LAMPStackTest2 {
 	@Test
 	public void testLAMPServer(){
 		Gear server   = new LAMPStackServer();
+		server.execute();
 //		Application app = new MySQLApp(server);
 //		assertNotNull(apache.getSession());
 	}
