@@ -44,28 +44,5 @@ public class Templaton {
 		return writer;
 	}
 	
-//	public void init(String templatePath, StringWriter writer){
-//		this.context = new VelocityContext();
-//		this.template = Velocity.getTemplate(templatePath);
-//		this.writer = writer;
-//		
-//	}
-	
-//	public Context put(String key, Object value) {
-//		this.context.put(key,value);
-//		return this.context;
-//	}
-	
-//	public StringWriter render() {
-//		
-//		if(this.writer == null) this.writer = new StringWriter();
-//		
-//		this.template.merge(context, writer);
-//		this.hasRendered = true;
-//		
-//		return this.writer;
-//	}
-	
-	
 
 }
