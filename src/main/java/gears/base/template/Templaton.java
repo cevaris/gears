@@ -1,7 +1,5 @@
 package gears.base.template;
 
-import gears.base.Gear;
-
 import java.io.StringWriter;
 
 import org.apache.log4j.Logger;

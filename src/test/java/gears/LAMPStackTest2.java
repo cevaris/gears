@@ -4,11 +4,7 @@ import static org.junit.Assert.*;
 import gears.base.Gear;
 import gears.base.Instance;
 import gears.base.Configuration;
-import gears.base.connection.Connection;
 import gears.base.connection.ConnectionFactory;
-import gears.base.connection.SSHConnection;
-import gears.base.pkmg.DebianInstaller;
-import gears.base.pkmg.Installer;
 import gears.base.pkmg.InstallerFactory;
 import gears.base.template.Templaton;
 

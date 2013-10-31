@@ -1,24 +1,19 @@
 package gears.base;
 
-import gears.base.connection.Connection;
-import gears.base.pkmg.Installer;
-import gears.base.template.Templaton;
-
-import java.io.File;
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 
 
-abstract public class Gear  {
+ public abstract class Gear implements Pangaea {
 	
-	protected String packageName = null;
+	protected String gearGroup = null;
 	
 	private static final Logger LOG = Logger.getLogger(Gear.class.getClass());
 	
 	protected Configuration config = null;
 	
-	private Installer installer   = null;
-	private Connection connection = null;
+//	private Installer installer   = null;
+//	private Connection connection = null;
 	
 	public abstract void execute();
 	
@@ -27,64 +22,74 @@ abstract public class Gear  {
 	 * @param conn
 	 * @param installer
 	 */
-	private void execute(Connection conn, Installer installer){
-		this.setConnection(conn);
-		this.setInstaller(installer);
+	private void execute(Instance instance){
 		this.execute();
 	}
 	
-	private void setConnection(Connection connection) {
-		this.connection = connection;
-	}
-	
-	private void setInstaller(Installer installer) {
-		this.installer = installer;
-	}
+//	private void setConnection(Connection connection) {
+//		this.connection = connection;
+//	}
+//	
+//	private void setInstaller(Installer installer) {
+//		this.installer = installer;
+//	}
 	
 	public void setConfig(Configuration config) {
 		this.config = config;
 	}
 	
+	public void setGearGroup(String gearGroup) {
+		this.gearGroup = gearGroup;
+	}
+	
 	protected boolean install(String group, Gear app) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
-			app.execute(instance.connection, instance.installer);
+			app.execute(instance);
 		}
 		return result;
 	}
 	
-	public boolean update()  { 
-		return command(this.installer.update());
+	
+	public boolean update() {
+		assert this.gearGroup != null : "Gear Group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
+			instance.update();
+		}
+		return true;
 	}
+	
 	
 	public boolean install(String flags, String commands) {
-		LOG.info(this.installer == null);
-//		return this.installer.install(flags, commands);		
-		return command(this.installer.install(flags, commands));
-	}
-	
-	public boolean restart(String service) {
-		return command(this.installer.restart(service));
-	}
-	
-	public boolean command(String commands) {
-		return this.connection.command(commands);
-	}
-	
-	public boolean render(String gearGroup, String source, String dest, VelocityContext context) {
-		Templaton templaton = Templaton.getInstance();
-		File destFile = new File(dest);
-		
-		for(Instance instance : this.config.getInstances(gearGroup)){
-			this.setConnection(instance.connection);
-			
-			// Make sure parent directory exists for destination file
-			command(String.format("mkdir -p %s", destFile.getParentFile()));
-			
-			String document = templaton.render(source, context).toString();
-			command(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
+		assert this.gearGroup != null : "Gear Group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
+			instance.install(flags, commands);
 		}
-		
+		return true;
+	}
+	
+
+	public boolean restart(String service) {
+		assert this.gearGroup != null : "Gear Group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
+			instance.restart(service);
+		}
+		return true;
+	}
+
+	public boolean command(String commands) {
+		assert this.gearGroup != null : "Gear Group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
+			instance.command(commands);
+		}
+		return true;
+	}
+
+	public boolean render(String source, String dest, VelocityContext context) {
+		assert this.gearGroup != null : "Gear Group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
+			instance.render(source, dest, context);
+		}
 		return true;
 	}
 	
@@ -102,12 +107,12 @@ abstract public class Gear  {
 //	public boolean update() {
 //		return this.gear.config.installer.update();
 //	}
-//	
-
+////	
+//
 //	public boolean install(String service) {
 //		return install(service, "");
 //	}
-	
+//	
 //	public boolean remove() {
 //		return this.gear.config.installer.remove(
 //				new String[]{},

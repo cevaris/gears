@@ -1,11 +1,15 @@
 package gears.base;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
+import org.apache.velocity.VelocityContext;
 
 import gears.base.connection.Connection;
 import gears.base.pkmg.Installer;
+import gears.base.template.Templaton;
 
-public class Instance {
+public class Instance implements Pangaea {
 	
 	
 	private static final Logger LOG = Logger.getLogger(Instance.class.getClass());
@@ -48,6 +52,37 @@ public class Instance {
 
 	public boolean connect() {
 		return this.connection.connect(this);
+	}
+
+	public boolean update()  { 
+		return command(this.installer.update());
+	}
+	
+	public boolean install(String flags, String commands) {
+		LOG.info(this.installer == null);
+//		return this.installer.install(flags, commands);		
+		return command(this.installer.install(flags, commands));
+	}
+	
+	public boolean restart(String service) {
+		return command(this.installer.restart(service));
+	}
+	
+	public boolean command(String commands) {
+		return this.connection.command(commands);
+	}
+	
+	public boolean render(String source, String dest, VelocityContext context) {
+		Templaton templaton = Templaton.getInstance();
+		
+		File destFile = new File(dest);
+		// Make sure parent directory exists for destination file
+		command(String.format("mkdir -p %s", destFile.getParentFile()));
+		
+		String document = templaton.render(source, context).toString();
+		command(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
+		
+		return true;
 	}
 
 }
