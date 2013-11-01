@@ -85,8 +85,4 @@ public class Instance implements Pangaea {
 		return true;
 	}
 
-	public void execute(Gear gear) {
-		
-	}
-
 }

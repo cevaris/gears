@@ -16,9 +16,10 @@ abstract public class Gear {
 	}
 	
 	protected boolean install(String group, Gear gear) {
+		
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
-			instance.execute(gear);
+			LOG.info("Installing gear: "+gear.getClass().getCanonicalName());
 		}
 		return result;
 	}
@@ -31,30 +32,28 @@ abstract public class Gear {
 	}
 	
 	public boolean update() {
-		instance.update();
-		return true;
-	}
-	
-	
-	public boolean install(String flags, String commands) {
-		for(Instance instance : this.config.getInstances(this.gearGroup)){
-			instance.install(flags, commands);
+		for(Instance instance : this.config.getInstances()){
+			instance.update();
 		}
 		return true;
 	}
 	
+	public boolean install(String flags, String commands) {
+		for(Instance instance : this.config.getInstances()){
+			instance.install(flags, commands);
+		}
+		return true;
+	}
 
 	public boolean restart(String service) {
-		assert this.gearGroup != null : "Gear Group not defined";
-		for(Instance instance : this.config.getInstances(this.gearGroup)){
+		for(Instance instance : this.config.getInstances()){
 			instance.restart(service);
 		}
 		return true;
 	}
 
 	public boolean command(String commands) {
-		assert this.gearGroup != null : "Gear Group not defined";
-		for(Instance instance : this.config.getInstances(this.gearGroup)){
+		for(Instance instance : this.config.getInstances()){
 			instance.command(commands);
 		}
 		return true;
@@ -62,8 +61,7 @@ abstract public class Gear {
 
 	
 	public boolean render(String source, String dest, VelocityContext context) {
-		assert this.gearGroup != null : "Gear Group not defined";
-		for(Instance instance : this.config.getInstances(this.gearGroup)){
+		for(Instance instance : this.config.getInstances()){
 			instance.render(source, dest, context);
 		}
 		return true;

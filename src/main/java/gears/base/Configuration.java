@@ -1,6 +1,8 @@
 package gears.base;
 
 
+import gears.base.connection.Connection;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,5 +39,5 @@ public class Configuration {
 	public List<Instance> getInstances(){
 		return this.instancesList;
 	}
-	
+
 }
