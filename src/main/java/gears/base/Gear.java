@@ -11,9 +11,13 @@ abstract public class Gear {
 	
 	protected Configuration config = null;
 	
+	private String gearGroup = null;
+	
 	public abstract void execute(); 
 	
 	public void install(String gearGroup, Gear gear) {
+		gear.setGearGroup(gearGroup);
+		gear.execute();
 	}
 	
 	public boolean render(String gearGroup, String source, String dest, VelocityContext context) {
@@ -23,34 +27,41 @@ abstract public class Gear {
 		return true;
 	}
 	
+	public void setGearGroup(String gearGroup) {
+		this.gearGroup = gearGroup;
+	}
+	
 	public void setConfig(Configuration config) {
 		this.config = config;
 	}
 	
-	
 	public boolean update() {
-		for(Instance instance : this.config.getInstances()){
+		assert this.gearGroup != null : "Gear group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
 			instance.update();
 		}
 		return true;
 	}
 	
 	public boolean install(String flags, String commands) {
-		for(Instance instance : this.config.getInstances()){
+		assert this.gearGroup != null : "Gear group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
 			instance.install(flags, commands);
 		}
 		return true;
 	}
 
 	public boolean restart(String service) {
-		for(Instance instance : this.config.getInstances()){
+		assert this.gearGroup != null : "Gear group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
 			instance.restart(service);
 		}
 		return true;
 	}
 
 	public boolean command(String commands) {
-		for(Instance instance : this.config.getInstances()){
+		assert this.gearGroup != null : "Gear group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
 			instance.command(commands);
 		}
 		return true;
@@ -58,7 +69,8 @@ abstract public class Gear {
 
 	
 	public boolean render(String source, String dest, VelocityContext context) {
-		for(Instance instance : this.config.getInstances()){
+		assert this.gearGroup != null : "Gear group not defined";
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
 			instance.render(source, dest, context);
 		}
 		return true;

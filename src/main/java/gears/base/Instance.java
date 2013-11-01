@@ -14,7 +14,6 @@ public class Instance {
 	
 	private static final Logger LOG = Logger.getLogger(Instance.class.getClass());
 	
-	private String gearGroup = null;
 	private Connection connection = null;
 	protected Installer  installer  = null;
 	
@@ -88,13 +87,6 @@ public class Instance {
 
 	public void execute(Gear gear) {
 		gear.execute();
-	}
-
-	public void setGearGroup(String group) {
-		this.gearGroup = group;
-	}
-	public String getGearGroup() {
-		return gearGroup;
 	}
 
 }
