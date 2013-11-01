@@ -11,19 +11,14 @@ abstract public class Gear {
 	
 	public abstract void execute(); 
 	
-	/**
-	 * Internal execution
-	 * @param conn
-	 * @param installer
-	 */
-	private void execute(Instance instance){
-		execute();
+	public void setConfig(Configuration config) {
+		this.config = config;
 	}
 	
-	protected boolean install(String group, GearBox gear) {
+	protected boolean install(String group, Gear gear) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
-			gear.execute(instance);
+			instance.execute(gear);
 		}
 		return result;
 	}

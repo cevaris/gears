@@ -2,7 +2,6 @@ package gears;
 
 import static org.junit.Assert.*;
 import gears.base.Gear;
-import gears.base.GearBox;
 import gears.base.Instance;
 import gears.base.Configuration;
 import gears.base.connection.ConnectionFactory;
@@ -97,11 +96,11 @@ public class LAMPStackTest2 {
 		}
 	}
 	
-	class LAMPStackServer extends GearBox {
+	class LAMPStackServer extends Gear {
 		
-		GearBox mysql  = new MySQLApp();
-		GearBox php    = new PHPApp();
-		GearBox apache = new ApacheApp();
+		Gear mysql  = new MySQLApp();
+		Gear php    = new PHPApp();
+		Gear apache = new ApacheApp();
 		
 		public LAMPStackServer() {
 			setConfig(new ProductionLAMP());
@@ -127,7 +126,7 @@ public class LAMPStackTest2 {
 	
 	@Test
 	public void testLAMPServer(){
-		GearBox server   = new LAMPStackServer();
+		Gear server   = new LAMPStackServer();
 		server.execute();
 	}
 
