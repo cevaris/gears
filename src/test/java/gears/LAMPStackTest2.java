@@ -2,6 +2,7 @@ package gears;
 
 import static org.junit.Assert.*;
 import gears.base.Gear;
+import gears.base.GearBox;
 import gears.base.Instance;
 import gears.base.Configuration;
 import gears.base.connection.ConnectionFactory;
@@ -76,7 +77,7 @@ public class LAMPStackTest2 {
 			VelocityContext context = Templaton.getContext();
         	context.put("MYSQL_PASS", MYSQL_PASS);
         	context.put("MYSQL_USER", MYSQL_USER );
-			render("web", INFO, "/var/www/info.php", context);
+			render(INFO, "/var/www/info.php", context);
 		}
 		    
 	}
@@ -96,11 +97,11 @@ public class LAMPStackTest2 {
 		}
 	}
 	
-	class LAMPStackServer extends Gear {
+	class LAMPStackServer extends GearBox {
 		
-		Gear mysql  = new MySQLApp();
-		Gear php    = new PHPApp();
-		Gear apache = new ApacheApp();
+		GearBox mysql  = new MySQLApp();
+		GearBox php    = new PHPApp();
+		GearBox apache = new ApacheApp();
 		
 		public LAMPStackServer() {
 			setConfig(new ProductionLAMP());
@@ -126,7 +127,7 @@ public class LAMPStackTest2 {
 	
 	@Test
 	public void testLAMPServer(){
-		Gear server   = new LAMPStackServer();
+		GearBox server   = new LAMPStackServer();
 		server.execute();
 	}
 
