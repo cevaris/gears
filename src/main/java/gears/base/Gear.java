@@ -15,11 +15,11 @@ abstract public class Gear {
 		this.config = config;
 	}
 	
-	protected boolean install(String group, Gear gear) {
-		
+	public boolean install(String group, Gear gear) {
 		boolean result = true;
 		for(Instance instance : this.config.getInstances(group)){
 			LOG.info("Installing gear: "+gear.getClass().getCanonicalName());
+			instance.execute(gear);
 		}
 		return result;
 	}
