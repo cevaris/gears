@@ -9,12 +9,13 @@ import gears.base.connection.Connection;
 import gears.base.pkmg.Installer;
 import gears.base.template.Templaton;
 
-public class Instance implements Pangaea {
+public class Instance {
 	
 	
 	private static final Logger LOG = Logger.getLogger(Instance.class.getClass());
 	
-	protected Connection connection = null;
+	private String gearGroup = null;
+	private Connection connection = null;
 	protected Installer  installer  = null;
 	
 	String fqdn;
@@ -87,6 +88,13 @@ public class Instance implements Pangaea {
 
 	public void execute(Gear gear) {
 		gear.execute();
+	}
+
+	public void setGearGroup(String group) {
+		this.gearGroup = group;
+	}
+	public String getGearGroup() {
+		return gearGroup;
 	}
 
 }

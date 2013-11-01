@@ -8,19 +8,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.schmizz.sshj.Config;
+
 import org.apache.log4j.Logger;
 
 public class Configuration {
 	
+	
 	private static final Logger LOG = Logger.getLogger(Configuration.class.getClass());
 	
+	private static Configuration configuration;
 	protected List<Instance> instancesList;
 	protected Map<String,List<Instance>> instancesMap;
 	
-	public Configuration() {
+	private Configuration() {
 		this.instancesMap  = new HashMap<String, List<Instance>>();
 		this.instancesList = new ArrayList<Instance>();
 	}
+	
+	
 	
 	public List<Instance> getInstances(String group) {
 		return this.instancesMap.get(group);
@@ -31,6 +37,7 @@ public class Configuration {
 		if(this.instancesMap.get(group) == null) 
 			this.instancesMap.put(group, new ArrayList<Instance>());
 		
+		instance.setGearGroup(group);
 		this.instancesMap.get(group).add(instance);
 		this.instancesList.add(instance);
 		return instance.connect();
@@ -39,5 +46,5 @@ public class Configuration {
 	public List<Instance> getInstances(){
 		return this.instancesList;
 	}
-
+	
 }

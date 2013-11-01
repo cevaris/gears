@@ -1,5 +1,7 @@
 package gears.base;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 
@@ -11,17 +13,7 @@ abstract public class Gear {
 	
 	public abstract void execute(); 
 	
-	public void setConfig(Configuration config) {
-		this.config = config;
-	}
-	
-	public boolean install(String group, Gear gear) {
-		boolean result = true;
-		for(Instance instance : this.config.getInstances(group)){
-			LOG.info("Installing gear: "+gear.getClass().getCanonicalName());
-			instance.execute(gear);
-		}
-		return result;
+	public void install(String gearGroup, Gear gear) {
 	}
 	
 	public boolean render(String gearGroup, String source, String dest, VelocityContext context) {
@@ -30,6 +22,11 @@ abstract public class Gear {
 		}
 		return true;
 	}
+	
+	public void setConfig(Configuration config) {
+		this.config = config;
+	}
+	
 	
 	public boolean update() {
 		for(Instance instance : this.config.getInstances()){
