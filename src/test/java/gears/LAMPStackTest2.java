@@ -98,15 +98,6 @@ public class LAMPStackTest2 {
 			install("web", php);
 			install("web", mysql);
 			install("web", apache);
-			
-			renderInfo();
-		}
-
-		private void renderInfo(){
-			VelocityContext context = Templaton.getContext();
-        	context.put("MYSQL_PASS", MySQLApp.MYSQL_PASS);
-        	context.put("MYSQL_USER", MySQLApp.MYSQL_USER );
-			render("web", INFO, "/var/www/info.php", context);
 		}
 		
 		
