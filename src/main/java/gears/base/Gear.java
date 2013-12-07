@@ -1,7 +1,5 @@
 package gears.base;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 
