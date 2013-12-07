@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 import gears.base.Gear;
 import gears.base.Instance;
 import gears.base.Configuration;
-import gears.base.connection.ConnectionFactory;
-import gears.base.pkmg.InstallerFactory;
 import gears.base.template.Templaton;
 
 import org.apache.velocity.VelocityContext;
@@ -96,17 +94,17 @@ public class LAMPStackTest2 {
 		@Override
 		public void execute() {
 			install("web", php);
-			install("web", mysql);
 			install("web", apache);
+//			install("db", mysql);
 		}
 		
 		
 		class ProductionLAMP extends Configuration {
 			 
-			private final static String SSH_KEY = "/Users/cevaris/.ssh/id_rsa";
+			private final static String SSH_KEY = "keys/id_rsa";
 			
 			public ProductionLAMP() {
-				Instance instance1 = new Instance("10.211.55.100", SSH_KEY);
+				Instance instance1 = new 	Instance("10.211.55.100", SSH_KEY);
 				addInstance("web", instance1);
 				
 				Instance instance2 = new Instance("10.211.55.101", SSH_KEY);
