@@ -6,10 +6,15 @@ import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 
 import gears.base.connection.Connection;
+import gears.base.connection.ConnectionFactory;
 import gears.base.pkmg.Installer;
+import gears.base.pkmg.InstallerFactory;
 import gears.base.template.Templaton;
 
 public class Instance {
+	
+	private ConnectionFactory connFactory    = ConnectionFactory.getInstance();
+	private InstallerFactory  installFactory = InstallerFactory.getInstance();
 	
 	
 	private static final Logger LOG = Logger.getLogger(Instance.class.getClass());
@@ -26,6 +31,14 @@ public class Instance {
 		
 		this.connection = connection;
 		this.installer = installer;
+	}
+	
+	public Instance(String fqdn, String sshPermKeyPath) {
+		this.sshPermKeyPath = sshPermKeyPath;
+		this.fqdn = fqdn;
+		
+		this.connection = this.connFactory.getSSHConnection();
+		this.installer  = this.installFactory.getDebianInstaller();
 	}
 
 	public void setInstaller(Installer installer) {

@@ -81,22 +81,7 @@ public class LAMPStackTest2 {
 		    
 	}
 	
-	class ProductionLAMP extends Configuration {
-		protected ConnectionFactory connFactory    = ConnectionFactory.getInstance();
-		protected InstallerFactory  installFactory = InstallerFactory.getInstance();
-		 
-		private final static String SSH_KEY = "/Users/cevaris/.ssh/id_rsa";
-		
-		public ProductionLAMP() {
-			Instance instance1 = new Instance("192.168.1.101", SSH_KEY,
-					connFactory.getSSHConnection(), installFactory.getDebianInstaller());
-			addInstance("web", instance1);
-			
-			Instance instance2 = new Instance("192.168.1.102", "/Users/cevaris/.ssh/id_rsa", 
-					connFactory.getSSHConnection(), installFactory.getDebianInstaller());
-			addInstance("web", instance2);
-		}
-	}
+	
 	
 	class LAMPStackServer extends Gear {
 		
@@ -122,6 +107,20 @@ public class LAMPStackTest2 {
         	context.put("MYSQL_PASS", MySQLApp.MYSQL_PASS);
         	context.put("MYSQL_USER", MySQLApp.MYSQL_USER );
 			render("web", INFO, "/var/www/info.php", context);
+		}
+		
+		
+		class ProductionLAMP extends Configuration {
+			 
+			private final static String SSH_KEY = "/Users/cevaris/.ssh/id_rsa";
+			
+			public ProductionLAMP() {
+				Instance instance1 = new Instance("10.211.55.100", SSH_KEY);
+				addInstance("web", instance1);
+				
+				Instance instance2 = new Instance("10.211.55.101", SSH_KEY);
+				addInstance("web", instance2);
+			}
 		}
 
 	}
