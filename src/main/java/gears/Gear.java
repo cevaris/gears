@@ -7,7 +7,7 @@ abstract public class Gear {
 	
 	private static final Logger LOG = Logger.getLogger(Gear.class.getClass());
 	
-	protected Configuration config = null;
+	protected Configuration config = Configuration.getInstance();
 	
 	private String gearGroup = null;
 	
@@ -22,13 +22,10 @@ abstract public class Gear {
 		this.gearGroup = gearGroup;
 	}
 	
-	public void setConfig(Configuration config) {
-		this.config = config;
-	}
-	
 	public boolean update() {
 		assert this.gearGroup != null : "Gear group not defined";
 		LOG.info(this.gearGroup);
+		LOG.info(this.config.getInstances());
 		for(Instance instance : this.config.getInstances(this.gearGroup)){
 			instance.update();
 		}

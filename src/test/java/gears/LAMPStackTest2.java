@@ -77,6 +77,21 @@ public class LAMPStackTest2 {
 	}
 	
 	
+	class ProductionLAMP {
+		
+		private final static String SSH_KEY = "/Users/cevaris/Documents/workspace/gears/gears/keys/id_rsa";
+		
+		private Configuration config = Configuration.getInstance();
+		
+		public ProductionLAMP() {
+			Instance instance1 = new Instance("10.211.55.100", SSH_KEY);
+			config.addInstance("web", instance1);
+			
+//			Instance instance2 = new Instance("10.211.55.101", SSH_KEY);
+//			config.addInstance("web", instance2);
+		}
+	}
+	
 	
 	class LAMPStackServer extends Gear {
 		
@@ -85,37 +100,22 @@ public class LAMPStackTest2 {
 		Gear apache = new ApacheApp();
 		
 		public LAMPStackServer() {
-			setConfig(new ProductionLAMP());
+			new ProductionLAMP();
 		}
 
 		@Override
 		public void execute() {
-			
 			install("web", php);
 			install("web", apache);
 			
 			install("web", mysql);
 		}
 		
-		
-		class ProductionLAMP extends Configuration {
-			 
-			private final static String SSH_KEY = "keys/id_rsa";
-			
-			public ProductionLAMP() {
-				Instance instance1 = new 	Instance("10.211.55.100", SSH_KEY);
-				addInstance("web", instance1);
-				
-//				Instance instance2 = new Instance("10.211.55.101", SSH_KEY);
-//				addInstance("web", instance2);
-			}
-		}
-
 	}
 	
 	@Test
 	public void testLAMPServer(){
-		Gear server   = new LAMPStackServer();
+		Gear server = new LAMPStackServer();
 		server.execute();
 	}
 

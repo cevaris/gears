@@ -15,7 +15,7 @@ public class ConfigurationTest {
 	@Test
 	public void testAddInstance() {
 		
-		Configuration config = new Configuration();
+		Configuration config = Configuration.getInstance();
 		Instance instance1 = new Instance("10.211.55.100", SSH_KEY, new SSHConnection(), new DebianInstaller());
 		config.addInstance("web", instance1);
 		
@@ -33,7 +33,7 @@ public class ConfigurationTest {
 	@Test
 	public void testMultipleConnect() {
 		
-		Configuration config = new Configuration();
+		Configuration config = Configuration.getInstance();
 		Instance instance1 = new Instance("10.211.55.100", SSH_KEY, new SSHConnection(), new DebianInstaller());
 		config.addInstance("web", instance1);
 		

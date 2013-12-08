@@ -1,8 +1,5 @@
 package gears;
 
-
-import gears.connection.Connection;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,15 +9,19 @@ import org.apache.log4j.Logger;
 
 public class Configuration {
 	
-	
 	private static final Logger LOG = Logger.getLogger(Configuration.class.getClass());
 	
-	private static Configuration configuration;
 	
+	private static Configuration instance = null;
 	protected List<Instance> instancesList;
 	protected Map<String,List<Instance>> instancesMap;
-	
-	public Configuration() {
+
+	public static Configuration getInstance() {
+		if(instance == null) instance = new Configuration();
+		return instance;
+	}
+		
+	private Configuration() {
 		this.instancesMap  = new HashMap<String, List<Instance>>();
 		this.instancesList = new ArrayList<Instance>();
 	}
