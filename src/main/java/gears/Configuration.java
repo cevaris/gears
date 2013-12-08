@@ -21,17 +21,23 @@ public class Configuration {
 	protected Map<String,List<Instance>> instancesMap;
 
 	public static Configuration getInstance() {
-		if(instance == null) instance = new Configuration();
+		if(instance == null) {
+			instance = new Configuration();
+		}
 		return instance;
 	}
 		
 	private Configuration() {
 		this.instancesMap  = new HashMap<String, List<Instance>>();
 		this.instancesList = new ArrayList<Instance>();
+		disconnectInstances();
 	}
 	
 	public List<Instance> getInstances(String group) {
-		return this.instancesMap.get(group);
+		if(this.instancesMap.containsKey(group))
+			return this.instancesMap.get(group);
+		else
+			return new ArrayList<Instance>();
 	}
 	
 	public List<Instance> getInstances() {
@@ -47,6 +53,23 @@ public class Configuration {
 		this.instancesMap.get(group).add(instance);
 		this.instancesList.add(instance);
 		return instance.connect();
+	}
+	
+	public static void reset(){
+		instance = new Configuration();		
+	}
+	
+	private void disconnectInstances() {
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+		    public void run() { 
+		    	LOG.info("Shutting down...");
+		    	if(instancesList != null){
+		    		for(Instance node: instancesList)
+		    			node.disconnect();
+		    	}
+		    	LOG.info("Done!");
+		    }
+		});
 	}
 
 }

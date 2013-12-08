@@ -67,6 +67,10 @@ public class Instance {
 	public boolean connect() {
 		return this.connection.connect(this);
 	}
+	
+	public boolean disconnect() {
+		return this.connection.disconnect(this);
+	}
 
 	public boolean update()  { 
 		return command(this.installer.update());

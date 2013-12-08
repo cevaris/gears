@@ -43,9 +43,12 @@ public class SSHConnection implements Connection {
 		
 		
 	public boolean disconnect(Instance instance) {
-//		assert(this.config != null) : "Server Configuration is null";
-		// TODO Code in disconnect method for SSH connection
-		return false;
+		try{
+			this.client.disconnect();
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 	public boolean isOpen() {
