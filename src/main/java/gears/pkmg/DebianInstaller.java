@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 public class DebianInstaller implements Installer {
 	
-	private static final Logger LOG = Logger.getLogger(DebianInstaller.class.getClass());
+	private static final Logger LOG = Logger.getLogger(DebianInstaller.class);
 	
 	
 	public String install(String service) {

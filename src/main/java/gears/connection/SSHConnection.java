@@ -22,7 +22,7 @@ import net.schmizz.sshj.userauth.keyprovider.PKCS8KeyFile;
 
 public class SSHConnection implements Connection {
 	
-	Logger LOG = Logger.getLogger(SSHConnection.class.getClass());
+	Logger LOG = Logger.getLogger(SSHConnection.class);
 	
 	private SSHClient client = null;
 	private boolean isOpen = false;
@@ -59,7 +59,7 @@ public class SSHConnection implements Connection {
 	public boolean command(String command) {
 		
 		if(Constants.DEBUG){
-			LOG.info("Command: "+command);
+			LOG.info(String.format("[%s] - %s", this.client.getRemoteAddress(), command));
 			return true;
 		}
 		
@@ -102,7 +102,7 @@ public class SSHConnection implements Connection {
             cmd.close();
             
         	session.close();
-        	System.out.println("Closed Session");
+        	LOG.info("Closed Session");
         	
         	return true;
         	

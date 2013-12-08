@@ -131,18 +131,9 @@ public class LAMPStackTest2 {
 		@Override
 		public void execute() {
 			
-			for(Instance instance: config.getInstances()){
-				install(instance, vim);
-			}
-			
-			for(Instance instance: config.getInstances("web")){
-				install(instance, php);
-			}
-			
-			
-			
-//			install("web", php);
-//			install("web", apache);
+			install(vim);
+			install("web", php);
+			install("web", apache);
 			
 //			install("db", mysql);
 			

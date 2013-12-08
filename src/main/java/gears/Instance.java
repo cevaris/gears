@@ -17,7 +17,7 @@ public class Instance {
 	private ConnectionFactory connFactory    = ConnectionFactory.getInstance();
 	private InstallerFactory  installFactory = InstallerFactory.getInstance();
 	
-	private static final Logger LOG = Logger.getLogger(Instance.class.getClass());
+	private static final Logger LOG = Logger.getLogger(Instance.class);
 	
 	private Connection connection  = null;
 	protected Installer  installer = null;
@@ -76,19 +76,15 @@ public class Instance {
 	}
 	
 	public boolean install(String commands) {
-		LOG.info(this.installer == null);
 		return command(this.installer.install(commands));
 	}
 	
 	public boolean install(String flags, String commands) {
-		LOG.info(this.installer == null);
 //		return this.installer.install(flags, commands);		
 		return command(this.installer.install(flags, commands));
 	}
 	
 	public boolean openPort(String value) {
-		LOG.info(this.installer == null);
-//		return this.installer.install(flags, commands);		
 		return command(this.installer.openPort(value));
 	}
 	
