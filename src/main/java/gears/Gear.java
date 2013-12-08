@@ -40,9 +40,9 @@ abstract public class Gear {
 	
 	
 	public void install(String gearGroup, Gear gear) {
-		this.setGearGroup(gearGroup);
+		gear.setGearGroup(gearGroup);
 		gear.execute();
-		this.setGearGroup(null);
+		gear.setGearGroup(null);
 	}
 	
 	public boolean render(String gearGroup, String source, String dest) {
@@ -74,7 +74,7 @@ abstract public class Gear {
 	
 	
 	public void install(Gear gear) {
-		this.setGearGroup(null);
+		gear.setGearGroup(null);
 		gear.execute();
 	}
 	
