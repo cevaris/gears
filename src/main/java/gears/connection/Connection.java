@@ -1,6 +1,6 @@
-package gears.base.connection;
+package gears.connection;
 
-import gears.base.Instance;
+import gears.Instance;
 
 public interface Connection {
 	

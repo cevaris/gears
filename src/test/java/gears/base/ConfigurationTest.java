@@ -1,8 +1,10 @@
 package gears.base;
 
 import static org.junit.Assert.*;
-import gears.base.connection.SSHConnection;
-import gears.base.pkmg.DebianInstaller;
+import gears.Configuration;
+import gears.Instance;
+import gears.connection.SSHConnection;
+import gears.pkmg.DebianInstaller;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package gears.base;
+package gears;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;

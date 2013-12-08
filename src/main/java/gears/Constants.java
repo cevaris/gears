@@ -1,6 +1,6 @@
 package gears;
 
-public class Config {
+public class Constants {
 
 	public static final boolean DEBUG = false;
 	

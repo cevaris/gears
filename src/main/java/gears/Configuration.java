@@ -1,7 +1,7 @@
-package gears.base;
+package gears;
 
 
-import gears.base.connection.Connection;
+import gears.connection.Connection;
 
 import java.util.ArrayList;
 import java.util.HashMap;

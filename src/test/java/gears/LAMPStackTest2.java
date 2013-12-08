@@ -1,10 +1,7 @@
 package gears;
 
 import static org.junit.Assert.*;
-import gears.base.Gear;
-import gears.base.Instance;
-import gears.base.Configuration;
-import gears.base.template.Templaton;
+import gears.template.Templaton;
 
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;

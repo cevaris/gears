@@ -1,4 +1,4 @@
-package gears.base.template;
+package gears.template;
 
 import java.io.StringWriter;
 

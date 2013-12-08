@@ -1,7 +1,7 @@
-package gears.base.connection;
+package gears.connection;
 
-import gears.Config;
-import gears.base.Instance;
+import gears.Constants;
+import gears.Instance;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -55,7 +55,7 @@ public class SSHConnection implements Connection {
 	
 	public boolean command(String command) {
 		
-		if(Config.DEBUG){
+		if(Constants.DEBUG){
 			LOG.info("Command: "+command);
 			return true;
 		}
@@ -127,7 +127,7 @@ public class SSHConnection implements Connection {
 			
 			PKCS8KeyFile keyFile = new PKCS8KeyFile();
 			keyFile.init(new File(instance.getSSHPermKeyPath()));
-			this.client.authPublickey(Config.SSH_USER,keyFile);
+			this.client.authPublickey(Constants.SSH_USER,keyFile);
 			
 			return true;
 		} catch (TransportException e){

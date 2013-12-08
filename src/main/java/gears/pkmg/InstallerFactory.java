@@ -1,4 +1,4 @@
-package gears.base.pkmg;
+package gears.pkmg;
 
 public class InstallerFactory {
 
