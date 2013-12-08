@@ -2,7 +2,6 @@ package gears.template;
 
 import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
@@ -12,7 +11,7 @@ import org.apache.velocity.context.Context;
 
 public class Templaton {
 	
-	private static final Logger LOG = Logger.getLogger(Templaton.class.getClass());
+	private static final Logger LOG = Logger.getLogger(Templaton.class);
 	
 	
 //	VelocityContext context = null;
@@ -34,13 +33,13 @@ public class Templaton {
 		Class<?> clazz = obj.getClass();
 		Context context = new VelocityContext();
 		
-		LOG.info(clazz.getName());
+//		LOG.info(clazz.getName());
 		
 		for(Field field : clazz.getDeclaredFields()) {
 			
 			try {
 				field.setAccessible(true);
-				LOG.info(field.getName()+" "+field.get(clazz));
+//				LOG.info(field.getName()+" "+field.get(clazz));
 				context.put(field.getName(), field.get(clazz).toString());
 			} catch (IllegalArgumentException e) {
 				// Skip

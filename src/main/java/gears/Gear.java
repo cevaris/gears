@@ -18,6 +18,17 @@ abstract public class Gear {
 	
 	public abstract void execute(); 
 	
+	
+	public void execute(String group, Gear gear){
+		gear.setGearGroup(group);
+		gear.execute();
+		gear.setGearGroup(null);
+	}
+	
+	public void install(Gear gear) {
+		execute(null, gear);
+	}
+	
 	private List<Instance> getInstances() {
 		return (this.gearGroup == null) ? config.getInstances() : config.getInstances(this.gearGroup);
 	}
@@ -26,31 +37,13 @@ abstract public class Gear {
 		this.gearGroup = gearGroup;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public void install(String gearGroup, Gear gear) {
-		gear.setGearGroup(gearGroup);
-		gear.execute();
-		gear.setGearGroup(null);
+		execute(gearGroup, gear);
 	}
 	
 	public boolean render(String gearGroup, String source, String dest) {
 		this.setGearGroup(gearGroup);
-		Context context = Templaton.getContext(this);
-		for(Instance instance : getInstances()){
-			instance.render(source, dest, context);
-		}
+		render(source, dest);
 		this.setGearGroup(null);
 		return true;
 	}
@@ -71,13 +64,6 @@ abstract public class Gear {
 		}
 		return true;
 	}
-	
-	
-	public void install(Gear gear) {
-		gear.setGearGroup(null);
-		gear.execute();
-	}
-	
 	
 	public boolean install(String commands) {
 		for(Instance instance : getInstances()){

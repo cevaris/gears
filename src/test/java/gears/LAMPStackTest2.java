@@ -1,10 +1,6 @@
 package gears;
 
 import static org.junit.Assert.*;
-import gears.template.Template;
-import gears.template.Templaton;
-
-import org.apache.velocity.VelocityContext;
 import org.junit.Test;
 
 
@@ -135,13 +131,13 @@ public class LAMPStackTest2 {
 			install("web", php);
 			install("web", apache);
 			
-//			install("db", mysql);
+			install("db", mysql);
 			
-//			renderInfo();
+			renderInfo();
 		}
 		
 		private void renderInfo(){
-        	render("web", INFO, "/var/www/info.php");
+        	render("web", INFO, "/var/www/info.php");	
 		}
 		
 	}
