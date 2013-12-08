@@ -1,11 +1,15 @@
 package gears;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+
+import com.google.common.collect.Iterables;
 
 public class Configuration {
 	
@@ -30,6 +34,10 @@ public class Configuration {
 		return this.instancesMap.get(group);
 	}
 	
+	public List<Instance> getInstances() {
+		return this.instancesList;
+	}
+	
 	public boolean addInstance(String group, Instance instance){
 		// Add instance list to newly encountered groups
 		if(this.instancesMap.get(group) == null) 
@@ -40,9 +48,5 @@ public class Configuration {
 		this.instancesList.add(instance);
 		return instance.connect();
 	}
-	
-	public List<Instance> getInstances(){
-		return this.instancesList;
-	}
-	
+
 }
