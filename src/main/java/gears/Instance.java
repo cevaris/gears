@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
 
 import gears.connection.Connection;
 import gears.connection.ConnectionFactory;
@@ -85,7 +86,7 @@ public class Instance {
 		return this.connection.command(commands);
 	}
 	
-	public boolean render(String source, String dest, VelocityContext context) {
+	public boolean render(String source, String dest, Context context) {
 		Templaton templaton = Templaton.getInstance();
 		
 		File destFile = new File(dest);

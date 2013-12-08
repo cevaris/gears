@@ -1,7 +1,15 @@
 package gears;
 
+import gears.template.Templaton;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
+
 
 abstract public class Gear {
 	
@@ -57,7 +65,17 @@ abstract public class Gear {
 	}
 
 	
-	public boolean render(String source, String dest, VelocityContext context) {
+	public boolean render(String source, String dest) {
+		assert this.gearGroup != null : "Gear group not defined";
+		Context context = Templaton.getContext(this.getClass());
+		
+		for(Instance instance : this.config.getInstances(this.gearGroup)){
+			instance.render(source, dest, context);
+		}
+		return true;
+	}
+	
+	public boolean render(String source, String dest, Context context) {
 		assert this.gearGroup != null : "Gear group not defined";
 		for(Instance instance : this.config.getInstances(this.gearGroup)){
 			instance.render(source, dest, context);
@@ -65,11 +83,13 @@ abstract public class Gear {
 		return true;
 	}
 	
-	public boolean render(String gearGroup, String source, String dest, VelocityContext context) {
+	public boolean render(String gearGroup, String source, String dest, Context context) {
 		for(Instance instance : this.config.getInstances(gearGroup)){
 			instance.render(source, dest, context);
 		}
 		return true;
 	}
+	
+	
 
 }

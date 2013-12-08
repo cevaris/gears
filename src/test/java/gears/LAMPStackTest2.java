@@ -10,7 +10,6 @@ import org.junit.Test;
 public class LAMPStackTest2 {
 
 	public static String TEST_RESOURCES = "src/test/java/resources/";
-	public static String HOSTS = TEST_RESOURCES + "hosts.yaml";
 	public static String INFO = TEST_RESOURCES + "info.php.vm";
 	
 	
@@ -68,12 +67,13 @@ public class LAMPStackTest2 {
 		}
 
 		private void renderConfig(){
-			VelocityContext context = Templaton.getContext();
-        	context.put("MYSQL_PASS", MYSQL_PASS);
-        	context.put("MYSQL_USER", MYSQL_USER );
-			render(INFO, "/var/www/info.php", context);
+//			VelocityContext context = Templaton.getContext();
+//        	context.put("MYSQL_PASS", MYSQL_PASS);
+//        	context.put("MYSQL_USER", MYSQL_USER );
+//			render(INFO, "/var/www/info.php", context);
+			render(INFO, "/var/www/info.php");
 		}
-		    
+
 	}
 	
 	
@@ -84,10 +84,10 @@ public class LAMPStackTest2 {
 		private Configuration config = Configuration.getInstance();
 		
 		public ProductionLAMP() {
-			Instance instance1 = new Instance("10.211.55.100", SSH_KEY);
+			Instance instance1 = new Instance("192.168.2.100", SSH_KEY);
 			config.addInstance("web", instance1);
 			
-//			Instance instance2 = new Instance("10.211.55.101", SSH_KEY);
+//			Instance instance2 = new Instance("192.168.2.101", SSH_KEY);
 //			config.addInstance("web", instance2);
 		}
 	}
@@ -109,6 +109,15 @@ public class LAMPStackTest2 {
 			install("web", apache);
 			
 			install("web", mysql);
+			
+			renderInfo();
+		}
+		
+		private void renderInfo(){
+			VelocityContext context = Templaton.getContext();
+        	context.put("MYSQL_PASS", MySQLApp.MYSQL_PASS);
+        	context.put("MYSQL_USER", MySQLApp.MYSQL_USER );
+			render("web", INFO, "/var/www/info.php", context);
 		}
 		
 	}
