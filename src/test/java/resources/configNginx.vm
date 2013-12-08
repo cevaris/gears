@@ -1,7 +1,7 @@
 server { 
-	listen $port; 
-	server_name $webName; 
-	root $projectPath; 
+	listen $PORT; 
+	server_name $WEB_NAME; 
+	root $PROJECT_PATH; 
 	
 	passenger_enabled on;
 }

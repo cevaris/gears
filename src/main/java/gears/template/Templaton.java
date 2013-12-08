@@ -34,15 +34,18 @@ public class Templaton {
 		Class<?> clazz = obj.getClass();
 		VelocityContext context = new VelocityContext();
 		
-		try {
-			for(Field field : clazz.getDeclaredFields()) {
+	
+		for(Field field : clazz.getDeclaredFields()) {
+			
+			try {
+				field.setAccessible(true);
 				LOG.info(field.getName()+" "+field.get(clazz));
 				context.put(field.getName(), field.get(clazz).toString());
+			} catch (IllegalArgumentException e) {
+				// Skip
+			} catch (IllegalAccessException e) {
+				// Skip
 			}
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 		}
 		
 		return context;

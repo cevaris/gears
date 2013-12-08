@@ -1,6 +1,9 @@
 package gears;
 
 import static org.junit.Assert.*;
+
+import java.io.File;
+
 import gears.template.Templaton;
 
 import org.apache.velocity.VelocityContext;
@@ -15,19 +18,27 @@ public class GearTest {
 	
 	class NginxGear extends Gear {
 		
-		public static final String PORT   = "8888";
-		public static final String WEBNAME   = "blogger.com";
+		protected static final String PORT    = "8888";
+		protected static final String WEB_NAME = "blogger.com";
+		protected static final String PROJECT_PATH = "/var/www/test";
 		
 		@Override
-		public void execute() {	}
+		public void execute() {
+			System.out.println(this.getClass().getName());
+		}
 
 		    
 	}
-
+	
 	@Test
 	public void testGetFields() {
-		NginxGear nginx = new NginxGear();
-		Context context = Templaton.getContext(nginx.getClass());
+		Gear nginx = new NginxGear();
+		
+		Templaton templaton = Templaton.getInstance();
+		Context context = Templaton.getContext(nginx);
+		String document = templaton.render(CONFIG_NGINX, context).toString();
+		
+		System.out.println(document);
 	}
 
 }

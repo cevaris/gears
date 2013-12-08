@@ -64,7 +64,6 @@ abstract public class Gear {
 		return true;
 	}
 
-	
 	public boolean render(String source, String dest) {
 		assert this.gearGroup != null : "Gear group not defined";
 		Context context = Templaton.getContext(this.getClass());
