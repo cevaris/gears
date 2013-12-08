@@ -21,7 +21,7 @@ public class LAMPStackTest2 {
 		@Override
 		public void execute() {
 			// Update application repository
-//			update();
+			update();
 
 			// Install misc apps
 			install("-y", "php5");
@@ -34,7 +34,7 @@ public class LAMPStackTest2 {
 		@Override
 		public void execute() {
 			// Update application repository
-//			update();
+			update();
 			
 			// Install misc apps
 			install( "-y", "apache2 libapache2-mod-php5 php5-mcrypt" );
@@ -59,7 +59,7 @@ public class LAMPStackTest2 {
 
 		@Override
 		public void execute() {
-//			update();
+			update();
 			
 			// Hack for automating Mysql install
 			command(String.format("echo mysql-server-5.5 mysql-server/root_password password %s | debconf-set-selections", MYSQL_PASS));
@@ -79,7 +79,6 @@ public class LAMPStackTest2 {
 			restart("mysql");
 			
 		}
-
 
 		private void renderConfig(){
 			render(MY_CNF, "/etc/mysql/my.cnf");
