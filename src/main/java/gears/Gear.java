@@ -1,5 +1,6 @@
 package gears;
 
+import static org.junit.Assert.assertTrue;
 import gears.template.Templaton;
 
 import java.lang.reflect.Field;
@@ -32,9 +33,7 @@ abstract public class Gear {
 	
 	public boolean update() {
 		assert this.gearGroup != null : "Gear group not defined";
-		LOG.info(this.gearGroup);
-		LOG.info(this.config.getInstances());
-		for(Instance instance : this.config.getInstances(this.gearGroup)){
+		for(Instance instance : this.config.getInstances()){
 			instance.update();
 		}
 		return true;
@@ -42,7 +41,7 @@ abstract public class Gear {
 	
 	public boolean install(String flags, String commands) {
 		assert this.gearGroup != null : "Gear group not defined";
-		for(Instance instance : this.config.getInstances(this.gearGroup)){
+		for(Instance instance : this.config.getInstances()){
 			instance.install(flags, commands);
 		}
 		return true;
@@ -50,7 +49,7 @@ abstract public class Gear {
 
 	public boolean restart(String service) {
 		assert this.gearGroup != null : "Gear group not defined";
-		for(Instance instance : this.config.getInstances(this.gearGroup)){
+		for(Instance instance : this.config.getInstances()){
 			instance.restart(service);
 		}
 		return true;
@@ -58,22 +57,13 @@ abstract public class Gear {
 
 	public boolean command(String commands) {
 		assert this.gearGroup != null : "Gear group not defined";
-		for(Instance instance : this.config.getInstances(this.gearGroup)){
+		boolean result = true;
+		for(Instance instance : this.config.getInstances()){
 			instance.command(commands);
 		}
-		return true;
+		return result;
 	}
 
-	public boolean render(String source, String dest) {
-		assert this.gearGroup != null : "Gear group not defined";
-		Context context = Templaton.getContext(this.getClass());
-		
-		for(Instance instance : this.config.getInstances(this.gearGroup)){
-			instance.render(source, dest, context);
-		}
-		return true;
-	}
-	
 	public boolean render(String source, String dest, Context context) {
 		assert this.gearGroup != null : "Gear group not defined";
 		for(Instance instance : this.config.getInstances(this.gearGroup)){
@@ -83,6 +73,25 @@ abstract public class Gear {
 	}
 	
 	public boolean render(String gearGroup, String source, String dest, Context context) {
+		for(Instance instance : this.config.getInstances(gearGroup)){
+			instance.render(source, dest, context);
+		}
+		return true;
+	}
+	
+	
+	public boolean render(String source, String dest) {
+		assert this.gearGroup != null : "Gear group not defined";
+		Context context = Templaton.getContext(this);
+		
+		for(Instance instance : this.config.getInstances()){
+			instance.render(source, dest, context);
+		}
+		return true;
+	}
+	
+	public boolean render(String gearGroup, String source, String dest) {
+		Context context = Templaton.getContext(this);
 		for(Instance instance : this.config.getInstances(gearGroup)){
 			instance.render(source, dest, context);
 		}

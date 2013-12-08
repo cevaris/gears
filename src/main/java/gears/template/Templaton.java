@@ -30,11 +30,12 @@ public class Templaton {
 		return new VelocityContext();
 	}
 	
-	public static VelocityContext getContext(Object obj) {
+	public static Context getContext(Object obj) {
 		Class<?> clazz = obj.getClass();
-		VelocityContext context = new VelocityContext();
+		Context context = new VelocityContext();
 		
-	
+		LOG.info(clazz.getName());
+		
 		for(Field field : clazz.getDeclaredFields()) {
 			
 			try {

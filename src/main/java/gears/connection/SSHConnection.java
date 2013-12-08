@@ -77,6 +77,7 @@ public class SSHConnection implements Connection {
             String line;        	
             while ((line = in.readLine()) != null) {
             	LOG.info(String.format("%s",line));
+            	log.append(line);
             }
             
             Integer exitStatus = cmd.getExitStatus();

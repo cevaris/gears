@@ -1,6 +1,7 @@
 package gears;
 
 import static org.junit.Assert.*;
+import gears.template.Template;
 import gears.template.Templaton;
 
 import org.apache.velocity.VelocityContext;
@@ -48,8 +49,8 @@ public class LAMPStackTest2 {
 		 * For MySQL config file
 		 * http://stackoverflow.com/questions/1167056/optimal-mysql-configuration-my-cnf
 		 */
-		public static final String MYSQL_PASS   = "mypass";
-		public static final String MYSQL_USER   = "root";
+		public static final String MYSQL_PASS = "mypass";
+		public static final String MYSQL_USER = "root";
 		
 		public static final String INNODB_BUFFER_POOL_SIZE = "512M";
 		public static final String INNODB_LOG_FILE_SIZE = "128M";
@@ -64,6 +65,12 @@ public class LAMPStackTest2 {
 			
 			// Install misc apps
 			install( "-y", "mysql-server php5-mysql php5 php5-mcrypt" );
+			
+			// Grant Remote access
+			command("mysql -u root --password='mypass' -e \"GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.1.%' IDENTIFIED BY 'mypass' WITH GRANT OPTION; FLUSH PRIVILEGES;\"");
+			command("mysql -u root --password='mypass' -e \"GRANT ALL PRIVILEGES ON *.* TO 'root'@'nod%' IDENTIFIED BY 'mypass' WITH GRANT OPTION; FLUSH PRIVILEGES;\"");
+			
+			
 		}
 
 		private void renderConfig(){
@@ -87,8 +94,8 @@ public class LAMPStackTest2 {
 			Instance instance1 = new Instance("192.168.2.100", SSH_KEY);
 			config.addInstance("web", instance1);
 			
-//			Instance instance2 = new Instance("192.168.2.101", SSH_KEY);
-//			config.addInstance("web", instance2);
+			Instance instance2 = new Instance("192.168.2.101", SSH_KEY);
+			config.addInstance("db", instance2);
 		}
 	}
 	
@@ -105,19 +112,16 @@ public class LAMPStackTest2 {
 
 		@Override
 		public void execute() {
-			install("web", php);
-			install("web", apache);
+//			install("web", php);
+//			install("web", apache);
 			
-			install("web", mysql);
+			install("db", mysql);
 			
 			renderInfo();
 		}
 		
 		private void renderInfo(){
-			VelocityContext context = Templaton.getContext();
-        	context.put("MYSQL_PASS", MySQLApp.MYSQL_PASS);
-        	context.put("MYSQL_USER", MySQLApp.MYSQL_USER );
-			render("web", INFO, "/var/www/info.php", context);
+        	render("web", INFO, "/var/www/info.php");
 		}
 		
 	}

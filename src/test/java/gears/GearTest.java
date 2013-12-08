@@ -22,23 +22,48 @@ public class GearTest {
 		protected static final String WEB_NAME = "blogger.com";
 		protected static final String PROJECT_PATH = "/var/www/test";
 		
+		public NginxGear() {
+			new ProductionConfig();
+		}
+		
 		@Override
 		public void execute() {
-			System.out.println(this.getClass().getName());
+			render(CONFIG_NGINX, "/tmp/nginx.conf");
 		}
-
 		    
 	}
 	
-	@Test
-	public void testGetFields() {
-		Gear nginx = new NginxGear();
+	class ProductionConfig {
 		
+		private final static String SSH_KEY = "/Users/cevaris/Documents/workspace/gears/gears/keys/id_rsa";
+		private Configuration config = Configuration.getInstance();
+		
+		public ProductionConfig() {
+			Instance instance1 = new Instance("192.168.2.100", SSH_KEY);
+			config.addInstance("web", instance1);
+			
+//			Instance instance2 = new Instance("192.168.2.101", SSH_KEY);
+//			config.addInstance("web", instance2);
+		}
+	}
+	
+
+	@Test
+	public void testDynamicContext() {
+		Gear nginx = new NginxGear();
 		Templaton templaton = Templaton.getInstance();
 		Context context = Templaton.getContext(nginx);
 		String document = templaton.render(CONFIG_NGINX, context).toString();
-		
-		System.out.println(document);
+		assertTrue(document != null);
+		assertTrue(document.length() > 0);
+	}
+	
+	@Test
+	public void testDynamciRender() {
+		Gear nginx = new NginxGear();
+		nginx.execute();
+		boolean result = nginx.command("cat /tmp/nginx.conf");
+		assertTrue(result);
 	}
 
 }
