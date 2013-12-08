@@ -46,6 +46,14 @@ abstract public class Gear {
 		}
 		return true;
 	}
+	
+	public boolean openPort(String value) {
+		assert this.gearGroup != null : "Gear group not defined";
+		for(Instance instance : this.config.getInstances()){
+			instance.openPort(value);
+		}
+		return true;
+	}
 
 	public boolean restart(String service) {
 		assert this.gearGroup != null : "Gear group not defined";

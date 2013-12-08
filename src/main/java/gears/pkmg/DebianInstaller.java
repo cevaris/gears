@@ -15,6 +15,10 @@ public class DebianInstaller implements Installer {
 		return String.format("apt-get %s --purge remove %s ",flags, services);
 	}
 	
+	public String openPort(String port){
+		return String.format("/sbin/iptables -A INPUT -i eth0 -p tcp --destination-port %s -j ACCEPT",port);
+	}
+	
 	public String restart(String service) {
 		return String.format("service %s restart", service);
 	}

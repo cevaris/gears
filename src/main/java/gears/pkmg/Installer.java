@@ -11,5 +11,7 @@ public interface Installer {
 	
 	public String remove(String flags, String service);
 	public String install(String flags, String commands);
+
+	public String openPort(String value);
 	
 }

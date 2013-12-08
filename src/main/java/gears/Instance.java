@@ -78,6 +78,12 @@ public class Instance {
 		return command(this.installer.install(flags, commands));
 	}
 	
+	public boolean openPort(String value) {
+		LOG.info(this.installer == null);
+//		return this.installer.install(flags, commands);		
+		return command(this.installer.openPort(value));
+	}
+	
 	public boolean restart(String service) {
 		return command(this.installer.restart(service));
 	}
