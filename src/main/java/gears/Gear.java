@@ -18,13 +18,6 @@ abstract public class Gear {
 		gear.execute();
 	}
 	
-	public boolean render(String gearGroup, String source, String dest, VelocityContext context) {
-		for(Instance instance : this.config.getInstances(gearGroup)){
-			instance.render(source, dest, context);
-		}
-		return true;
-	}
-	
 	public void setGearGroup(String gearGroup) {
 		this.gearGroup = gearGroup;
 	}
@@ -35,6 +28,7 @@ abstract public class Gear {
 	
 	public boolean update() {
 		assert this.gearGroup != null : "Gear group not defined";
+		LOG.info(this.gearGroup);
 		for(Instance instance : this.config.getInstances(this.gearGroup)){
 			instance.update();
 		}
@@ -69,6 +63,13 @@ abstract public class Gear {
 	public boolean render(String source, String dest, VelocityContext context) {
 		assert this.gearGroup != null : "Gear group not defined";
 		for(Instance instance : this.config.getInstances(this.gearGroup)){
+			instance.render(source, dest, context);
+		}
+		return true;
+	}
+	
+	public boolean render(String gearGroup, String source, String dest, VelocityContext context) {
+		for(Instance instance : this.config.getInstances(gearGroup)){
 			instance.render(source, dest, context);
 		}
 		return true;

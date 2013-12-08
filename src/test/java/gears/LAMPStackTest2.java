@@ -90,9 +90,11 @@ public class LAMPStackTest2 {
 
 		@Override
 		public void execute() {
+			
 			install("web", php);
 			install("web", apache);
-//			install("db", mysql);
+			
+			install("web", mysql);
 		}
 		
 		
@@ -104,8 +106,8 @@ public class LAMPStackTest2 {
 				Instance instance1 = new 	Instance("10.211.55.100", SSH_KEY);
 				addInstance("web", instance1);
 				
-				Instance instance2 = new Instance("10.211.55.101", SSH_KEY);
-				addInstance("web", instance2);
+//				Instance instance2 = new Instance("10.211.55.101", SSH_KEY);
+//				addInstance("web", instance2);
 			}
 		}
 
