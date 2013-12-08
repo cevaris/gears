@@ -19,8 +19,8 @@ public class Instance {
 	
 	private static final Logger LOG = Logger.getLogger(Instance.class.getClass());
 	
-	private Connection connection = null;
-	protected Installer  installer  = null;
+	private Connection connection  = null;
+	protected Installer  installer = null;
 	
 	String fqdn;
 	String sshPermKeyPath;

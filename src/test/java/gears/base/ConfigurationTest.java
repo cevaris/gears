@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class ConfigurationTest {
 	
-	private final static String SSH_KEY = "keys/id_rsa";
+	private final static String SSH_KEY = "/Users/cevaris/Documents/workspace/gears/gears/keys/id_rsa";
 	
 	@Test
 	public void testAddInstance() {
@@ -25,6 +25,7 @@ public class ConfigurationTest {
 		
 		assertNotNull(config.getInstances("web"));
 		assertTrue(config.getInstances("web").size() == 2);
+		
 	}
 	
 	@Test
