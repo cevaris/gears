@@ -17,7 +17,6 @@ public class Instance {
 	private ConnectionFactory connFactory    = ConnectionFactory.getInstance();
 	private InstallerFactory  installFactory = InstallerFactory.getInstance();
 	
-	
 	private static final Logger LOG = Logger.getLogger(Instance.class.getClass());
 	
 	private Connection connection  = null;
@@ -74,6 +73,11 @@ public class Instance {
 
 	public boolean update()  { 
 		return command(this.installer.update());
+	}
+	
+	public boolean install(String commands) {
+		LOG.info(this.installer == null);
+		return command(this.installer.install(commands));
 	}
 	
 	public boolean install(String flags, String commands) {

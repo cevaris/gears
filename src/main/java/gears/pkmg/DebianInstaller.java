@@ -6,6 +6,11 @@ public class DebianInstaller implements Installer {
 	
 	private static final Logger LOG = Logger.getLogger(DebianInstaller.class.getClass());
 	
+	
+	public String install(String service) {
+		return install("-y",service);
+	}
+	
 	public String install(String flags, String service) {
 		return String.format("apt-get %s install %s",flags, service);
 	}

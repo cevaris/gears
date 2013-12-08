@@ -16,6 +16,20 @@ public class LAMPStackTest2 {
 	public static String MY_CNF = TEST_RESOURCES + "my.cnf.vm";
 	
 	
+	class VimApp extends Gear {
+		
+		@Override
+		public void execute() {
+			// Update application repository
+			update();
+
+			// Install misc apps
+			install("vim");
+		}
+		    
+	}
+	
+	
 	class PHPApp extends Gear {
 		
 		@Override
@@ -105,6 +119,7 @@ public class LAMPStackTest2 {
 	
 	class LAMPStackServer extends Gear {
 		
+		Gear vim    = new VimApp();
 		Gear mysql  = new MySQLApp();
 		Gear php    = new PHPApp();
 		Gear apache = new ApacheApp();
@@ -115,12 +130,23 @@ public class LAMPStackTest2 {
 
 		@Override
 		public void execute() {
+			
+			for(Instance instance: config.getInstances()){
+				install(instance, vim);
+			}
+			
+			for(Instance instance: config.getInstances("web")){
+				install(instance, php);
+			}
+			
+			
+			
 //			install("web", php);
 //			install("web", apache);
 			
-			install("db", mysql);
+//			install("db", mysql);
 			
-			renderInfo();
+//			renderInfo();
 		}
 		
 		private void renderInfo(){

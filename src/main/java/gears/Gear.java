@@ -22,6 +22,11 @@ abstract public class Gear {
 	
 	public abstract void execute(); 
 	
+	
+	public void install(Gear gear) {
+		gear.execute();
+	}
+	
 	public void install(String gearGroup, Gear gear) {
 		gear.setGearGroup(gearGroup);
 		gear.execute();
@@ -35,6 +40,15 @@ abstract public class Gear {
 		assert this.gearGroup != null : "Gear group not defined";
 		for(Instance instance : this.config.getInstances()){
 			instance.update();
+		}
+		return true;
+	}
+	
+	
+	public boolean install(String commands) {
+		assert this.gearGroup != null : "Gear group not defined";
+		for(Instance instance : this.config.getInstances()){
+			instance.install(commands);
 		}
 		return true;
 	}
