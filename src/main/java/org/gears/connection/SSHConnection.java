@@ -1,7 +1,5 @@
-package gears.connection;
+package org.gears.connection;
 
-import gears.Constants;
-import gears.Instance;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +9,8 @@ import java.io.InputStreamReader;
 import java.security.Security;
 
 import org.apache.log4j.Logger;
+import org.gears.Constants;
+import org.gears.Instance;
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;

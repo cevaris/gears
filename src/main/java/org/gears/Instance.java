@@ -1,16 +1,16 @@
-package gears;
+package org.gears;
 
 import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
+import org.gears.connection.Connection;
+import org.gears.connection.ConnectionFactory;
+import org.gears.pkmg.Installer;
+import org.gears.pkmg.InstallerFactory;
+import org.gears.template.Templaton;
 
-import gears.connection.Connection;
-import gears.connection.ConnectionFactory;
-import gears.pkmg.Installer;
-import gears.pkmg.InstallerFactory;
-import gears.template.Templaton;
 
 public class Instance {
 	

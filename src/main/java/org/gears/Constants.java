@@ -1,4 +1,4 @@
-package gears;
+package org.gears;
 
 public class Constants {
 

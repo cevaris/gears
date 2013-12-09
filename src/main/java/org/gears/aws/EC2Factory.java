@@ -1,4 +1,4 @@
-package gears.aws;
+package org.gears.aws;
 
 import java.io.IOException;
 import java.io.InputStream;

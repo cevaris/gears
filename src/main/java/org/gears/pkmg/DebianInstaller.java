@@ -1,4 +1,4 @@
-package gears.pkmg;
+package org.gears.pkmg;
 
 import org.apache.log4j.Logger;
 

@@ -1,6 +1,10 @@
 package gears;
 
 import static org.junit.Assert.*;
+
+import org.gears.Configuration;
+import org.gears.Gear;
+import org.gears.Instance;
 import org.junit.Test;
 
 

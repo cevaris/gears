@@ -1,4 +1,4 @@
-package gears.template;
+package org.gears.template;
 
 import java.io.StringWriter;
 import java.lang.reflect.Field;

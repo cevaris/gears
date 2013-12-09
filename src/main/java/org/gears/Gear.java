@@ -1,11 +1,11 @@
-package gears;
+package org.gears;
 
 import java.util.List;
 
-import gears.template.Templaton;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.context.Context;
+import org.gears.template.Templaton;
 
 
 abstract public class Gear {

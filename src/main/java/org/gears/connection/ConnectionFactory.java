@@ -1,6 +1,6 @@
-package gears.connection;
+package org.gears.connection;
 
-import gears.Configuration;
+import org.gears.Configuration;
 
 public class ConnectionFactory {
 

@@ -1,4 +1,4 @@
-package gears;
+package org.gears;
 
 import java.util.ArrayList;
 import java.util.Collection;

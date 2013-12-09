@@ -4,10 +4,13 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 
-import gears.template.Templaton;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
+import org.gears.Configuration;
+import org.gears.Gear;
+import org.gears.Instance;
+import org.gears.template.Templaton;
 import org.junit.Test;
 
 public class GearTest {

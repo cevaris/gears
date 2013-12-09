@@ -2,6 +2,7 @@ package gears.aws;
 
 import static org.junit.Assert.*;
 
+import org.gears.aws.EC2Factory;
 import org.junit.Test;
 
 import com.amazonaws.services.ec2.model.Instance;

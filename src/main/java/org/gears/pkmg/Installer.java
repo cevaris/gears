@@ -1,6 +1,6 @@
-package gears.pkmg;
+package org.gears.pkmg;
 
-import gears.connection.Connection;
+import org.gears.connection.Connection;
 
 public interface Installer {
 	

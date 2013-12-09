@@ -1,8 +1,8 @@
 package template;
 
 import static org.junit.Assert.*;
-import gears.template.Templaton;
 
+import org.gears.template.Templaton;
 import org.junit.Test;
 
 
