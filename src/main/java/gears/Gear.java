@@ -48,6 +48,13 @@ abstract public class Gear {
 		return true;
 	}
 	
+	public boolean install(String greatGroup, String flags, String commands) {
+		this.setGearGroup(gearGroup);
+		install(flags, commands);
+		this.setGearGroup(null);
+		return true;
+	}
+	
 	
 	
 	

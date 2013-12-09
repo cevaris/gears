@@ -58,10 +58,9 @@ public class SSHConnection implements Connection {
 	
 	public boolean command(String command) {
 		
-		if(Constants.DEBUG){
-			LOG.info(String.format("[%s] - %s", this.client.getRemoteAddress(), command));
-			return true;
-		}
+		LOG.info(String.format("[%s] - %s", this.client.getRemoteAddress(), command));
+		
+		if(Constants.DEBUG) return true;
 		
 		try {
 			Session session = this.client.startSession();

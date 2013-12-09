@@ -55,7 +55,7 @@ public class LAMPStackTest2 {
 
 	}
 	
-	class MySQLApp extends Gear {
+	class MySQLServerApp extends Gear {
 		
 		/**
 		 * For MySQL config file
@@ -81,7 +81,7 @@ public class LAMPStackTest2 {
 			renderConfig();
 			
 			// Grant Remote access
-			command("mysql -u root --password='mypass' -e \"GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.1.%' IDENTIFIED BY 'mypass' WITH GRANT OPTION; FLUSH PRIVILEGES;\"");
+			command("mysql -u root --password='mypass' -e \"GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.2.%' IDENTIFIED BY 'mypass' WITH GRANT OPTION; FLUSH PRIVILEGES;\"");
 			command("mysql -u root --password='mypass' -e \"GRANT ALL PRIVILEGES ON *.* TO 'root'@'nod%' IDENTIFIED BY 'mypass' WITH GRANT OPTION; FLUSH PRIVILEGES;\"");
 			
 			openPort("3306");
@@ -92,6 +92,19 @@ public class LAMPStackTest2 {
 
 		private void renderConfig(){
 			render(MY_CNF, "/etc/mysql/my.cnf");
+		}
+
+	}
+	
+	class MySQLClientApp extends Gear {
+
+		@Override
+		public void execute() {
+			update();
+			
+			// Install misc apps
+			install( "-y", "mysql-client php5-mysql" );
+			
 		}
 
 	}
@@ -116,7 +129,8 @@ public class LAMPStackTest2 {
 	class LAMPStackServer extends Gear {
 		
 		Gear vim    = new VimApp();
-		Gear mysql  = new MySQLApp();
+		Gear mysqlServer = new MySQLServerApp();
+		Gear mysqlClient = new MySQLClientApp();
 		Gear php    = new PHPApp();
 		Gear apache = new ApacheApp();
 		
@@ -128,10 +142,12 @@ public class LAMPStackTest2 {
 		public void execute() {
 			
 			install(vim);
+			
 			install("web", php);
 			install("web", apache);
+			install("web", "-y", "mysql-client php5-mysql" );
 			
-			install("db", mysql);
+			install("db", mysqlServer);
 			
 			renderInfo();
 		}
