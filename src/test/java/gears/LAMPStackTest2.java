@@ -39,8 +39,11 @@ public class LAMPStackTest2 {
 		    
 	}
 	
-	class HaProxyApp extends Gear {
+	class HaProxyApp {
 		
+		protected void configuration(){
+			
+		}
 
 	}
 	
