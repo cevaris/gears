@@ -15,69 +15,65 @@ import org.apache.velocity.context.Context;
 import org.gears.Gear;
 
 public class Templaton {
-	
+
 	private static final Logger LOG = Logger.getLogger(Templaton.class);
-	
+
 	private static Templaton instance = null;
-	
-	
+
 	public static Templaton getInstance() {
-		if(instance == null) instance = new Templaton();
+		if (instance == null)
+			instance = new Templaton();
 		return instance;
 	}
-	
-	public static VelocityContext getContext(){
+
+	public static VelocityContext getContext() {
 		return new VelocityContext();
 	}
-	
-	
+
 	public static Context getContext(Gear obj) {
-		
-//		return getContext(obj, Templaton.getContext());
-		showHierarchy(obj.getClass());
-		return getContext();
-		
+
+		 return getContext(obj.getClass(), obj, Templaton.getContext());
+//		showHierarchy(obj.getClass());
+//		return getContext();
+
 	}
-	
+
 	private static void showHierarchy(Class<?> c) {
-        if (c.getSuperclass() == Gear.class || 
-        		c.getSuperclass() == Object.class) {
-            System.out.println(c.getSimpleName());
-            return;
-        }
-        showHierarchy(c.getSuperclass());
-        System.out.println(c.getSimpleName());
-    }
-	
-	private static Context getContext(Object obj, Context context) {
-		LOG.info("Adding class: " +obj.getClass());
-		context.put(obj.getClass().getSimpleName(), obj);
-		
-		if(obj.getClass().getSuperclass()  == Object.class){
-			return context;
+		if (c.getSuperclass() == Gear.class
+				|| c.getSuperclass() == Object.class) {
+			System.out.println(c.getSimpleName());
+			return;
 		}
-		
-		LOG.info("Sending: "+obj.getClass().getSuperclass());
-		
-		//Work up the hierarchy
-		return getContext(obj.getClass().getSuperclass().cast(Gear.class), context);
+		showHierarchy(c.getSuperclass());
+		System.out.println(c.getSimpleName());
 	}
-	
-	
+
+	private static Context getContext(Class<?> c, Gear obj, Context context) {
+		// Return when at root hierarchy
+		if (c.getSuperclass() == Object.class) return context;
+		
+		// Load context for the given gear
+		context.put(c.getSimpleName(), obj);
+		LOG.info(c.getSimpleName());
+		// Keep walking up the hierarchy
+		return getContext(c.getSuperclass(), obj, context);
+		
+	}
+
 	public StringWriter render(String source, Context context) {
 		return render(source, context, new StringWriter());
 	}
-	
-	public StringWriter render(String source, Context context, StringWriter writer) {
-		
-		if(writer == null) writer = new StringWriter();
-		
+
+	public StringWriter render(String source, Context context,
+			StringWriter writer) {
+
+		if (writer == null)
+			writer = new StringWriter();
+
 		Template template = Velocity.getTemplate(source);
 		template.merge(context, writer);
-		
+
 		return writer;
 	}
-
-	
 
 }
