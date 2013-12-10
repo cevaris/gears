@@ -55,7 +55,7 @@ public class GearTest {
 	public void testDynamicContext() {
 		Gear nginx = new NginxGear();
 		Templaton templaton = Templaton.getInstance();
-		Context context = Templaton.getContext(nginx);
+		Context context = Templaton.getContext("nginx",nginx);
 		String document = templaton.render(CONFIG_NGINX, context).toString();
 		assertTrue(document != null);
 		assertTrue(document.length() > 0);

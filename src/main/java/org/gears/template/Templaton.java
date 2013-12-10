@@ -5,21 +5,19 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
+import org.gears.Gear;
 
 public class Templaton {
 	
 	private static final Logger LOG = Logger.getLogger(Templaton.class);
 	
-	
-//	VelocityContext context = null;
-//	StringWriter writer = null;
-//	Template template = null;
 	private static Templaton instance = null;
 	
 	
@@ -32,55 +30,9 @@ public class Templaton {
 		return new VelocityContext();
 	}
 	
-	public static Context getContext(Object obj) {
-		
-		
-		Class<?> clazz = obj.getClass();
-		Context context = new VelocityContext();
-		
-		LOG.info(clazz.getName());
-		LOG.info(clazz.getSuperclass().getCanonicalName());
-		LOG.info(String.format("-%s-",clazz.getSuperclass().getSuperclass().getCanonicalName()));
-		
-		while(!clazz.getCanonicalName().equalsIgnoreCase("java.lang.Object")){
-			
-			for(Field field : clazz.getDeclaredFields()) {
-				
-				LOG.info(clazz.getCanonicalName() + " - " +field.getName() + " - " + field.getType() + " - " + field.getGenericType());
-				
-				try {
-					
-					Type type = field.getGenericType();
-					field.setAccessible(true);
-					
-					if (type instanceof ParameterizedType) {  
-		                ParameterizedType pt = (ParameterizedType) type;  
-		                LOG.info("Return type is " + pt.getRawType() + " with the following type arguments: ");
-		                for (Type t : pt.getActualTypeArguments()) {  
-		                	Class genericParameter0OfThisClass = 
-		                		    (Class)
-		                		        ((ParameterizedType)
-		                		            clazz
-		                		                .getGenericSuperclass())
-		                		                    .getActualTypeArguments()[0];
-		                	LOG.info(genericParameter0OfThisClass);
-		                	context.put(field.getName(), field.get(genericParameter0OfThisClass));
-		                }  
-		                
-		            } else {
-		            	LOG.info(field.getName()+" "+field.get(clazz));
-						context.put(field.getName(), field.get(clazz).toString());
-		            }
-					
-				} catch (IllegalArgumentException e) {
-					LOG.error(String.format("Could not reflect field %s.%s ", clazz.getCanonicalName(), field.getName()));
-				} catch (IllegalAccessException e) {
-					LOG.error(String.format("Could not reflect field %s.%s ", clazz.getCanonicalName(), field.getName()));
-				}
-			}
-			clazz = clazz.getSuperclass();
-		}
-		
+	public static Context getContext(String key, Gear obj) {
+		Context context = Templaton.getContext();
+		context.put(key, obj);
 		return context;
 	}
 	
