@@ -13,8 +13,7 @@ abstract public class Gear {
 	private static final Logger LOG = Logger.getLogger(Gear.class);
 	
 	protected Configuration config = Configuration.getInstance();
-	
-	private String gearGroup = null;
+	protected String gearGroup = null;
 	
 	public abstract void execute(); 
 	
