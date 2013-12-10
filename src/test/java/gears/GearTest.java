@@ -51,22 +51,22 @@ public class GearTest {
 	}
 	
 
-	@Test
-	public void testDynamicContext() {
-		Gear nginx = new NginxGear();
-		Templaton templaton = Templaton.getInstance();
-		Context context = Templaton.getContext("nginx",nginx);
-		String document = templaton.render(CONFIG_NGINX, context).toString();
-		assertTrue(document != null);
-		assertTrue(document.length() > 0);
-	}
-	
-	@Test
-	public void testDynamciRender() {
-		Gear nginx = new NginxGear();
-		nginx.execute();
-		boolean result = nginx.command("cat /tmp/nginx.conf");
-		assertTrue(result);
-	}
+//	@Test
+//	public void testDynamicContext() {
+//		Gear nginx = new NginxGear();
+//		Templaton templaton = Templaton.getInstance();
+//		Context context = Templaton.getContext("nginx",nginx);
+//		String document = templaton.render(CONFIG_NGINX, context).toString();
+//		assertTrue(document != null);
+//		assertTrue(document.length() > 0);
+//	}
+//	
+//	@Test
+//	public void testDynamciRender() {
+//		Gear nginx = new NginxGear();
+//		nginx.execute();
+//		boolean result = nginx.command("cat /tmp/nginx.conf");
+//		assertTrue(result);
+//	}
 
 }
