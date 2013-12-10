@@ -121,8 +121,7 @@ abstract public class Gear {
 	}
 	
 	public boolean render(String source, String dest) {
-//		Context context = Templaton.getContext(this);
-		Context context = Templaton.getContext();
+		Context context = Templaton.getContext(this);
 		
 		for(Instance instance : getInstances()){
 			instance.render(source, dest, context);
