@@ -11,7 +11,7 @@ public class RedHatInstaller implements Installer {
 	}
 	
 	public String install(String flags, String service) {
-		return String.format("yum %s install %s",flags, service);
+		return String.format("yum %s --disableplugin=fastestmirror install %s",flags, service);
 	}
 
 	//TODO: Installer "remove" not tested
@@ -35,7 +35,7 @@ public class RedHatInstaller implements Installer {
 	}
 	
 	public String update() {
-		return "yum update";
+		return "yum --disableplugin=fastestmirror update";
 	}
 
 }

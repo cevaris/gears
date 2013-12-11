@@ -31,28 +31,32 @@ public class Instance {
 	String fqdn;
 	String sshPermKeyPath;
 
-	public Instance(String fqdn, String sshPermKeyPath, Connection connection, Installer installer, System system) {
-		setup(fqdn, sshPermKeyPath, connection, installer, system);
+	public Instance(String fqdn, String sshPermKeyPath, Connection connection, System system) {
+		setup(fqdn, sshPermKeyPath, connection, system);
 	}
 	
 	public Instance(String fqdn, String sshPermKeyPath) {
 		setup(fqdn,sshPermKeyPath,
-				this.connFactory.getSSHConnection(),
-				this.installFactory.getDebianInstaller(), System.DEBIAN);
+				this.connFactory.getSSHConnection(), System.DEBIAN);
 	}
 
 	public Instance(String fqdn, String sshPermKeyPath, System system) {
 		setup(fqdn,sshPermKeyPath,
-				this.connFactory.getSSHConnection(),
-				this.installFactory.getDebianInstaller(), system);
+				this.connFactory.getSSHConnection(), system);
 	}
 	
-	private void setup(String fqdn, String sshPermKeyPath, Connection connection, Installer installer, System system){
+	private void setup(String fqdn, String sshPermKeyPath, Connection connection, System system){
 		this.sshPermKeyPath = sshPermKeyPath;
 		this.fqdn = fqdn;
 		
 		this.connection = connection;
-		this.installer = installer;
+		
+		switch(system){
+			case DEBIAN:
+				this.installer = this.installFactory.getDebianInstaller(); break;
+			case RED_HAT:
+				this.installer = this.installFactory.getRedHatInstaller(); break;
+		}
 	}
 
 	public void setInstaller(Installer installer) {

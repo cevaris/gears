@@ -12,24 +12,10 @@ abstract public class Gear {
 	
 	private static final Logger LOG = Logger.getLogger(Gear.class);
 	
-	public Context attributes = Templaton.getContext();
 	protected Configuration config = Configuration.getInstance();
 	protected String gearGroup = null;
 	
 	public abstract void execute();
-	
-	public Context setDefaults() {return this.attributes;} 
-	public Context defaults()    {return this.attributes;}
-	
-	public void setAttribute(String key, Object value){
-		this.attributes.put(key, value);
-	}
-	public Object getAttribute(String key){
-		return this.attributes.get(key);
-	}
-//	public Context setAttribute(String key, Object value){
-//		return this.attributes.put(key, value);
-//	}
 	
 	public void execute(String group, Gear gear){
 		gear.setGearGroup(group);

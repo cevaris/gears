@@ -13,5 +13,8 @@ public class InstallerFactory {
 	public Installer getDebianInstaller(){
 		return new DebianInstaller();
 	}
+	public Installer getRedHatInstaller(){
+		return new RedHatInstaller();
+	}
 	
 }

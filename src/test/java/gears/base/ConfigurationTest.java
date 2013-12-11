@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.gears.Configuration;
 import org.gears.Instance;
+import org.gears.System;
 import org.gears.connection.SSHConnection;
 import org.gears.pkmg.DebianInstaller;
 import org.junit.Before;
@@ -23,10 +24,10 @@ public class ConfigurationTest {
 	public void testAddInstance() {
 		
 		Configuration config = Configuration.getInstance();
-		Instance instance1 = new Instance("192.168.2.100", SSH_KEY, new SSHConnection(), new DebianInstaller());
+		Instance instance1 = new Instance("192.168.2.100", SSH_KEY, new SSHConnection(), System.DEBIAN);
 		config.addInstance("web", instance1);
 		
-		Instance instance2 = new Instance("192.168.2.101", SSH_KEY, new SSHConnection(), new DebianInstaller());
+		Instance instance2 = new Instance("192.168.2.101", SSH_KEY, new SSHConnection(), System.DEBIAN);
 		config.addInstance("web", instance2);
 		
 		for(Instance instance : config.getInstances("web")){
@@ -52,7 +53,7 @@ public class ConfigurationTest {
 	public void testInvalidInstanceSet() {
 		
 		Configuration config = Configuration.getInstance();
-		Instance instance1 = new Instance("192.168.2.100", SSH_KEY, new SSHConnection(), new DebianInstaller());
+		Instance instance1 = new Instance("192.168.2.100", SSH_KEY, new SSHConnection(), System.DEBIAN);
 		config.addInstance("web", instance1);
 		
 		assertTrue(config.getInstances().size() == 1);
