@@ -57,8 +57,7 @@ public class Templaton {
 		return render(source, context, new StringWriter());
 	}
 
-	public StringWriter render(String source, Context context,
-			StringWriter writer) {
+	public StringWriter render(String source, Context context, StringWriter writer) {
 
 		if (writer == null)
 			writer = new StringWriter();

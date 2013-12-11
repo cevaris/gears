@@ -114,6 +114,13 @@ abstract public class Gear {
 	}
 	
 	
+	public boolean restart(String gearGroup, Gear service) {
+		setGearGroup(gearGroup);
+		boolean result = restart(service.toString());
+		setGearGroup(null);
+		return result;
+	}
+	
 	public boolean restart(Gear service) {
 		return restart(service.toString());
 	}

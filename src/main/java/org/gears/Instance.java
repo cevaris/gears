@@ -116,6 +116,7 @@ public class Instance {
 		if(source.endsWith(".vm")){
 			LOG.info("Found vm file, sending to template engine");
 			document = templaton.render(source, context).toString();
+			command(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
 		} else {
 			try {
 				URL url = Resources.getResource(source);
@@ -126,9 +127,7 @@ public class Instance {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
+
 		return true;
 	}
 
