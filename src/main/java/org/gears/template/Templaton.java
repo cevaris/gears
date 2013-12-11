@@ -27,6 +27,7 @@ public class Templaton {
 	}
 	
 	private Templaton() {
+		velocityEngine.setProperty("velocity.log", "../logs/velocity.log");
 		velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 		velocityEngine.init();

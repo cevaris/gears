@@ -1,6 +1,0 @@
-2013-10-15 14:40:13,213 - ResourceManager : unable to find resource 'configNginx.vm' in any resource loader.
-2013-10-15 14:40:28,491 - ResourceManager : unable to find resource 'configNginx.vm' in any resource loader.
-2013-10-15 14:40:36,909 - ResourceManager : unable to find resource 'configNginx.vm' in any resource loader.
-2013-10-15 14:40:50,893 - ResourceManager : unable to find resource 'src/test/resources/configNginx.vm' in any resource loader.
-2013-10-15 14:41:24,963 - ResourceManager : unable to find resource 'src/test/resources/configNginx.vm' in any resource loader.
-2013-10-20 17:00:57,183 - ResourceManager : unable to find resource 'src/test/java/resources/b.vm' in any resource loader.
