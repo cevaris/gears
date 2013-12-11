@@ -106,6 +106,9 @@ abstract public class Gear {
 	}
 
 	
+	public boolean start(Gear gear) {
+		return start(gear.toString());		
+	}
 	public boolean start(String service) {
 		for(Instance instance : getInstances()){
 			instance.start(service);

@@ -26,23 +26,33 @@ public class Instance {
 	private Connection connection  = null;
 	protected Installer  installer = null;
 	
+	System system = null;
+	
 	String fqdn;
 	String sshPermKeyPath;
 
-	public Instance(String fqdn, String sshPermKeyPath, Connection connection, Installer installer) {
+	public Instance(String fqdn, String sshPermKeyPath, Connection connection, Installer installer, System system) {
+		setup(fqdn, sshPermKeyPath, connection, installer, system);
+	}
+	
+	public Instance(String fqdn, String sshPermKeyPath) {
+		setup(fqdn,sshPermKeyPath,
+				this.connFactory.getSSHConnection(),
+				this.installFactory.getDebianInstaller(), System.DEBIAN);
+	}
+
+	public Instance(String fqdn, String sshPermKeyPath, System system) {
+		setup(fqdn,sshPermKeyPath,
+				this.connFactory.getSSHConnection(),
+				this.installFactory.getDebianInstaller(), system);
+	}
+	
+	private void setup(String fqdn, String sshPermKeyPath, Connection connection, Installer installer, System system){
 		this.sshPermKeyPath = sshPermKeyPath;
 		this.fqdn = fqdn;
 		
 		this.connection = connection;
 		this.installer = installer;
-	}
-	
-	public Instance(String fqdn, String sshPermKeyPath) {
-		this.sshPermKeyPath = sshPermKeyPath;
-		this.fqdn = fqdn;
-		
-		this.connection = this.connFactory.getSSHConnection();
-		this.installer  = this.installFactory.getDebianInstaller();
 	}
 
 	public void setInstaller(Installer installer) {
