@@ -17,11 +17,19 @@ public class Templaton {
 	private static final Logger LOG = Logger.getLogger(Templaton.class);
 
 	private static Templaton instance = null;
+	
+	private static final VelocityEngine velocityEngine = new VelocityEngine();
 
 	public static Templaton getInstance() {
 		if (instance == null)
 			instance = new Templaton();
 		return instance;
+	}
+	
+	private Templaton() {
+		velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+		velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+		velocityEngine.init();
 	}
 
 	public static VelocityContext getContext() {
@@ -55,13 +63,7 @@ public class Templaton {
 		if (writer == null)
 			writer = new StringWriter();
 		
-		VelocityEngine ve = new VelocityEngine();
-        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-        ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-        ve.init();
-
-        Template template = ve.getTemplate(source);
-//		Template template = Velocity.getTemplate(source);
+        Template template = velocityEngine.getTemplate(source);
 		template.merge(context, writer);
 
 		return writer;
