@@ -8,9 +8,9 @@ import org.apache.velocity.context.Context;
 import org.gears.template.Templaton;
 
 
-abstract public class Gear {
+abstract public class Application {
 	
-	private static final Logger LOG = Logger.getLogger(Gear.class);
+	private static final Logger LOG = Logger.getLogger(Application.class);
 	
 	protected Configuration config = Configuration.getInstance();
 	protected String gearGroup = null;
@@ -48,7 +48,7 @@ abstract public class Gear {
 	
 	
 	
-	public void install(String group, Gear gear) {
+	public void install(String group, Application gear) {
 		for(Instance instance : config.getInstances(group)){
 			gear.setInstance(instance);
 			LOG.info(group +" "+instance.getFQDN());
@@ -57,7 +57,7 @@ abstract public class Gear {
 		}
 	}
 	
-	public void install(Gear gear) {
+	public void install(Application gear) {
 		install(null, gear);
 	}
 	
@@ -102,7 +102,7 @@ abstract public class Gear {
 	}
 
 	
-	public boolean start(Gear gear) {
+	public boolean start(Application gear) {
 		return start(gear.toString());
 	}
 	public boolean start(String service) {
@@ -115,14 +115,14 @@ abstract public class Gear {
 	}
 	
 	
-	public boolean restart(String gearGroup, Gear service) {
+	public boolean restart(String gearGroup, Application service) {
 		setGearGroup(gearGroup);
 		boolean result = restart(service.toString());
 		setGearGroup(null);
 		return result;
 	}
 	
-	public boolean restart(Gear service) {
+	public boolean restart(Application service) {
 		return restart(service.toString());
 	}
 	

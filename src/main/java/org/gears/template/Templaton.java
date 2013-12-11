@@ -10,7 +10,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.gears.Gear;
+import org.gears.Application;
 
 public class Templaton {
 
@@ -37,11 +37,11 @@ public class Templaton {
 		return new VelocityContext();
 	}
 
-	public static Context getContext(Gear obj) {
+	public static Context getContext(Application obj) {
 		return getContext(obj.getClass(), obj, Templaton.getContext());
 	}
 
-	private static Context getContext(Class<?> c, Gear obj, Context context) {
+	private static Context getContext(Class<?> c, Application obj, Context context) {
 		// Return when at root hierarchy
 		if (c.getSuperclass() == Object.class)
 			return context;

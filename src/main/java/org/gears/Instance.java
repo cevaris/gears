@@ -152,7 +152,7 @@ public class Instance {
 		return true;
 	}
 
-	public void execute(Gear gear) {
+	public void execute(Application gear) {
 		gear.execute();
 	}
 
