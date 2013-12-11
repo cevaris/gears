@@ -24,6 +24,10 @@ public class DebianInstaller implements Installer {
 		return String.format("/sbin/iptables -A INPUT -i eth0 -p tcp --destination-port %s -j ACCEPT",port);
 	}
 	
+	public String start(String service) {
+		return String.format("service %s start", service);
+	}
+	
 	public String restart(String service) {
 		return String.format("service %s restart", service);
 	}

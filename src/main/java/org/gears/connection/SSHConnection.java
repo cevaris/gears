@@ -64,7 +64,8 @@ public class SSHConnection implements Connection {
             
             Integer exitStatus = cmd.getExitStatus();
             if(exitStatus == null || exitStatus != 0) {
-            	LOG.error(String.format("Irregular Exit Status (%d) from the following command %s", exitStatus, command));
+//            	LOG.error(String.format("Irregular Exit Status (%d) from the following command %s", exitStatus, command));
+            	LOG.error(String.format("Irregular Exit Status (%d).", exitStatus));
             	BufferedReader error = new BufferedReader(new InputStreamReader(errorChannel));
             	while ((line = error.readLine()) != null) {
                 	LOG.info(String.format("%s",line));
@@ -73,7 +74,8 @@ public class SSHConnection implements Connection {
             	errorChannel.close();
             	error.close();   
             } else {
-            	LOG.info(String.format("Success Exit Status (%d) from the following command %s", exitStatus, command));
+            	LOG.info(String.format("Success Exit Status (%d).", exitStatus));
+//            	LOG.info(String.format("Success Exit Status (%d) from the following command %s", exitStatus, command));
             }
             
             in.close();

@@ -1,6 +1,8 @@
 package org.gears;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.context.Context;
@@ -9,6 +11,9 @@ import org.gears.connection.ConnectionFactory;
 import org.gears.pkmg.Installer;
 import org.gears.pkmg.InstallerFactory;
 import org.gears.template.Templaton;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 
 
 public class Instance {
@@ -87,6 +92,10 @@ public class Instance {
 		return command(this.installer.openPort(value));
 	}
 	
+	public boolean start(String value) {
+		return command(this.installer.start(value));
+	}
+	
 	public boolean restart(String service) {
 		return command(this.installer.restart(service));
 	}
@@ -102,9 +111,23 @@ public class Instance {
 		// Make sure parent directory exists for destination file
 		command(String.format("mkdir -p %s", destFile.getParentFile()));
 		
-		String document = templaton.render(source, context).toString();
-		LOG.info(document);
-		command(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
+		String document = "";
+		
+		if(source.endsWith(".vm")){
+			LOG.info("Found vm file, sending to template engine");
+			document = templaton.render(source, context).toString();
+		} else {
+			try {
+				URL url = Resources.getResource(source);
+				document = Resources.toString(url, Charsets.UTF_8);
+				LOG.info("Found regular file, not sending to template engine");
+				command(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\"").replace("$", "\\$"), dest));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
 		
 		return true;
 	}

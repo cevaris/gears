@@ -105,13 +105,26 @@ abstract public class Gear {
 		return true;
 	}
 
+	
+	public boolean start(String service) {
+		for(Instance instance : getInstances()){
+			instance.start(service);
+		}
+		return true;
+	}
+	
+	
+	public boolean restart(Gear service) {
+		return restart(service.toString());
+	}
+	
 	public boolean restart(String service) {
 		for(Instance instance : getInstances()){
 			instance.restart(service);
 		}
 		return true;
 	}
-
+	
 	public boolean command(String commands) {
 		boolean result = true;
 		for(Instance instance : getInstances()){
