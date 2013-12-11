@@ -103,6 +103,7 @@ public class Instance {
 		command(String.format("mkdir -p %s", destFile.getParentFile()));
 		
 		String document = templaton.render(source, context).toString();
+		LOG.info(document);
 		command(String.format( "echo -e \"%s\" > %s", document.replace("\"", "\\\""), dest));
 		
 		return true;

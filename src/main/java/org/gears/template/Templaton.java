@@ -6,7 +6,10 @@ import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.gears.Gear;
 
 public class Templaton {
@@ -51,8 +54,14 @@ public class Templaton {
 
 		if (writer == null)
 			writer = new StringWriter();
+		
+		VelocityEngine ve = new VelocityEngine();
+        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        ve.init();
 
-		Template template = Velocity.getTemplate(source);
+        Template template = ve.getTemplate(source);
+//		Template template = Velocity.getTemplate(source);
 		template.merge(context, writer);
 
 		return writer;
