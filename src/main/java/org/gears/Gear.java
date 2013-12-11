@@ -60,7 +60,7 @@ abstract public class Gear {
 		return true;
 	}
 	
-	public boolean install(String greatGroup, String flags, String commands) {
+	public boolean install(String gearGroup, String flags, String commands) {
 		this.setGearGroup(gearGroup);
 		install(flags, commands);
 		this.setGearGroup(null);
@@ -120,9 +120,9 @@ abstract public class Gear {
 		return result;
 	}
 	
+	
 	public boolean render(String source, String dest) {
 		Context context = Templaton.getContext(this);
-		
 		for(Instance instance : getInstances()){
 			instance.render(source, dest, context);
 		}

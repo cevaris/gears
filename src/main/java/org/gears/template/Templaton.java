@@ -36,7 +36,7 @@ public class Templaton {
 
 		// Load context for the given gear
 		context.put(c.getSimpleName(), obj);
-		LOG.info(c.getSimpleName());
+//		LOG.info(c.getSimpleName());
 		// Keep walking up the hierarchy
 		return getContext(c.getSuperclass(), obj, context);
 

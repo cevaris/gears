@@ -27,21 +27,6 @@ public class SSHConnection implements Connection {
 	private SSHClient client = null;
 	private boolean isOpen = false;
 	
-	
-//	public boolean connect() {
-		
-//		assert(this.config != null) : "Server Configuration is null";
-		
-		boolean status = true;
-//		for(Instance instance : this.config.getInstances()){
-//			status = status && connect(instance);
-//		}
-//		this.isOpen = status;
-		
-//		return status;
-//	}
-		
-		
 	public boolean disconnect(Instance instance) {
 		try{
 			this.client.disconnect();
@@ -67,11 +52,6 @@ public class SSHConnection implements Connection {
 			final Command cmd = session.exec(command);
         	InputStream channel = cmd.getInputStream();
         	InputStream errorChannel = cmd.getErrorStream();
-        	
-//        	/* Writes full response to string */ 
-//        	StringWriter writer = new StringWriter();
-//        	IOUtils.copy(channel, writer);
-//        	this.response = writer.toString();
         	
         	BufferedReader in = new BufferedReader(new InputStreamReader(channel));
         	StringBuilder log = new StringBuilder();

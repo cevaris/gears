@@ -3,7 +3,6 @@ package org.gears;
 import java.io.File;
 
 import org.apache.log4j.Logger;
-import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 import org.gears.connection.Connection;
 import org.gears.connection.ConnectionFactory;
