@@ -14,18 +14,18 @@ abstract public class Gear {
 	
 	protected Configuration config = Configuration.getInstance();
 	protected String gearGroup = null;
+	protected Instance instance = null;
 	
 	public abstract void execute();
 	
-	public void execute(String group, Gear gear){
-		gear.setGearGroup(group);
-		gear.execute();
-		gear.setGearGroup(null);
+	public boolean isSystem(System guess){
+		if(this.instance != null){
+			return this.instance.getSystem() == guess;
+		}
+		return false;
 	}
 	
-	public void install(Gear gear) {
-		execute(null, gear);
-	}
+	
 	
 	private List<Instance> getInstances() {
 		return (this.gearGroup == null) ? config.getInstances() : config.getInstances(this.gearGroup);
@@ -34,15 +34,38 @@ abstract public class Gear {
 	private void setGearGroup(String gearGroup) {
 		this.gearGroup = gearGroup;
 	}
+	
+	private void setInstance(Instance instance) {
+		this.instance = instance;
+	}
 
-	public void install(String gearGroup, Gear gear) {
-		execute(gearGroup, gear);
+	
+	
+	
+	public void install(String group, Gear gear) {
+		for(Instance instance : config.getInstances(group)){
+			gear.setInstance(instance);
+			gear.execute();
+			gear.setInstance(null);
+		}
 	}
 	
-	public boolean render(String gearGroup, String source, String dest) {
-		this.setGearGroup(gearGroup);
-		render(source, dest);
-		this.setGearGroup(null);
+	public void install(Gear gear) {
+		install(null, gear);
+	}
+	
+	
+		
+	
+	
+	
+	
+	public boolean update() {
+		for(Instance instance : getInstances()){
+			setInstance(instance);
+			instance.update();
+			setInstance(null);
+		}
 		return true;
 	}
 	
@@ -53,51 +76,37 @@ abstract public class Gear {
 		return true;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public boolean update() {
-		for(Instance instance : getInstances()){
-			instance.update();
-		}
-		return true;
-	}
-	
 	public boolean install(String commands) {
-		for(Instance instance : getInstances()){
-			instance.install(commands);
-		}
-		return true;
+		return install("", commands);
 	}
 	
 	public boolean install(String flags, String commands) {
 		for(Instance instance : getInstances()){
+			setInstance(instance);
 			instance.install(flags, commands);
+			setInstance(null);
 		}
 		return true;
 	}
 	
 	public boolean openPort(String value) {
 		for(Instance instance : getInstances()){
+			setInstance(instance);
 			instance.openPort(value);
+			setInstance(null);
 		}
 		return true;
 	}
 
 	
 	public boolean start(Gear gear) {
-		return start(gear.toString());		
+		return start(gear.toString());
 	}
 	public boolean start(String service) {
 		for(Instance instance : getInstances()){
+			setInstance(instance);
 			instance.start(service);
+			setInstance(null);
 		}
 		return true;
 	}
@@ -116,7 +125,9 @@ abstract public class Gear {
 	
 	public boolean restart(String service) {
 		for(Instance instance : getInstances()){
+			setInstance(instance);
 			instance.restart(service);
+			setInstance(null);
 		}
 		return true;
 	}
@@ -124,16 +135,28 @@ abstract public class Gear {
 	public boolean command(String commands) {
 		boolean result = true;
 		for(Instance instance : getInstances()){
+			setInstance(instance);
 			instance.command(commands);
+			setInstance(null);
 		}
 		return result;
 	}
 	
 	
+	
+	public boolean render(String gearGroup, String source, String dest) {
+		this.setGearGroup(gearGroup);
+		render(source, dest);
+		this.setGearGroup(null);
+		return true;
+	}
+	
 	public boolean render(String source, String dest) {
 		Context context = Templaton.getContext(this);
 		for(Instance instance : getInstances()){
+			setInstance(instance);
 			instance.render(source, dest, context);
+			setInstance(null);
 		}
 		return true;
 	}

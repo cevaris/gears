@@ -50,11 +50,14 @@ public class Instance {
 		this.fqdn = fqdn;
 		
 		this.connection = connection;
+		this.system = system;
 		
 		switch(system){
 			case DEBIAN:
+				LOG.info("Loading Debian installer");
 				this.installer = this.installFactory.getDebianInstaller(); break;
 			case RED_HAT:
+				LOG.info("Loading Red Hat installer");
 				this.installer = this.installFactory.getRedHatInstaller(); break;
 		}
 	}
@@ -72,6 +75,10 @@ public class Instance {
 	}
 	public void setSSHPermKeyPath(String sshPermKeyPath) {
 		this.sshPermKeyPath = sshPermKeyPath;
+	}
+	
+	public System getSystem() {
+		return system;
 	}
 	
 	public String getFQDN() {
