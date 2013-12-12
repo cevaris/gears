@@ -8,7 +8,7 @@ import java.io.File;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 import org.gears.Configuration;
-import org.gears.Application;
+import org.gears.Gear;
 import org.gears.Instance;
 import org.gears.template.Templaton;
 import org.junit.Test;
@@ -19,7 +19,7 @@ public class GearTest {
 	public static String CONFIG_NGINX = TEST_RESOURCES + "configNginx.vm";
 	
 	
-	class NginxGear extends Application {
+	class NginxGear extends Gear {
 		
 		protected static final String PORT    = "8888";
 		protected static final String WEB_NAME = "blogger.com";

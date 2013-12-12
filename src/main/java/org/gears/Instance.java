@@ -31,7 +31,7 @@ public class Instance {
 	String fqdn;
 	String sshPermKeyPath;
 	
-	public void install(Application app) {
+	public void install(Gear app) {
 		app.execute(this);
 	}
 
@@ -148,7 +148,7 @@ public class Instance {
 		return true;
 	}
 
-	public void execute(Application gear) {
+	public void execute(Gear gear) {
 		gear.execute();
 	}
 
