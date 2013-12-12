@@ -1,11 +1,7 @@
 package org.gears;
 
-import java.util.List;
-
 
 import org.apache.log4j.Logger;
-import org.apache.velocity.context.Context;
-import org.gears.template.Templaton;
 
 
 abstract public class Application {
@@ -13,7 +9,7 @@ abstract public class Application {
 	private static final Logger LOG = Logger.getLogger(Application.class);
 	
 	protected Configuration config = Configuration.getInstance();
-	protected Instance instance = null;
+	private Instance instance = null;
 	
 	public boolean isSystem(System guess){
 		if(this.instance != null){
@@ -33,6 +29,14 @@ abstract public class Application {
 	public final void execute(Instance instance) {
 		this.instance = instance;
 		this.execute();
+	}
+	
+	public Instance getInstance() {
+		return instance;
+	}
+	
+	protected void setInstance(Instance instance) {
+		this.instance = instance;
 	}
 	
 	public abstract void execute();

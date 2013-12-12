@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.apache.log4j.Logger;
+import org.gears.template.Templaton;
 
 
 abstract public class GearApplication extends Application {
@@ -27,14 +28,18 @@ abstract public class GearApplication extends Application {
 //	public void install(String gearGroup, String commands) {
 //	}
 	
+	
+	public void render(String source, String destination) {
+		getInstance().render(source, destination, Templaton.getContext(this));
+	}
 		
 	
 	public void service(String serviceName, Service state) {
-		this.instance.service(serviceName, state);
+		getInstance().service(serviceName, state);
 	}
 	
 	public void install(String commands) {
-		this.instance.install(commands);
+		getInstance().install(commands);
 	}
 	
 	
@@ -61,6 +66,7 @@ abstract public class GearApplication extends Application {
 	
 	
 	public void command(String commands) {
+		getInstance().command(commands);
 	}
 	
 	
@@ -71,9 +77,6 @@ abstract public class GearApplication extends Application {
 //	public void render(String source, String dest) {
 //	}
 	
-	public void render(Instance instance, String source, String dest) {
-		
-	}
 	
 	
 	

@@ -61,6 +61,23 @@ abstract public class Gear extends Application {
 	}
 	
 	
+	public void service(Application application, Service state) {
+		for(Instance instance : config.getInstances()){
+			// TODO: Find a way to get red of Application.setInstance(Instance);
+			application.setInstance(instance);
+			instance.service(application.toString(), state);
+		}
+	}
+	
+	public void service(String group, Application application, Service state) {
+		for(Instance instance : config.getInstances(group)){
+			// TODO: Find a way to get red of Application.setInstance(Instance);
+			application.setInstance(instance);
+			instance.service(application.toString(), state);
+		}
+	}
+	
+	
 	
 	
 	public void render(String source, String dest) {
