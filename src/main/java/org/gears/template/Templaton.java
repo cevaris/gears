@@ -37,11 +37,11 @@ public class Templaton {
 		return new VelocityContext();
 	}
 
-	public static Context getContext(Application obj) {
+	public static Context getContext(Object obj) {
 		return getContext(obj.getClass(), obj, Templaton.getContext());
 	}
 
-	private static Context getContext(Class<?> c, Application obj, Context context) {
+	private static Context getContext(Class<?> c, Object obj, Context context) {
 		// Return when at root hierarchy
 		if (c.getSuperclass() == Object.class)
 			return context;

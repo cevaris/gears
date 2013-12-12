@@ -11,7 +11,6 @@ public class Configuration {
 	
 	private static final Logger LOG = Logger.getLogger(Configuration.class.getClass());
 	
-	
 	private static Configuration instance = null;
 	protected List<Instance> instancesList;
 	protected Map<String,List<Instance>> instancesMap;
