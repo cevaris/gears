@@ -1,6 +1,7 @@
 package org.gears.pkmg;
 
 import org.apache.log4j.Logger;
+import org.gears.Service;
 
 public class DebianInstaller implements Installer {
 	
@@ -24,16 +25,21 @@ public class DebianInstaller implements Installer {
 		return String.format("/sbin/iptables -A INPUT -i eth0 -p tcp --destination-port %s -j ACCEPT",port);
 	}
 	
-	public String start(String service) {
-		return String.format("service %s start", service);
-	}
-	
-	public String restart(String service) {
-		return String.format("service %s restart", service);
-	}
+//	public String start(String service) {
+//		return String.format("service %s start", service);
+//	}
+//	
+//	public String restart(String service) {
+//		return String.format("service %s restart", service);
+//	}
 	
 	public String update() {
 		return "apt-get update";
 	}
+
+	public String service(String serviceName, Service state) {
+		return String.format("service %s %s", serviceName, state.name().toLowerCase());
+	}
+	
 
 }

@@ -30,6 +30,10 @@ public class Instance {
 	
 	String fqdn;
 	String sshPermKeyPath;
+	
+	public void install(Application app) {
+		app.execute(this);
+	}
 
 	public Instance(String fqdn, String sshPermKeyPath, Connection connection, System system) {
 		setup(fqdn, sshPermKeyPath, connection, system);
@@ -105,7 +109,6 @@ public class Instance {
 	}
 	
 	public boolean install(String flags, String commands) {
-//		return this.installer.install(flags, commands);		
 		return command(this.installer.install(flags, commands));
 	}
 	
@@ -113,16 +116,20 @@ public class Instance {
 		return command(this.installer.openPort(value));
 	}
 	
-	public boolean start(String value) {
-		return command(this.installer.start(value));
-	}
-	
-	public boolean restart(String service) {
-		return command(this.installer.restart(service));
-	}
-	
+//	public boolean start(String value) {
+//		return command(this.installer.start(value));
+//	}
+//	
+//	public boolean restart(String service) {
+//		return command(this.installer.restart(service));
+//	}
+//	
 	public boolean command(String commands) {
 		return this.connection.command(commands);
+	}
+	
+	public boolean service(String serviceName, Service state) {
+		return command(this.installer.service(serviceName, state));
 	}
 	
 	public boolean render(String source, String dest, Context context) {
@@ -155,5 +162,7 @@ public class Instance {
 	public void execute(Application gear) {
 		gear.execute();
 	}
+
+	
 
 }

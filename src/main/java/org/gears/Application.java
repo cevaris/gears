@@ -13,7 +13,6 @@ abstract public class Application {
 	private static final Logger LOG = Logger.getLogger(Application.class);
 	
 	protected Configuration config = Configuration.getInstance();
-	protected String gearGroup = null;
 	protected Instance instance = null;
 	
 	public boolean isSystem(System guess){
@@ -30,8 +29,19 @@ abstract public class Application {
 		return null;
 	}
 	
+	
+	public final void execute(Instance instance) {
+		this.instance = instance;
+		this.execute();
+	}
+	
 	public abstract void execute();
 	
+	
+	private void service(String serviceName, Service state) {
+		this.instance.service(serviceName, state);
+	}
+
 	
 	
 

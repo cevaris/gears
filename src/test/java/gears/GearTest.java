@@ -31,7 +31,7 @@ public class GearTest {
 		
 		@Override
 		public void execute() {
-			render(CONFIG_NGINX, "/tmp/nginx.conf");
+//			render(CONFIG_NGINX, "/tmp/nginx.conf");
 		}
 		    
 	}
