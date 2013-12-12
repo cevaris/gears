@@ -1,7 +1,5 @@
 package org.gears;
 
-import java.util.List;
-
 
 import org.apache.log4j.Logger;
 import org.gears.template.Templaton;
@@ -9,7 +7,7 @@ import org.gears.template.Templaton;
 
 abstract public class GearApplication extends Application {
 	
-	private static final Logger LOG = Logger.getLogger(GearApplication.class);
+	static final Logger LOG = Logger.getLogger(GearApplication.class);
 	
 //	private List<Instance> getInstances() {
 //		return (this.gearGroup == null) ? config.getInstances() : config.getInstances(this.gearGroup);

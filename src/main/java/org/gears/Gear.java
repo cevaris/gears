@@ -1,8 +1,6 @@
 package org.gears;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 import org.apache.log4j.Logger;
@@ -11,8 +9,7 @@ import org.gears.template.Templaton;
 
 abstract public class Gear extends Application {
 	
-	private static final Logger LOG = Logger.getLogger(Gear.class);
-	
+	static final Logger LOG = Logger.getLogger(Gear.class);
 	
 	
 	public void install(String commands) {

@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 
 abstract public class Application {
 	
-	private static final Logger LOG = Logger.getLogger(Application.class);
+	static final Logger LOG = Logger.getLogger(Application.class);
 	
 	protected Configuration config = Configuration.getInstance();
 	private Instance instance = null;
