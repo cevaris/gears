@@ -1,7 +1,5 @@
 package org.gears.connection;
 
-import org.gears.Configuration;
-
 public class ConnectionFactory {
 
 	private static ConnectionFactory instance = null;
