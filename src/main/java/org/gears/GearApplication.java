@@ -29,7 +29,9 @@ abstract public class GearApplication extends Application {
 	
 		
 	
-	
+	public void service(String serviceName, Service state) {
+		this.instance.service(serviceName, state);
+	}
 	
 	public void install(String commands) {
 		this.instance.install(commands);

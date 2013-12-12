@@ -1,6 +1,7 @@
 package org.gears.pkmg;
 
 import org.apache.log4j.Logger;
+import org.gears.Service;
 
 public class RedHatInstaller implements Installer {
 	
@@ -36,6 +37,10 @@ public class RedHatInstaller implements Installer {
 	
 	public String update() {
 		return "yum update";
+	}
+
+	public String service(String serviceName, Service state) {
+		return String.format("service %s %s", serviceName, state.name().toLowerCase());
 	}
 
 }

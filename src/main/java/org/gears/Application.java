@@ -38,11 +38,4 @@ abstract public class Application {
 	public abstract void execute();
 	
 	
-	private void service(String serviceName, Service state) {
-		this.instance.service(serviceName, state);
-	}
-
-	
-	
-
 }
