@@ -4,6 +4,7 @@ public enum Service {
 	
 	START,
 	RESTART,
-	STOP;
+	STOP,
+	SAVE;
 
 }

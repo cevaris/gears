@@ -21,10 +21,11 @@ public class RedHatInstaller implements Installer {
 	}
 	
 	public String openPort(String port){
-		String command = String.format("-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport %s -j ACCEPT", port);
-		return String.format(
-				"echo -e \"%s\" >> %s", command.replace("\"", "\\\""), "/etc/sysconfig/iptables");
-//		return String.format("/sbin/iptables -A INPUT -i eth0 -p tcp --destination-port %s -j ACCEPT",port);
+//		String command = String.format("-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport %s -j ACCEPT", port);
+//		return String.format(
+//				"echo -e \"%s\" >> %s", command.replace("\"", "\\\""), "/etc/sysconfig/iptables");
+		return String.format("/sbin/iptables -A INPUT -i eth0 -p tcp --destination-port %s -j ACCEPT; %s", 
+				port, service("iptables", Service.SAVE));
 	}
 	
 	public String start(String service) {

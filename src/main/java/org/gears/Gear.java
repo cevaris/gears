@@ -1,6 +1,8 @@
 package org.gears;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import org.apache.log4j.Logger;
@@ -10,6 +12,20 @@ import org.gears.template.Templaton;
 abstract public class Gear extends Application {
 	
 	private static final Logger LOG = Logger.getLogger(Gear.class);
+	
+	
+	
+	public void install(String commands) {
+		for(Instance instance : config.getInstances()){
+			instance.install(commands);
+		}
+	}
+	
+	public void install(String group, String commands) {
+		for(Instance instance : config.getInstances(group)){
+			instance.install(commands);
+		}
+	}
 	
 	public void install(String group, Application application) {
 		for(Instance instance : config.getInstances(group)){
@@ -37,12 +53,14 @@ abstract public class Gear extends Application {
 	}
 	
 	
-	public void openPort(String value) {
-	}
-
 	
-	public void command(String commands) {
+	public void install(String group, HashMap<System, Object> context) {
+		for(Instance instance : config.getInstances(group)){
+			instance.install((String)context.get(instance.getSystem()));
+		}
 	}
+	
+	
 	
 	
 	public void render(String source, String dest) {
