@@ -44,10 +44,9 @@ public class Configuration {
 		if(this.instancesMap.get(group) == null) 
 			this.instancesMap.put(group, new ArrayList<Instance>());
 		
-//		instance.setGearGroup(group);
 		this.instancesMap.get(group).add(instance);
 		this.instancesList.add(instance);
-		return instance.connect();
+		return true;
 	}
 	
 	public static void reset(){

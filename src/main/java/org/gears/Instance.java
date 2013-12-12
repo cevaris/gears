@@ -35,28 +35,24 @@ public class Instance {
 		app.execute(this);
 	}
 
-	public Instance(String fqdn, String sshPermKeyPath, Connection connection, System system) {
-		setup(fqdn, sshPermKeyPath, connection, system);
+	public Instance(String fqdn, String sshPermKeyPath, Connection connection) {
+		setup(fqdn, sshPermKeyPath, connection);
 	}
 	
 	public Instance(String fqdn, String sshPermKeyPath) {
-		setup(fqdn,sshPermKeyPath,
-				this.connFactory.getSSHConnection(), System.DEBIAN);
-	}
-
-	public Instance(String fqdn, String sshPermKeyPath, System system) {
-		setup(fqdn,sshPermKeyPath,
-				this.connFactory.getSSHConnection(), system);
+		setup(fqdn,sshPermKeyPath, this.connFactory.getSSHConnection());
 	}
 	
-	private void setup(String fqdn, String sshPermKeyPath, Connection connection, System system){
+	private void setup(String fqdn, String sshPermKeyPath, Connection connection){
 		this.sshPermKeyPath = sshPermKeyPath;
 		this.fqdn = fqdn;
 		
 		this.connection = connection;
-		this.system = system;
+		this.connect();
 		
-		switch(system){
+		this.system = this.connection.determineSystem();
+		
+		switch(this.system){
 			case DEBIAN:
 				LOG.info("Loading Debian installer");
 				this.installer = this.installFactory.getDebianInstaller(); break;
@@ -64,6 +60,7 @@ public class Instance {
 				LOG.info("Loading Red Hat installer");
 				this.installer = this.installFactory.getRedHatInstaller(); break;
 		}
+		
 	}
 
 	public void setInstaller(Installer installer) {
@@ -116,14 +113,6 @@ public class Instance {
 		return command(this.installer.openPort(value));
 	}
 	
-//	public boolean start(String value) {
-//		return command(this.installer.start(value));
-//	}
-//	
-//	public boolean restart(String service) {
-//		return command(this.installer.restart(service));
-//	}
-//	
 	public boolean command(String commands) {
 		return this.connection.command(commands);
 	}

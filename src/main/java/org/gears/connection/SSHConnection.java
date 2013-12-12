@@ -11,6 +11,7 @@ import java.security.Security;
 import org.apache.log4j.Logger;
 import org.gears.Constants;
 import org.gears.Instance;
+import org.gears.System;
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
@@ -40,8 +41,11 @@ public class SSHConnection implements Connection {
 		return this.isOpen;
 	}
 	
+	public boolean command(String command){
+		return command(command, new StringBuilder() );
+	}
 	
-	public boolean command(String command) {
+	public boolean command(String command, StringBuilder log) {
 		
 		LOG.info(String.format("[%s] - %s", this.client.getRemoteAddress(), command));
 		
@@ -54,7 +58,7 @@ public class SSHConnection implements Connection {
         	InputStream errorChannel = cmd.getErrorStream();
         	
         	BufferedReader in = new BufferedReader(new InputStreamReader(channel));
-        	StringBuilder log = new StringBuilder();
+//        	StringBuilder log = new StringBuilder();
         	
             String line;        	
             while ((line = in.readLine()) != null) {
@@ -64,7 +68,6 @@ public class SSHConnection implements Connection {
             
             Integer exitStatus = cmd.getExitStatus();
             if(exitStatus == null || exitStatus != 0) {
-//            	LOG.error(String.format("Irregular Exit Status (%d) from the following command %s", exitStatus, command));
             	LOG.error(String.format("Irregular Exit Status (%d).", exitStatus));
             	BufferedReader error = new BufferedReader(new InputStreamReader(errorChannel));
             	while ((line = error.readLine()) != null) {
@@ -75,7 +78,6 @@ public class SSHConnection implements Connection {
             	error.close();   
             } else {
             	LOG.info(String.format("Success Exit Status (%d).", exitStatus));
-//            	LOG.info(String.format("Success Exit Status (%d) from the following command %s", exitStatus, command));
             }
             
             in.close();
@@ -124,6 +126,23 @@ public class SSHConnection implements Connection {
 		}
 		
 		return false;
+		
+	}
+
+	public System determineSystem() {
+		
+		StringBuilder log = new StringBuilder();
+		command("cat /etc/*-release", log);
+		String releaseInfo = log.toString();
+		LOG.info(releaseInfo);
+		
+		if(releaseInfo.contains("Ubuntu")){
+			return System.DEBIAN;
+		} else if(releaseInfo.contains("CentOS")){
+			return System.RED_HAT;
+		}
+
+		return System.UNKNOWN;
 		
 	}
 

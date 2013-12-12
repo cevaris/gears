@@ -90,6 +90,11 @@ abstract public class Gear extends Application {
 			instance.render(source, dest, Templaton.getContext(this));
 		}
 	}
+	public void render(String group, String source, HashMap<System, Object> context) {
+		for(Instance instance : config.getInstances(group)){
+			instance.render(source, (String) context.get(instance.getSystem()), Templaton.getContext(this));
+		}
+	}
 	
 
 }

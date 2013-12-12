@@ -1,6 +1,7 @@
 package org.gears.connection;
 
 import org.gears.Instance;
+import org.gears.System;
 
 public interface Connection {
 	
@@ -10,5 +11,6 @@ public interface Connection {
 	public boolean disconnect(Instance instance);
 	public boolean command(String command);
 	
+	public System determineSystem();
 
 }

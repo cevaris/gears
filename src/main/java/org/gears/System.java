@@ -3,6 +3,7 @@ package org.gears;
 public enum System {
 	
 	DEBIAN,
-	RED_HAT;
+	RED_HAT,
+	UNKNOWN;
 
 }
