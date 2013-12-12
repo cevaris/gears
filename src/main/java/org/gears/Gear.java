@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.apache.log4j.Logger;
+import org.gears.template.Templaton;
 
 
 abstract public class Gear extends Application {
@@ -36,7 +37,6 @@ abstract public class Gear extends Application {
 	}
 	
 	
-	
 	public void openPort(String value) {
 	}
 
@@ -45,8 +45,15 @@ abstract public class Gear extends Application {
 	}
 	
 	
-	public void render(Instance instance, String source, String dest) {
-		
+	public void render(String source, String dest) {
+		for(Instance instance : config.getInstances()){
+			instance.render(source, dest, Templaton.getContext(this));
+		}
+	}
+	public void render(String group, String source, String dest) {
+		for(Instance instance : config.getInstances(group)){
+			instance.render(source, dest, Templaton.getContext(this));
+		}
 	}
 	
 
